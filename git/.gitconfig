@@ -1,0 +1,19 @@
+[user]
+	name = William Turner
+	email = william.turner@aero.bombardier.com
+[push]
+	default = simple
+[core]
+	autocrlf = input
+[alias]
+	graph = log --graph --abbrev-commit --decorate --all
+	addnw = !sh -c 'git diff -w --no-color "$@" | git apply --cached --ignore-whitespace' -
+[pull]
+	ff = only
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	required = true
+
+[diff "hex"]
+	textconv = hexdump -v -C
