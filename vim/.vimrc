@@ -1,3 +1,5 @@
+execute pathogen#infect()
+
 " Solarized
 syntax enable
 set background=dark
