@@ -35,8 +35,10 @@ fi
 export GTK_IM_MODULE=xim
 export QT_IM_MODULE=xim
 
-/usr/bin/VBoxClient --clipboard
-/usr/bin/VBoxClient --checkhostversion
-/usr/bin/VBoxClient --display
-/usr/bin/VBoxClient --seamless
+if [ -x "$(command -v VBoxClient)" ]; then 
+  VBoxClient --clipboard
+  VBoxClient --checkhostversion
+  VBoxClient --display
+fi
+
 exec /usr/bin/i3
