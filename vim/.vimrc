@@ -2,8 +2,8 @@ execute pathogen#infect()
 
 " Solarized
 syntax enable
-set background=dark
 colorscheme solarized
+set background=dark
 
 " Line highlight
 set cursorline
@@ -18,3 +18,7 @@ set hidden
 " Make Wq and W behave
 :command W w
 :command Wq wq
+
+" Airline config
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
