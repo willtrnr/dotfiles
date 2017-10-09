@@ -28,3 +28,6 @@
 [submodule "vim/.vim/bundle/vim-signify"]
 	path = vim/.vim/bundle/vim-signify
 	url = https://github.com/mhinz/vim-signify.git
+[submodule "vim/.vim/bundle/editorconfig-vim"]
+	path = vim/.vim/bundle/editorconfig-vim
+	url = https://github.com/editorconfig/editorconfig-vim.git
