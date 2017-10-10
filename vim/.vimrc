@@ -16,7 +16,7 @@ set number
 set hidden
 
 " Filetype stuff
-:filetype plugin on
+filetype plugin on
 
 " Make Wq and W behave
 :command W w
