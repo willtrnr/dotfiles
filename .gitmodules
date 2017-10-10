@@ -46,3 +46,6 @@
 [submodule "vim/.vim/bundle/vim-multiple-cursors"]
 	path = vim/.vim/bundle/vim-multiple-cursors
 	url = https://github.com/terryma/vim-multiple-cursors.git
+[submodule "xcompose"]
+	path = xcompose
+	url = https://github.com/kragen/xcompose.git
