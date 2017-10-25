@@ -49,3 +49,9 @@
 [submodule "xcompose"]
 	path = xcompose
 	url = https://github.com/kragen/xcompose.git
+[submodule "vim/.vim/bundle/vim-javascript"]
+	path = vim/.vim/bundle/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
+[submodule "vim/.vim/bundle/vim-jsx"]
+	path = vim/.vim/bundle/vim-jsx
+	url = https://github.com/mxw/vim-jsx.git
