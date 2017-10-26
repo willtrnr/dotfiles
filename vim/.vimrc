@@ -31,3 +31,6 @@ let g:airline#extensions#tabline#enabled = 1
 " CtrlP config
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+
+" JSX config
+let g:jsx_ext_required = 0
