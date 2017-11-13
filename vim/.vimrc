@@ -13,18 +13,29 @@ set number
 " Allow switching out of an unsaved buffer
 set hidden
 
-" Fix some file watching stuff
+" Fix some file watching stuff for webpack
 set backupcopy=yes
+
+" Search casing
+set ignorecase
+set smartcase
+
+" Better tab complete
+set wildmode=longest,list,full
+set wildmenu
 
 " Solarized
 syntax enable
 colorscheme solarized
 set background=dark
 
-" Make Wq, W and Q behave
+" Make Wq, W and Q behave as if lowercased
 :command W w
 :command Wq wq
 :command Q q
+
+" Conveniant aliases
+:map :wbd :w<cr>:bd<cr>
 
 " Plugin stuff
 
