@@ -55,6 +55,3 @@
 [submodule "vim/.vim/bundle/vim-jsx"]
 	path = vim/.vim/bundle/vim-jsx
 	url = https://github.com/mxw/vim-jsx.git
-[submodule "vim/.vim/bundle/vim-flow"]
-	path = vim/.vim/bundle/vim-flow
-	url = https://github.com/flowtype/vim-flow.git
