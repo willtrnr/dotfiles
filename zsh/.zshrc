@@ -53,9 +53,14 @@ plugins=(archlinux bower colorize docker extract gem git-extras git-flow-avh git
 
 # User configuration
 
-export PATH=$PATH:$(ruby -e 'print Gem.user_dir')/bin
+if (command -v ruby > /dev/null); then
+  export PATH=$PATH:$(ruby -e 'print Gem.user_dir')/bin
+fi
+
+if (command -v yarn > /dev/null); then
+  export PATH=$PATH:$(yarn global bin)
+fi
+
+export EDITOR=vim
 
 source $ZSH/oh-my-zsh.sh
-
-# Preferred editor
-export EDITOR='vim'
