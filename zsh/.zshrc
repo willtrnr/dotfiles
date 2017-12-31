@@ -53,18 +53,24 @@ plugins=(archlinux bower colorize docker extract gem git-extras git-flow-avh git
 
 # User configuration
 
-if (command -v ruby > /dev/null); then
-  export PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
-fi
-
 if [ -d "$HOME/.nodebrew/current/bin" ]; then
   export PATH="$PATH:$HOME/.nodebrew/current/bin"
+fi
+
+if (command -v ruby > /dev/null); then
+  export PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
 fi
 
 if (command -v yarn > /dev/null); then
   export PATH="$PATH:$(yarn global bin)"
 fi
 
-export EDITOR=vim
+if (command -v vim > /dev/null); then
+  export EDITOR="$(command -v vim)"
+elif (command -v vi > /dev/null); then
+  export EDITOR="$(command -v vi)"
+elif (command -v nano > /dev/null); then
+  export EDITOR="$(command -v nano)"
+fi
 
 source $ZSH/oh-my-zsh.sh
