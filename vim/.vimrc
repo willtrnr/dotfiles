@@ -60,4 +60,7 @@ let g:syntastic_javascript_checkers = ['eslint', 'flow']
 let g:syntastic_javascript_eslint_exe = '/usr/bin/eslint_d'
 let g:syntastic_javascript_flow_exe = '/usr/bin/yarn run --silent 2>/dev/null flow'
 
+let g:syntastic_java_checkers = ['checkstyle']
 let g:syntastic_java_javac_config_file_enabled = 1
+let g:syntastic_java_checkstyle_classpath = '/usr/share/java/checkstyle/checkstyle.jar'
+let g:syntastic_java_checkstyle_conf_file = 'checkstyle.xml'
