@@ -8,7 +8,7 @@ function proxyon {
     export JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyHost=$http_proxy_host -Dhttp.proxyPort=$http_proxy_port -Dhttp.proxyUser=$http_proxy_user -Dhttp.proxyPassword=$http_proxy_pass -Dhttp.nonProxyHosts='$(echo $no_proxy | sed 's/,/|/g')'"
   fi
   if [[ "$JAVA_OPTS" != *"https.proxy"* ]]; then
-    export JAVA_OPTS="$JAVA_OPTS -Dhttps.proxyHost=$https_proxy_host -Dhttps.proxyPort=$https_proxy_port -Dhttps.proxyUser=$https_proxy_user -Dhttps.proxyPassword=$https_proxy_pass -Dhttps.nonProxyHosts='$(echo $no_proxy | sed 's/,/|/g')'"
+    export JAVA_OPTS="$JAVA_OPTS -Dhttps.proxyHost=$http_proxy_host -Dhttps.proxyPort=$http_proxy_port -Dhttps.proxyUser=$http_proxy_user -Dhttps.proxyPassword=$http_proxy_pass -Dhttps.nonProxyHosts='$(echo $no_proxy | sed 's/,/|/g')'"
   fi
 
   if [[ "$SBT_OPTS" != *"sbt.override.build.repos"* ]]; then
@@ -24,7 +24,7 @@ function proxyoff {
   export SBT_OPTS="$(echo "$SBT_OPTS" | sed -e 's/-Dsbt.override.build.repos=true//' -e 's/  */ /g')"
 }
 
-if [ -z "$http_proxy_user" ] && [ -f "$HOME/.credentials" ]; then
+if [ -f "$HOME/.credentials" ]; then
   . $HOME/.credentials
   export http_proxy_user="$username"
   export http_proxy_pass="$password"
