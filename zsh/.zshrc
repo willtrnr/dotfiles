@@ -49,28 +49,8 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(archlinux bower colorize docker extract gem git-extras git-flow-avh git gitignore grunt gulp history jsontools kubectl lein lol node npm nyan pip python redis-cli sbt scala sublime sudo svn urltools virtualenv wd z zsh-wakatime)
+plugins=(archlinux bower colorize docker extract gem git-extras git-flow-avh git gitignore grunt gulp history jsontools kubectl lein lol node npm pip python redis-cli sbt scala sublime sudo svn urltools virtualenv wd z zsh-wakatime)
 
 # User configuration
-
-if [ -d "$HOME/.nodebrew/current/bin" ]; then
-  export PATH="$PATH:$HOME/.nodebrew/current/bin"
-fi
-
-if (command -v ruby > /dev/null); then
-  export PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
-fi
-
-if (command -v yarn > /dev/null); then
-  export PATH="$PATH:$(yarn global bin)"
-fi
-
-if (command -v vim > /dev/null); then
-  export EDITOR="$(command -v vim)"
-elif (command -v vi > /dev/null); then
-  export EDITOR="$(command -v vi)"
-elif (command -v nano > /dev/null); then
-  export EDITOR="$(command -v nano)"
-fi
 
 source $ZSH/oh-my-zsh.sh

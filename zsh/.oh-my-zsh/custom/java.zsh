@@ -37,3 +37,13 @@ function jg1gc {
     export JAVA_OPTS="$(echo "$JAVA_OPTS" | sed -e 's/-XX:+UseG1GC//' -e 's/  */ /g')"
   fi
 }
+
+function ykprof {
+  if [ "$1" = "on" ]; then
+    if [[ "$JAVA_OPTS" != *"-agentpath"* ]]; then
+      export JAVA_OPTS="-agentpath:/opt/yourkit/bin/linux-x86-64/libyjpagent.so=listen=all $JAVA_OPTS"
+    fi
+  else
+    export JAVA_OPTS="$(echo "$JAVA_OPTS" | sed -e 's/-agentpath:[^ ]*//' -e 's/  */ /g')"
+  fi
+}
