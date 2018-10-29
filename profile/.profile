@@ -27,7 +27,7 @@ fi
 if (command -v less > /dev/null); then
   export PAGER="$(command -v less)"
 elif (command -v more > /dev/null); then
-  export EDITOR="$(command -v more)"
+  export PAGER="$(command -v more)"
 fi
 
 # Select the best available browser

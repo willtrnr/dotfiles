@@ -1,4 +1,4 @@
-# Try to load .profile like the other shells
-if [ -f ~/.profile ]; then
-  emulate sh -c 'source ~/.profile'
+# Try to load .profile like other shells
+if [ -f "$HOME/.profile" ]; then
+  emulate sh -c 'source "$HOME/.profile"'
 fi
