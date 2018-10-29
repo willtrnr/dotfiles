@@ -29,3 +29,15 @@ if (command -v less > /dev/null); then
 elif (command -v more > /dev/null); then
   export EDITOR="$(command -v more)"
 fi
+
+# Select the best available browser
+
+if (command -v google-chrome-beta > /dev/null); then
+  export BROWSER="$(command -v google-chrome-beta) %s"
+elif (command -v google-chrome-stable > /dev/null); then
+  export BROWSER="$(command -v google-chrome-stable) %s"
+elif (command -v chromium > /dev/null); then
+  export BROWSER="$(command -v chromium) %s"
+elif (command -v firefox > /dev/null); then
+  export BROWSER="$(command -v firefox) %s"
+fi
