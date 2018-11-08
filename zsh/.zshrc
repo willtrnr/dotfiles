@@ -49,7 +49,36 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(archlinux bower colorize docker extract gem git-extras git-flow-avh git gitignore grunt gulp history jsontools kubectl lein lol node npm pip python redis-cli sbt scala sublime sudo svn urltools virtualenv wd z zsh-wakatime)
+plugins=(
+  archlinux
+  bower
+  colorize
+  docker
+  extract
+  gem
+  git
+  git-extras
+  gitignore
+  history
+  jsontools
+  kubectl
+  lein
+  lol
+  node
+  npm
+  pip
+  python
+  sbt
+  scala
+  sudo
+  svn
+  urltools
+  virtualenv
+  wd
+  yarn
+  z
+  zsh-wakatime
+)
 
 # User configuration
 
