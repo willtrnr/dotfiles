@@ -55,3 +55,6 @@
 [submodule "vim/.vim/bundle/vim-jsx"]
 	path = vim/.vim/bundle/vim-jsx
 	url = https://github.com/mxw/vim-jsx.git
+[submodule "vim/.vim/bundle/thrift.vim"]
+	path = vim/.vim/bundle/thrift.vim
+	url = https://github.com/solarnz/thrift.vim.git
