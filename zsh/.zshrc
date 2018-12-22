@@ -76,7 +76,6 @@ plugins=(
   virtualenv
   wd
   yarn
-  z
   zsh-wakatime
 )
 
