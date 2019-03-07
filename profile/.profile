@@ -30,6 +30,13 @@ elif (command -v more > /dev/null); then
   export PAGER="$(command -v more)"
 fi
 
+# Select the best available terminal, this the i3-sensible-terminal selection order
+if (command -v kitty > /dev/null); then
+  export TERMINAL="$(command -v kitty)"
+elif (command -v urxvt > /dev/null); then
+  export TERMINAL="$(command -v urxvt)"
+fi
+
 # Select the best available browser
 
 if (command -v google-chrome-beta > /dev/null); then
