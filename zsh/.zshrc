@@ -68,6 +68,7 @@ plugins=(
   lein
   node
   npm
+  nvm
   pip
   python
   sbt

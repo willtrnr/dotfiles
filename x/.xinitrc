@@ -23,8 +23,6 @@ if [ -f "$usermodmap" ]; then
     xmodmap "$usermodmap"
 fi
 
-# start some nice programs
-
 if [ -d /etc/X11/xinit/xinitrc.d ] ; then
   for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
     [ -x "$f" ] && . "$f"
@@ -35,10 +33,14 @@ fi
 export GTK_IM_MODULE=xim
 export QT_IM_MODULE=xim
 
-if [ -x "$(command -v VBoxClient)" ]; then 
+if (command -v VBoxClient-all > /dev/null); then
+  VBoxClient-all
+elif (command -v VBoxClient > /dev/null); then
   VBoxClient --clipboard
   VBoxClient --checkhostversion
   VBoxClient --display
+  VBoxClient --seamless
+  VBoxClient --draganddrop
 fi
 
 exec /usr/bin/i3
