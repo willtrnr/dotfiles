@@ -24,6 +24,9 @@ set smartcase
 set wildmode=longest,list,full
 set wildmenu
 
+" Always show sign gutter to avoid jitter
+set signcolumn=yes
+
 " Solarized
 syntax enable
 colorscheme solarized
@@ -64,3 +67,10 @@ let g:syntastic_java_checkers = ['checkstyle']
 let g:syntastic_java_javac_config_file_enabled = 1
 let g:syntastic_java_checkstyle_classpath = '/usr/share/java/checkstyle/checkstyle.jar'
 let g:syntastic_java_checkstyle_conf_file = 'checkstyle.xml'
+
+" CoC
+set updatetime=300
+set shortmess+=c
+
+" Use Ctrl-Space for completion
+inoremap <silent><expr> <c-space> coc#refresh()
