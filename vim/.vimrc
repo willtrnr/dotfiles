@@ -71,6 +71,7 @@ let g:syntastic_java_checkstyle_conf_file = 'checkstyle.xml'
 " CoC
 set updatetime=300
 set shortmess+=c
+set cmdheight=2
 
 " Use Ctrl-Space for completion
 inoremap <silent><expr> <c-space> coc#refresh()
