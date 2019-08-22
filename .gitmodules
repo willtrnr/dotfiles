@@ -73,3 +73,4 @@
 [submodule "vim/.vim/bundle/coc.nvim"]
 	path = vim/.vim/bundle/coc.nvim
 	url = https://github.com/neoclide/coc.nvim.git
+	branch = release
