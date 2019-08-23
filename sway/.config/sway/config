@@ -12,6 +12,13 @@ set $term i3-sensible-terminal
 
 set $menu dmenu_path | dmenu | xargs swaymsg exec --
 
+### Input configuration
+#
+input * {
+    xkb_layout us
+    xkb_options compose:ralt
+}
+
 ### Key bindings
 #
 # Basics:
