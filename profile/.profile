@@ -39,12 +39,12 @@ fi
 
 # Select the best available browser
 
-if (command -v google-chrome-beta > /dev/null); then
+if (command -v chromium > /dev/null); then
+  export BROWSER="$(command -v chromium)"
+elif (command -v google-chrome-beta > /dev/null); then
   export BROWSER="$(command -v google-chrome-beta)"
 elif (command -v google-chrome-stable > /dev/null); then
   export BROWSER="$(command -v google-chrome-stable)"
-elif (command -v chromium > /dev/null); then
-  export BROWSER="$(command -v chromium)"
 elif (command -v firefox > /dev/null); then
   export BROWSER="$(command -v firefox)"
 fi
