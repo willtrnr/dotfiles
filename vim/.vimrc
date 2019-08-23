@@ -13,8 +13,9 @@ set number
 " Allow switching out of an unsaved buffer
 set hidden
 
-" Fix some file watching stuff for webpack
-set backupcopy=yes
+" Fix some file watching stuff
+set nobackup
+set nowritebackup
 
 " Search casing
 set ignorecase
@@ -40,21 +41,26 @@ set background=dark
 " Conveniant aliases
 :map :wbd :w<cr>:bd<cr>
 
+
 " Plugin stuff
 
 " Airline
+
 set noshowmode
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
 " CtrlP
+
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " JSX
+
 let g:jsx_ext_required = 0
 
 " Syntastic
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
@@ -65,9 +71,19 @@ let g:syntastic_java_checkstyle_classpath = '/usr/share/java/checkstyle/checksty
 let g:syntastic_java_checkstyle_conf_file = 'checkstyle.xml'
 
 " CoC
+
 set updatetime=300
 set shortmess+=c
 set cmdheight=2
 
 " Use Ctrl-Space for completion
 inoremap <silent><expr> <c-space> coc#refresh()
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Fix autofix problem of current line
+nmap <leader>qf <Plug>(coc-fix-current)
