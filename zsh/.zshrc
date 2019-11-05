@@ -82,5 +82,29 @@ plugins=(
 )
 
 # User configuration
+BULLETTRAIN_PROMPT_ORDER=(
+  status
+  custom
+  context
+  dir
+  screen
+  perl
+  ruby
+  virtualenv
+  nvm
+  aws
+  go
+  rust
+  elixir
+  git
+  hg
+  cmd_exec_time
+)
+
+BULLETTRAIN_PROMPT_CHAR=""
+BULLETTRAIN_PROMPT_SEPARATE_LINE="false"
+BULLETTRAIN_PROMPT_ADD_NEWLINE="false"
+
+BULLETTRAIN_STATUS_EXIT_SHOW="true"
 
 source $ZSH/oh-my-zsh.sh
