@@ -37,10 +37,11 @@ if (command -v VBoxClient-all > /dev/null); then
   VBoxClient-all
 elif (command -v VBoxClient > /dev/null); then
   VBoxClient --clipboard
-  VBoxClient --checkhostversion
-  VBoxClient --display
-  VBoxClient --seamless
   VBoxClient --draganddrop
+  VBoxClient --seamless
+  VBoxClient --display
+  VBoxClient --checkhostversion
+  VBoxClient --vmsvga-x11
 fi
 
 exec /usr/bin/i3

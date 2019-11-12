@@ -80,3 +80,6 @@
 [submodule "zsh/.oh-my-zsh/custom/themes/bullet-train"]
 	path = zsh/.oh-my-zsh/custom/themes/bullet-train
 	url = https://github.com/caiogondim/bullet-train-oh-my-zsh-theme.git
+[submodule "vim/.vim/bundle/omnisharp-vim"]
+	path = vim/.vim/bundle/omnisharp-vim
+	url = https://github.com/OmniSharp/omnisharp-vim.git
