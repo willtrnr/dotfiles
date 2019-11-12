@@ -42,25 +42,27 @@ set background=dark
 :map :wbd :w<cr>:bd<cr>
 
 
-" Plugin stuff
-
+"
 " Airline
-
+"
 set noshowmode
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
+"
 " CtrlP
-
+"
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
+"
 " JSX
-
+"
 let g:jsx_ext_required = 0
 
+"
 " Syntastic
-
+"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
@@ -70,8 +72,11 @@ let g:syntastic_java_javac_config_file_enabled = 1
 let g:syntastic_java_checkstyle_classpath = '/usr/share/java/checkstyle/checkstyle.jar'
 let g:syntastic_java_checkstyle_conf_file = 'checkstyle.xml'
 
-" CoC
+let g:syntastic_cs_checkers = ['code_checker']
 
+"
+" CoC
+"
 set updatetime=300
 set shortmess+=c
 set cmdheight=2
@@ -87,3 +92,16 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Fix autofix problem of current line
 nmap <leader>qf <Plug>(coc-fix-current)
+
+"
+" OmniSharp
+"
+let g:OmniSharp_server_stdio = 1
+let g:OmniSharp_selector_ui = 'ctrlp'
+let g:OmniSharp_highlight_types = 2
+
+augroup omnisharp_commands
+  autocmd!
+  autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
+  autocmd FileType cs nnoremap <buffer> gd :OmniSharpGotoDefinition<CR>
+augroup END
