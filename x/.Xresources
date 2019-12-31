@@ -43,6 +43,10 @@
 *color14:                 S_base1
 *color15:                 S_base3
 
+!! font config
+
+Xft.dpi: 96
+
 !! rxvt-unicode
 
 URxvt.font: xft:DejaVu Sans Mono for Powerline:pixelsize=12:antialias=true,xft:DejaVu Sans Mono:pixelsize=12:antialias=true
