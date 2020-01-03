@@ -58,6 +58,7 @@ plugins=(
   colorize
   docker
   extract
+  gcloud
   gem
   git
   git-extras

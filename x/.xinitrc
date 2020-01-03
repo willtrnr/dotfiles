@@ -30,8 +30,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
   unset f
 fi
 
-export GTK_IM_MODULE=xim
-export QT_IM_MODULE=xim
+# start the VBox integrations if we have them
 
 if (command -v VBoxClient-all > /dev/null); then
   VBoxClient-all
@@ -43,5 +42,14 @@ elif (command -v VBoxClient > /dev/null); then
   VBoxClient --checkhostversion
   VBoxClient --vmsvga-x11
 fi
+
+# setup compose keys
+
+setxkbmap -option compose:ralt
+
+export GTK_IM_MODULE=xim
+export QT_IM_MODULE=xim
+
+# start i3
 
 exec /usr/bin/i3
