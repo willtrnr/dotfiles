@@ -14,6 +14,11 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# snip screen
+bindsym Print exec snip
+bindsym Shift+Print exec snip -u
+bindsym --release Control+Print exec snip -s
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
