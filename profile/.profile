@@ -35,6 +35,7 @@ elif (command -v more > /dev/null); then
 fi
 
 # Select the best available terminal, overrides the i3-sensible-terminal selection order
+
 if (command -v kitty > /dev/null); then
   export TERMINAL="$(command -v kitty)"
 elif (command -v urxvt > /dev/null); then
@@ -43,7 +44,9 @@ fi
 
 # Select the best available browser
 
-if (command -v chromium > /dev/null); then
+if (command -v chromium-snapshot-bin > /dev/null); then
+  export BROWSER="$(command -v chromium-snapshot-bin)"
+elif (command -v chromium > /dev/null); then
   export BROWSER="$(command -v chromium)"
 elif (command -v google-chrome-beta > /dev/null); then
   export BROWSER="$(command -v google-chrome-beta)"

@@ -36,10 +36,10 @@ if (command -v VBoxClient-all > /dev/null); then
   VBoxClient-all
 elif (command -v VBoxClient > /dev/null); then
   VBoxClient --clipboard
-  VBoxClient --draganddrop
-  VBoxClient --seamless
-  VBoxClient --display
   VBoxClient --checkhostversion
+  VBoxClient --display
+  VBoxClient --seamless
+  VBoxClient --draganddrop
   VBoxClient --vmsvga-x11
 fi
 
