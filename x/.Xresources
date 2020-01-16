@@ -49,7 +49,10 @@ Xft.dpi: 96
 
 !! rxvt-unicode
 
-URxvt.font: xft:Fira Code:pixelsize=12:antialias=true
+URxvt.font: xft:Fira Code:style=Regular:size=9.5:antialias=true
+URxvt.boldFont: xft:Fira Code:style=Bold:size=9.5:antialias=true
+URxvt.italicFont: xft:Fira Code:style=Italic:size=9.5:antialias=true
+URxvt.boldItalicFont: xft:Fira Code:style=Bold Italic:size=9.5:antialias=true
 
 URxvt.scrollBar: false
 URxvt.scrollTtyOutput: false
