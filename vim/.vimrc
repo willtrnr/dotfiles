@@ -37,6 +37,7 @@ set background=dark
 :command W w
 :command Wq wq
 :command Q q
+:command Qa qa
 
 " Conveniant aliases
 :map :wbd :w<cr>:bd<cr>
@@ -79,7 +80,6 @@ let g:syntastic_cs_checkers = ['code_checker']
 "
 set updatetime=300
 set shortmess+=c
-set cmdheight=2
 
 " Use Ctrl-Space for completion
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -90,7 +90,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Fix autofix problem of current line
+" Apply autofix to current line
 nmap <leader>qf <Plug>(coc-fix-current)
 
 "
