@@ -57,11 +57,6 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 "
-" JSX
-"
-let g:jsx_ext_required = 0
-
-"
 " Syntastic
 "
 let g:syntastic_always_populate_loc_list = 1
