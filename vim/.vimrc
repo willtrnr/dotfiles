@@ -51,6 +51,14 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
 "
+" IndentLine
+"
+
+let g:indentLine_enabled = 0
+let g:indentLine_leadingSpaceChar = '·'
+let g:indentLine_leadingSpaceEnabled = 1
+
+"
 " CtrlP
 "
 let g:ctrlp_working_path_mode = 'ra'
