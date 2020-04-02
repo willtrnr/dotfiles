@@ -13,7 +13,7 @@ if (command -v ruby > /dev/null); then
 fi
 
 if (command -v yarn > /dev/null); then
-  export PATH="$PATH:$(yarn global bin)"
+  export PATH="$PATH:$(yarn global bin 2> /dev/null)"
 fi
 
 # Select the best available editor
