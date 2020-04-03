@@ -42,7 +42,6 @@ set background=dark
 " Conveniant aliases
 :map :wbd :w<cr>:bd<cr>
 
-
 "
 " Airline
 "
@@ -57,6 +56,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:indentLine_enabled = 0
 let g:indentLine_leadingSpaceChar = '·'
 let g:indentLine_leadingSpaceEnabled = 1
+let g:indentLine_concealcursor = ''
 
 "
 " CtrlP
