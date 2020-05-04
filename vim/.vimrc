@@ -78,6 +78,8 @@ let g:syntastic_java_checkstyle_conf_file = 'checkstyle.xml'
 
 let g:syntastic_cs_checkers = ['code_checker']
 
+let g:syntastic_markdown_checkers = ['proselint']
+
 "
 " CoC
 "
