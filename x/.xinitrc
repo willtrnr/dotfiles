@@ -43,7 +43,7 @@ elif (command -v VBoxClient > /dev/null); then
   VBoxClient --vmsvga-x11
 fi
 
-# start the VMWare integrations if we have them
+# start the VMware integrations if we have them
 
 if (command -v vmware-user-suid-wrapper > /dev/null); then
   vmware-user-suid-wrapper
