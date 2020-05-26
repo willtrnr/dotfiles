@@ -43,6 +43,14 @@ elif (command -v VBoxClient > /dev/null); then
   VBoxClient --vmsvga-x11
 fi
 
+# start the VMWare integrations if we have them
+
+if (command -v vmware-user-suid-wrapper > /dev/null); then
+  vmware-user-suid-wrapper
+elif (command -v vmware-user > /dev/null); then
+  vmware-user
+fi
+
 # setup compose keys
 
 setxkbmap -option compose:ralt
