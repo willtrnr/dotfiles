@@ -30,26 +30,29 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
   unset f
 fi
 
-# start the VBox integrations if we have them
+# start the hypervisor integrations if we have them
 
-if (command -v VBoxClient-all > /dev/null); then
-  VBoxClient-all
-elif (command -v VBoxClient > /dev/null); then
-  VBoxClient --clipboard
-  VBoxClient --checkhostversion
-  VBoxClient --display
-  VBoxClient --seamless
-  VBoxClient --draganddrop
-  VBoxClient --vmsvga-x11
+virt="$(systemd-detect-virt || true)"
+
+if [ "$virt" == "oracle" ]; then
+  # running in VirtualBox
+  if (command -v VBoxClient > /dev/null); then
+    VBoxClient --clipboard
+    VBoxClient --checkhostversion
+    VBoxClient --seamless
+    VBoxClient --draganddrop
+    VBoxClient --vmsvga
+  fi
+elif [ "$virt" == "vmware" ]; then
+  # running in some VMware variant
+  if (command -v vmware-user-suid-wrapper > /dev/null); then
+    vmware-user-suid-wrapper
+  elif (command -v vmware-user > /dev/null); then
+    vmware-user
+  fi
 fi
 
-# start the VMware integrations if we have them
-
-if (command -v vmware-user-suid-wrapper > /dev/null); then
-  vmware-user-suid-wrapper
-elif (command -v vmware-user > /dev/null); then
-  vmware-user
-fi
+unset virt
 
 # setup compose keys
 
