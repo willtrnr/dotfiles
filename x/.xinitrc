@@ -39,9 +39,6 @@ if [ "$virt" == "oracle" ]; then
   if (command -v VBoxClient > /dev/null); then
     VBoxClient --clipboard
     VBoxClient --checkhostversion
-    VBoxClient --seamless
-    VBoxClient --draganddrop
-    VBoxClient --vmsvga
   fi
 elif [ "$virt" == "vmware" ]; then
   # running in some VMware variant

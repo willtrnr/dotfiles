@@ -14,10 +14,13 @@ general {
 order += "disk /"
 order += "disk /var"
 order += "disk /mnt/c"
+order += "disk /media/vboxsf/c"
 order += "disk /media/vmware/c"
 order += "disk /mnt/d"
+order += "disk /media/vboxsf/d"
 order += "disk /media/vmware/d"
 order += "disk /mnt/e"
+order += "disk /media/vboxsf/e"
 order += "disk /media/vmware/e"
 order += "ethernet _first_"
 order += "wireless _first_"
@@ -80,6 +83,10 @@ disk "/mnt/c" {
   format = "C: %avail"
 }
 
+disk "/media/vboxsf/c" {
+  format = "C: %avail"
+}
+
 disk "/media/vmware/c" {
   format = "C: %avail"
 }
@@ -88,11 +95,19 @@ disk "/mnt/d" {
   format = "D: %avail"
 }
 
+disk "/media/vboxsf/d" {
+  format = "D: %avail"
+}
+
 disk "/media/vmware/d" {
   format = "D: %avail"
 }
 
 disk "/mnt/e" {
+  format = "E: %avail"
+}
+
+disk "/media/vboxsf/e" {
   format = "E: %avail"
 }
 
