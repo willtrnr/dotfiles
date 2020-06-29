@@ -1,11 +1,15 @@
 # Path adjustments
 
-if [ -d "$HOME/.nodebrew/current/bin" ]; then
-  export PATH="$PATH:$HOME/.nodebrew/current/bin"
+if [ -d "$HOME/bin" ]; then
+  export PATH="$HOME/bin:$PATH"
 fi
 
 if [ -d "$HOME/.krew/bin" ]; then
   export PATH="$PATH:$HOME/.krew/bin"
+fi
+
+if [ -d "$HOME/.nodebrew/current/bin" ]; then
+  export PATH="$PATH:$HOME/.nodebrew/current/bin"
 fi
 
 if (command -v ruby > /dev/null); then
