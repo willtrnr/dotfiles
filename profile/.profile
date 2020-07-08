@@ -1,7 +1,7 @@
 # Path adjustments
 
 if [ -d "$HOME/bin" ]; then
-  export PATH="$HOME/bin:$PATH"
+  export PATH="$PATH:$HOME/bin"
 fi
 
 if [ -d "$HOME/.krew/bin" ]; then
