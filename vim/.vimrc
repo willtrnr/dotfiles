@@ -1,5 +1,3 @@
-execute pathogen#infect()
-
 " Filetype stuff
 filetype plugin on
 
@@ -28,10 +26,8 @@ set wildmenu
 " Always show sign gutter to avoid jitter
 set signcolumn=yes
 
-" Solarized
+" Syntax highlight
 syntax enable
-colorscheme solarized
-set background=dark
 
 " Make Wq, W and Q behave as if lowercased
 :command W w
@@ -41,6 +37,24 @@ set background=dark
 
 " Conveniant aliases
 :map :wbd :w<cr>:bd<cr>
+
+
+"
+" Polyglot
+"
+" This needs to happen before the plugin is loaded
+let g:polyglot_disabled = ['python-compiler']
+
+"
+" Load plugins
+"
+execute pathogen#infect()
+
+"
+" Solarized
+"
+colorscheme solarized
+set background=dark
 
 "
 " Airline
@@ -81,11 +95,6 @@ let g:syntastic_cs_checkers = ['code_checker']
 let g:syntastic_markdown_checkers = ['proselint']
 
 let g:syntastic_python_checkers = []
-
-"
-" Polyglot
-"
-let g:polyglot_disabled = ['python-compiler']
 
 "
 " CoC
