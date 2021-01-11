@@ -4,20 +4,24 @@ if [ -d "$HOME/bin" ]; then
   export PATH="$PATH:$HOME/bin"
 fi
 
-if [ -d "$HOME/.krew/bin" ]; then
-  export PATH="$PATH:$HOME/.krew/bin"
+if (command -v ruby > /dev/null); then
+  export PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
 fi
 
 if [ -d "$HOME/.nodebrew/current/bin" ]; then
   export PATH="$PATH:$HOME/.nodebrew/current/bin"
 fi
 
-if (command -v ruby > /dev/null); then
-  export PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
-fi
-
 if (command -v yarn > /dev/null); then
   export PATH="$PATH:$(yarn global bin 2> /dev/null)"
+fi
+
+if [ -d "$HOME/.cargo/bin" ]; then
+  export PATH="$PATH:$HOME/.cargo/bin"
+fi
+
+if [ -d "$HOME/.krew/bin" ]; then
+  export PATH="$PATH:$HOME/.krew/bin"
 fi
 
 # Select the best available editor

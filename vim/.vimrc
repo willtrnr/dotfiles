@@ -94,7 +94,7 @@ let g:syntastic_cs_checkers = ['code_checker']
 
 let g:syntastic_markdown_checkers = ['proselint']
 
-let g:syntastic_python_checkers = []
+let g:syntastic_python_checkers = ['mypy', 'pylint']
 
 "
 " CoC
