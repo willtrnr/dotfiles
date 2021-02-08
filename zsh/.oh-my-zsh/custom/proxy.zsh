@@ -16,13 +16,8 @@ function proxy_on {
     # The file can be empty, in which case we will assume password-less
     proxy_user="$(. $HOME/.credentials; echo "$username")"
     proxy_pass="$(. $HOME/.credentials; echo "$password")"
-  else
-    # Otherwise check if we can prompt the user
-    if [ "$allow_prompt" != "1" ]; then
-      # Bail out, we don't assume password-less
-      return
-    fi
-
+  elif [ "$allow_prompt" = "1" ]; then
+    # As last resort, prompt the user
     # Ask the user for the credentials (or lack thereof)
     echo -n "Proxy username: "
     read proxy_user
@@ -44,10 +39,16 @@ function proxy_on {
 
   # We'll at least try to setup the Java properties if we didn't already have something
   if [[ "$JAVA_OPTS" != *"http.proxy"* ]]; then
-    export JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyHost=$http_proxy_host -Dhttp.proxyPort=$http_proxy_port -Dhttp.proxyUser=$proxy_user -Dhttp.proxyPassword=$proxy_pass -Dhttp.nonProxyHosts='$(echo $no_proxy | sed 's/,/|/g')'"
+    export JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyHost=$http_proxy_host -Dhttp.proxyPort=$http_proxy_port -Dhttp.nonProxyHosts='$(echo $no_proxy | sed 's/,/|/g')'"
+    if [ -n "$proxy_user" ]; then
+      export JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyUser=$proxy_user -Dhttp.proxyPassword=$proxy_pass"
+    fi
   fi
   if [[ "$JAVA_OPTS" != *"https.proxy"* ]]; then
-    export JAVA_OPTS="$JAVA_OPTS -Dhttps.proxyHost=$http_proxy_host -Dhttps.proxyPort=$http_proxy_port -Dhttps.proxyUser=$proxy_user -Dhttps.proxyPassword=$proxy_pass -Dhttps.nonProxyHosts='$(echo $no_proxy | sed 's/,/|/g')'"
+    export JAVA_OPTS="$JAVA_OPTS -Dhttps.proxyHost=$http_proxy_host -Dhttps.proxyPort=$http_proxy_port -Dhttps.nonProxyHosts='$(echo $no_proxy | sed 's/,/|/g')'"
+    if [ -n "$proxy_user" ]; then
+      export JAVA_OPTS="$JAVA_OPTS -Dhttps.proxyUser=$proxy_user -Dhttps.proxyPassword=$proxy_pass"
+    fi
   fi
 }
 
