@@ -1,7 +1,7 @@
 function proxy_on {
   local proxy_user proxy_pass allow_prompt
 
-  allow_prompt="${1:-1}"
+  allow_prompt="${1:-0}"
 
   if [ -n "$http_proxy" ]; then
     return
