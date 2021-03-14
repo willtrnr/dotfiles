@@ -3,7 +3,8 @@ function proxy_on {
 
   allow_prompt="${1:-0}"
 
-  if [ -n "$http_proxy" ]; then
+  if [ -n "$http_proxy" ] || [ -z "$http_proxy_host" ]; then
+    # Abort if proxy is already defined or we have no proxy host
     return
   fi
 
