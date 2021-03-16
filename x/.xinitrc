@@ -6,7 +6,6 @@ sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
 
 # merge in defaults and keymaps
-
 if [ -f $sysresources ]; then
   xrdb -merge $sysresources
 fi
@@ -30,8 +29,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
   unset f
 fi
 
-# start the hypervisor integrations if we have them
-
+# start the hypervisor integrations if we have and need them
 virt="$(systemd-detect-virt || true)"
 if [ "$virt" == "oracle" ]; then
   # running in some VirtualBox variant
@@ -49,17 +47,15 @@ elif [ "$virt" == "vmware" ]; then
 fi
 unset virt
 
-# setup compose keys
+# setup compose key on right-alt and remape escape to caps lock
+setxkbmap -option compose:ralt -option caps:escape
 
-setxkbmap -option compose:ralt
-
+# fix compose in ui toolkits
 export GTK_IM_MODULE=xim
 export QT_IM_MODULE=xim
 
 # start i3
-
 if (command -v xcompmgr > /dev/null); then
   xcompmgr &
 fi
-
 exec i3
