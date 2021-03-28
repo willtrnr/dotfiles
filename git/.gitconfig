@@ -17,3 +17,5 @@
 
 [diff "hex"]
 	textconv = hexdump -v -C
+[init]
+	defaultBranch = master
