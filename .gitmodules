@@ -89,3 +89,6 @@
 [submodule "vim/.vim/bundle/indentLine"]
 	path = vim/.vim/bundle/indentLine
 	url = https://github.com/Yggdroot/indentLine.git
+[submodule "vim/.vim/bundle/vim-minimap"]
+	path = vim/.vim/bundle/vim-minimap
+	url = https://github.com/severin-lemaignan/vim-minimap.git
