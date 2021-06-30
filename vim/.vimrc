@@ -76,6 +76,11 @@ let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_concealcursor = ''
 
 "
+" Minimap
+"
+let g:minimap_highlight = 'Constant'
+
+"
 " CtrlP
 "
 let g:ctrlp_working_path_mode = 'ra'

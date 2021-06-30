@@ -1,1 +1,6 @@
-credentials += Credentials(Path.userHome / ".sbt" / "credentials")
+credentials ++= {
+  List("credentials", "nexus-credentials", "github-credentials")
+    .map(Path.userHome / ".sbt" / _)
+    .filter(f => f.exists && !f.isDirectory)
+    .map(Credentials(_))
+}
