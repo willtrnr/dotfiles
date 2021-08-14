@@ -1,5 +1,5 @@
-" Filetype stuff
-filetype plugin on
+" Force use of UTF-8 on vim
+set encoding=UTF-8
 
 " Line highlight
 set cursorline
@@ -26,6 +26,12 @@ set wildmenu
 " Always show sign gutter to avoid jitter
 set signcolumn=yes
 
+" Adjust refresh for async stuff
+set updatetime=100
+"
+" Filetype stuff
+filetype plugin on
+
 " Syntax highlight
 syntax enable
 
@@ -51,13 +57,54 @@ let g:polyglot_disabled = ['python-compiler', 'autoindent']
 "
 " Load plugins
 "
-execute pathogen#infect()
+call plug#begin()
+
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'lilydjwg/colorizer'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'Yggdroot/indentLine'
+Plug 'preservim/nerdcommenter'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'frazrepo/vim-rainbow'
+Plug 'w0rp/ale'
+Plug 'majutsushi/tagbar'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-sensible'
+
+if $STY != ""
+  Plug 'ryanoasis/vim-devicons'
+endif
+
+if has('nvim')
+  Plug 'ray-x/material_plus.nvim'
+else
+  Plug 'altercation/vim-colors-solarized'
+endif
+
+if has('nvim') || has('patch-8.0.902')
+  Plug 'mhinz/vim-signify'
+else
+  Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
+endif
+
+call plug#end()
 
 "
-" Solarized
+" Color scheme
 "
-colorscheme solarized
-set background=dark
+if has('nvim')
+  let g:material_style = 'mariana'
+  colorscheme material
+else
+  colorscheme solarized
+	set background=dark
+endif
 
 "
 " Airline
@@ -69,7 +116,6 @@ let g:airline#extensions#tabline#enabled = 1
 "
 " IndentLine
 "
-
 let g:indentLine_enabled = 0
 let g:indentLine_leadingSpaceChar = '·'
 let g:indentLine_leadingSpaceEnabled = 1
@@ -100,9 +146,17 @@ let g:syntastic_markdown_checkers = ['proselint']
 let g:syntastic_python_checkers = ['mypy', 'pylint']
 
 "
+" ALE
+"
+let g:ale_disable_lsp = 1
+let g:ale_linters = {
+\  'python': ['mypy', 'pylint'],
+\  'markdown': ['proselint'],
+\}
+
+"
 " CoC
 "
-set updatetime=300
 set shortmess+=c
 
 " Navigate diagnostics
