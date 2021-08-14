@@ -59,6 +59,7 @@ let g:polyglot_disabled = ['python-compiler', 'autoindent']
 "
 call plug#begin()
 
+Plug 'tpope/vim-sensible'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'lilydjwg/colorizer'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -67,24 +68,19 @@ Plug 'Yggdroot/indentLine'
 Plug 'preservim/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
-Plug 'OmniSharp/omnisharp-vim'
 Plug 'frazrepo/vim-rainbow'
 Plug 'w0rp/ale'
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-sensible'
-
-if $STY != ""
-  Plug 'ryanoasis/vim-devicons'
-endif
+Plug 'ryanoasis/vim-devicons'
+Plug 'altercation/vim-colors-solarized'
+Plug 'simnalamburt/vim-mundo'
 
 if has('nvim')
   Plug 'ray-x/material_plus.nvim'
-else
-  Plug 'altercation/vim-colors-solarized'
 endif
 
 if has('nvim') || has('patch-8.0.902')
@@ -171,16 +167,3 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Highlight symbol references on hold
 autocmd CursorHold * silent call CocActionAsync('highlight')
-
-"
-" OmniSharp
-"
-let g:OmniSharp_server_stdio = 1
-let g:OmniSharp_selector_ui = 'ctrlp'
-let g:OmniSharp_highlight_types = 2
-
-augroup omnisharp_commands
-  autocmd!
-  autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
-  autocmd FileType cs nnoremap <buffer> gd :OmniSharpGotoDefinition<CR>
-augroup END
