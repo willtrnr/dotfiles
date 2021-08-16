@@ -65,31 +65,31 @@ let g:polyglot_disabled = ['python-compiler', 'autoindent']
 "
 call plug#begin()
 
-Plug 'tpope/vim-sensible'
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'lilydjwg/colorizer'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'Yggdroot/indentLine'
+Plug 'frazrepo/vim-rainbow'
+Plug 'lilydjwg/colorizer'
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'preservim/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
-Plug 'frazrepo/vim-rainbow'
-Plug 'w0rp/ale'
-Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-Plug 'tpope/vim-fugitive'
 Plug 'sheerun/vim-polyglot'
-Plug 'altercation/vim-colors-solarized'
 Plug 'simnalamburt/vim-mundo'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sensible'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'w0rp/ale'
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+Plug 'Yggdroot/indentLine'
 
 if has('nvim')
-  Plug 'kyazdani42/nvim-web-devicons'
-  Plug 'hoob3rt/lualine.nvim'
   Plug 'akinsho/nvim-bufferline.lua'
+  Plug 'kyazdani42/nvim-web-devicons'
   Plug 'ray-x/material_plus.nvim'
 else
+  Plug 'altercation/vim-colors-solarized'
   Plug 'ryanoasis/vim-devicons'
-  Plug 'vim-airline/vim-airline'
 endif
 
 if has('nvim') || has('patch-8.0.902')
@@ -104,25 +104,28 @@ call plug#end()
 " Ricing
 "
 
+let g:airline_powerline_fonts = 1
+
 if has('nvim')
   " Enable true-color mode
   set termguicolors
 
-  " Use more advanced lua schemes on nvim
+  " Use material theme on nvim
   let g:material_style = 'mariana'
   let g:material_style_fix = v:true
   set background=dark
   colorscheme material
 
+  " Pick an appropriate Airline theme for the color scheme
+  let g:airline_theme = 'deus'
+
   " Enable colored file type icons
   lua require('nvim-web-devicons').setup {}
 
-  " Use Lualine and BufferLine on nvim
-  lua require('lualine').setup {
-  \  options = {
-  \    theme = 'material'
-  \  }
-  \}
+  " Make sure the Airline tabline is disabled to make room for bufferline
+  let g:airline#extensions#tabline#enabled = 0
+
+  " Use BufferLine on nvim
   lua require('bufferline').setup {
   \  options = {
   \    right_mouse_command = nil,
@@ -134,11 +137,14 @@ if has('nvim')
   \}
 else
   " Use good'ol solarized on standard vim
-  colorscheme solarized
   set background=dark
+  colorscheme solarized
 
-  " We'll have Airline for the status line on standard vim
-  let g:airline_powerline_fonts = 1
+  " Pick an appropriate Airline theme for the color scheme
+  let g:airline_theme = 'solarized'
+  let g:airline_solarized_bg = 'dark'
+
+  " Use the Airline provided tabline
   let g:airline#extensions#tabline#enabled = 1
 endif
 
