@@ -28,7 +28,10 @@ set signcolumn=yes
 
 " Adjust refresh for async stuff
 set updatetime=100
-"
+
+" Enable mouse
+set mouse=a
+
 " Filetype stuff
 filetype plugin on
 
@@ -71,16 +74,19 @@ Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 Plug 'frazrepo/vim-rainbow'
 Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'sheerun/vim-polyglot'
-Plug 'ryanoasis/vim-devicons'
 Plug 'altercation/vim-colors-solarized'
 Plug 'simnalamburt/vim-mundo'
 
 if has('nvim')
+  Plug 'kyazdani42/nvim-web-devicons'
+  Plug 'hoob3rt/lualine.nvim'
+  Plug 'akinsho/nvim-bufferline.lua'
   Plug 'ray-x/material_plus.nvim'
+else
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'vim-airline/vim-airline'
 endif
 
 if has('nvim') || has('patch-8.0.902')
@@ -92,22 +98,46 @@ endif
 call plug#end()
 
 "
-" Color scheme
+" Ricing
 "
-if has('nvim')
-  let g:material_style = 'mariana'
-  colorscheme material
-else
-  colorscheme solarized
-	set background=dark
-endif
 
-"
-" Airline
-"
-set noshowmode
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+if has('nvim')
+  " Enable true-color mode
+  set termguicolors
+
+  " Use more advanced lua schemes on nvim
+  let g:material_style = 'mariana'
+  let g:material_style_fix = v:true
+  set background=dark
+  colorscheme material
+
+  " Enable colored file type icons
+  lua require('nvim-web-devicons').setup {}
+
+  " Use Lualine and BufferLine on nvim
+  lua require('lualine').setup {
+  \  options = {
+  \    theme = 'material'
+  \  }
+  \}
+  lua require('bufferline').setup {
+  \  options = {
+  \    right_mouse_command = nil,
+  \    middle_mouse_command = 'bdelete! %d',
+  \    diagnostics = 'nvim_lsp',
+  \    separator_style = 'slant',
+  \    always_show_bufferline = true,
+  \  }
+  \}
+else
+  " Use good'ol solarized on standard vim
+  colorscheme solarized
+  set background=dark
+
+  " We'll have Airline for the status line on standard vim
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 1
+endif
 
 "
 " IndentLine
