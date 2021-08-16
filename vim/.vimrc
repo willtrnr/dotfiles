@@ -30,10 +30,13 @@ set signcolumn=yes
 set updatetime=100
 
 " Enable mouse
-set mouse=a
+set mouse=nv
 
 " Disable mode display
 set noshowmode
+
+" Change the leader to space
+let mapleader=' '
 
 " Filetype stuff
 filetype plugin on
@@ -161,24 +164,6 @@ let g:indentLine_concealcursor = ''
 "
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-
-"
-" Syntastic
-"
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-let g:syntastic_java_checkers = ['checkstyle']
-let g:syntastic_java_javac_config_file_enabled = 1
-let g:syntastic_java_checkstyle_classpath = '/usr/share/java/checkstyle/checkstyle.jar'
-let g:syntastic_java_checkstyle_conf_file = 'checkstyle.xml'
-
-let g:syntastic_cs_checkers = ['code_checker']
-
-let g:syntastic_markdown_checkers = ['proselint']
-
-let g:syntastic_python_checkers = ['mypy', 'pylint']
 
 "
 " ALE
