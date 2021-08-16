@@ -32,6 +32,9 @@ set updatetime=100
 " Enable mouse
 set mouse=a
 
+" Disable mode display
+set noshowmode
+
 " Filetype stuff
 filetype plugin on
 
