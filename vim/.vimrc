@@ -60,8 +60,13 @@ syntax enable
 :map :wbd :w<cr>:bd<cr>
 
 " Quick buffer switching with Tab and Shift-Tab
-nnoremap <silent> <tab> :bn<CR>
-nnoremap <silent> <s-tab> :bp<CR>
+nnoremap <silent> <tab> :bn<cr>
+nnoremap <silent> <s-tab> :bp<cr>
+
+if has('nvim')
+  " Exit terminal mod with <esc>
+  tnoremap <esc> <c-\><c-n>
+endif
 
 "
 " Polyglot
@@ -78,10 +83,10 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'frazrepo/vim-rainbow'
 Plug 'lilydjwg/colorizer'
-Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+Plug 'majutsushi/tagbar', { 'on': ['TagbarOpen', 'TagbarToggle', 'TagbarOpenAutoClose'] }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'preservim/nerdcommenter'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeOpen', 'NERDTreeToggle', 'NERDTreeFocus'] }
 Plug 'sheerun/vim-polyglot'
 Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-fugitive'
@@ -89,7 +94,7 @@ Plug 'tpope/vim-sensible'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeOpen', 'NERDTreeToggle', 'NERDTreeFocus'] }
 Plug 'Yggdroot/indentLine'
 
 if has('nvim')
@@ -119,7 +124,7 @@ if has('nvim')
   " Enable true-color mode
   set termguicolors
 
-  " Use material theme on nvim
+  " Use the mariana material theme
   let g:material_style = 'mariana'
   let g:material_style_fix = v:true
   set background=dark
@@ -134,12 +139,11 @@ if has('nvim')
   " Make sure the Airline tabline is disabled to make room for bufferline
   let g:airline#extensions#tabline#enabled = 0
 
-  " Use BufferLine on nvim
+  " Setup buffline
   lua require('bufferline').setup {
   \  options = {
   \    right_mouse_command = nil,
   \    middle_mouse_command = 'bdelete! %d',
-  \    diagnostics = 'nvim_lsp',
   \    separator_style = 'slant',
   \    always_show_bufferline = true,
   \  }
@@ -201,11 +205,11 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Show code actions for selection
-nmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+nmap <silent> <leader>a <Plug>(coc-codeaction-cursor)
 vmap <silent> <leader>a <Plug>(coc-codeaction-selected)
 
 " Show documentation window
-nnoremap <silent> <leader>d :call <SID>show_documentation()<CR>
+nnoremap <silent> <leader>d :call <sid>show_documentation()<cr>
 
 function! s:show_documentation()
   if index(['vim','help'], &filetype) >= 0
@@ -223,3 +227,18 @@ vmap <silent> <leader>f <Plug>(coc-format-selected)
 
 " Highlight symbol references on hold
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+"
+" NERDTree
+"
+let g:NERDTreeQuitOnOpen = 3
+let g:NERDTreeMinimalUI = 1
+
+nnoremap <silent> <leader>e :NERDTreeFocus<cr>
+nnoremap <silent> <c-e> :NERDTreeToggle<cr>
+
+"
+" Tagbar
+"
+nnoremap <silent> <leader>t :TagbarOpenAutoClose<cr>
+nnoremap <silent> <c-t> :TagbarToggle<cr>
