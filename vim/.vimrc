@@ -29,11 +29,17 @@ set signcolumn=yes
 " Adjust refresh for async stuff
 set updatetime=100
 
-" Enable mouse
+" Enable mouse in normal and visual
 set mouse=nv
 
 " Disable mode display
 set noshowmode
+
+" More space for diagnostic messages in the command bar
+set cmdheight=2
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
 
 " Change the leader to space
 let mapleader=' '
@@ -177,17 +183,43 @@ let g:ale_linters = {
 "
 " CoC
 "
-set shortmess+=c
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
-" Navigate diagnostics
+" Diagnostics navigation
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" Remap keys for gotos
+" GoTo navigation
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" Show code actions for selection
+nmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+vmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+
+" Show documentation window
+nnoremap <silent> <leader>d :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if index(['vim','help'], &filetype) >= 0
+    execute 'h '.expand('<cword>')
+  elseif coc#rpc#ready()
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Format selection
+nmap <silent> <leader>f <Plug>(coc-format-selected)
+vmap <silent> <leader>f <Plug>(coc-format-selected)
 
 " Highlight symbol references on hold
 autocmd CursorHold * silent call CocActionAsync('highlight')
