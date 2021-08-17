@@ -1,0 +1,4 @@
+{
+	"diagnostic.displayByAle": true,
+	"metals.sbtScript": "/usr/bin/sbt"
+}
