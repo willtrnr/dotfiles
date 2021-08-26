@@ -66,6 +66,8 @@ nnoremap <silent> <s-tab> :bp<cr>
 if has('nvim')
   " Exit terminal mod with <esc>
   tnoremap <esc> <c-\><c-n>
+  " Set scrollback much lower to avoid lag issues
+  set scrollback=4000
 endif
 
 "
@@ -117,7 +119,6 @@ call plug#end()
 "
 " Ricing
 "
-
 let g:airline_powerline_fonts = 1
 
 if has('nvim')
