@@ -103,6 +103,7 @@ if has('nvim')
   Plug 'akinsho/nvim-bufferline.lua'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'ray-x/material_plus.nvim'
+  Plug 'akinsho/toggleterm.nvim'
 else
   Plug 'altercation/vim-colors-solarized'
   Plug 'ryanoasis/vim-devicons'
@@ -148,6 +149,11 @@ if has('nvim')
   \    separator_style = 'slant',
   \    always_show_bufferline = true,
   \  }
+  \}
+
+  " Enable toggleterm
+  lua require('toggleterm').setup {
+  \  open_mapping = [[<c-\>]],
   \}
 else
   " Use good'ol solarized on standard vim
