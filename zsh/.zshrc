@@ -74,7 +74,6 @@ plugins=(
   npm
   nvm
   pip
-  poetry
   python
   sbt
   scala
