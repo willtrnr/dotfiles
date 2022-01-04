@@ -54,9 +54,6 @@ HIST_STAMPS="yyyy-mm-dd"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-	cargo
-	rust
-	rustup
   archlinux
   colorize
   docker
@@ -69,14 +66,14 @@ plugins=(
   history
   jsontools
   kubectl
-  lein
   node
   npm
   nvm
   pip
+  pyenv
   python
+  rust
   sbt
-  scala
   sudo
   svn
   urltools

@@ -1,13 +1,5 @@
 # Path adjustments
 
-if [ -d "$HOME/bin" ]; then
-  export PATH="$HOME/bin:$PATH"
-fi
-
-if [ -d "$HOME/.local/bin" ]; then
-	export PATH="$HOME/.local/bin:$PATH"
-fi
-
 if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
@@ -28,10 +20,23 @@ if (command -v ruby > /dev/null); then
   export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
 fi
 
+if (command -v pyenv > /dev/null); then
+  export PYENV_ROOT="$(pyenv root)"
+  export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+fi
+
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -d "$HOME/bin" ]; then
+  export PATH="$HOME/bin:$PATH"
+fi
+
 # Select the best available editor
 
 if (command -v nvim > /dev/null); then
-	export EDITOR="$(command -v nvim)"
+  export EDITOR="$(command -v nvim)"
 elif (command -v vim > /dev/null); then
   export EDITOR="$(command -v vim)"
 elif (command -v vi > /dev/null); then
@@ -53,7 +58,7 @@ fi
 if (command -v kitty > /dev/null); then
   export TERMINAL="$(command -v kitty)"
 elif (command -v alacritty > /dev/null); then
-	export TERMINAL="$(command -v alacritty)"
+  export TERMINAL="$(command -v alacritty)"
 elif (command -v urxvt > /dev/null); then
   export TERMINAL="$(command -v urxvt)"
 fi
