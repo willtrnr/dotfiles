@@ -187,7 +187,7 @@ let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standar
 "
 let g:ale_disable_lsp = 1
 let g:ale_linters = {
-\  'python': ['mypy', 'pylint'],
+\  'python': ['pylint'],
 \  'markdown': ['proselint'],
 \}
 
