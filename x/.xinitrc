@@ -58,4 +58,7 @@ export QT_IM_MODULE=xim
 if (command -v xcompmgr > /dev/null); then
   xcompmgr &
 fi
+if (command -v dunst > /dev/null); then
+  dunst --config ~/.config/dunst/dunstrc &
+fi
 exec i3
