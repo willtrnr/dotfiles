@@ -28,14 +28,11 @@
 #                            BEGIN CONFIG                             #
 #######################################################################
 
-# Use a custom lock script
-#LOCKSCRIPT="i3lock-extra -m pixelize"
-
 # Colors: FG (foreground), BG (background), HL (highlighted)
-FG_COLOR="#bbbbbb"
+FG_COLOR="#BBBBBB"
 BG_COLOR="#111111"
 HLFG_COLOR="#111111"
-HLBG_COLOR="#bbbbbb"
+HLBG_COLOR="#BBBBBB"
 BORDER_COLOR="#222222"
 
 # Options not related to colors (most rofi options do not work anymore)
