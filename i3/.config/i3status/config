@@ -12,16 +12,9 @@ general {
 }
 
 order += "disk /"
-order += "disk /var"
-order += "disk /mnt/c"
-order += "disk /media/vboxsf/c"
-order += "disk /media/vmware/c"
-order += "disk /mnt/d"
-order += "disk /media/vboxsf/d"
-order += "disk /media/vmware/d"
-order += "disk /mnt/e"
-order += "disk /media/vboxsf/e"
-order += "disk /media/vmware/e"
+order += "disk /media/vmware/C"
+order += "disk /media/vmware/D"
+order += "disk /media/vmware/E"
 order += "ethernet _first_"
 order += "wireless _first_"
 order += "battery 0"
@@ -75,42 +68,14 @@ disk "/" {
   format = "/ %avail"
 }
 
-disk "/var" {
-  format = "/var %avail"
-}
-
-disk "/mnt/c" {
+disk "/media/vmware/C" {
   format = "C: %avail"
 }
 
-disk "/media/vboxsf/c" {
-  format = "C: %avail"
-}
-
-disk "/media/vmware/c" {
-  format = "C: %avail"
-}
-
-disk "/mnt/d" {
+disk "/media/vmware/D" {
   format = "D: %avail"
 }
 
-disk "/media/vboxsf/d" {
-  format = "D: %avail"
-}
-
-disk "/media/vmware/d" {
-  format = "D: %avail"
-}
-
-disk "/mnt/e" {
-  format = "E: %avail"
-}
-
-disk "/media/vboxsf/e" {
-  format = "E: %avail"
-}
-
-disk "/media/vmware/e" {
+disk "/media/vmware/E" {
   format = "E: %avail"
 }

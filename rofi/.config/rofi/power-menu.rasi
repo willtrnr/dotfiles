@@ -1,0 +1,11 @@
+@import "~/.config/rofi/config.rasi"
+
+window {
+	location: east;
+	width: 20ch;
+	height: 10em;
+}
+
+inputbar {
+	children: [ entry ];
+}
