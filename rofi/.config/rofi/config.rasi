@@ -1,13 +1,17 @@
 @theme "glue_pro_blue"
 
 window {
-	font: "FiraCode Nerd Font Mono 10";
+  font: "FiraCode Nerd Font Mono 10";
+}
+
+inputbar {
+  children: [ entry ];
 }
 
 message, listview {
-	border: 1px solid 0 0;
+  border: 1px solid 0 0;
 }
 
 listview {
-	scrollbar: false;
+  scrollbar: false;
 }
