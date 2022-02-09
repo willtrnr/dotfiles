@@ -1,7 +1,15 @@
-@import "~/.config/rofi/config.rasi"
+@import "~/.config/rofi/ricing.rasi"
 
 window {
-  location: east;
   width: 18ch;
   height: 9.5em;
+  location: east;
+}
+
+inputbar {
+	children: [ "entry" ];
+}
+
+listview {
+  scrollbar: false;
 }
