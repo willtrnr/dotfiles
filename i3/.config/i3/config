@@ -18,9 +18,9 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 
 # program launcher
-bindsym $mod+d exec rofi -modi drun#run -show drun -show-icons
+bindsym $mod+d exec rofi -modi drun#run -show drun -show-icons -matching fuzzy
 # window switcher
-bindsym $mod+t exec rofi -modi drun -show window -show-icons
+bindsym $mod+t exec rofi -modi drun -show window -show-icons -matching fuzzy
 
 # change focus
 bindsym $mod+Left focus left
@@ -95,7 +95,7 @@ bindsym XF86MonBrightnessDown exec xbacklight -10
 # volume control (untested)
 bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
 bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
-bindsym XF86AudioMute exec pamixer -t 
+bindsym XF86AudioMute exec pamixer -t
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
