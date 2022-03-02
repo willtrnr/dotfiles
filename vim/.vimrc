@@ -41,6 +41,9 @@ set cmdheight=2
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
+" Disable modelines execution
+set nomodeline
+
 " Change the leader to space
 let mapleader=' '
 
