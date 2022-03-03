@@ -59,18 +59,30 @@ syntax enable
 :command Q q
 :command Qa qa
 
-" Write buffer and close
-:map :wbd :w<cr>:bd<cr>
+" Close buffer and move to previous with Ctrl-w
+nnoremap <silent> <c-w> :bp<cr>:bd#<cr>
 
 " Quick buffer switching with Tab and Shift-Tab
 nnoremap <silent> <tab> :bn<cr>
 nnoremap <silent> <s-tab> :bp<cr>
 
+" Use Ctrl-kjhl to navigate windows
+nnoremap <silent> <c-k> :wincmd k<cr>
+nnoremap <silent> <c-j> :wincmd j<cr>
+nnoremap <silent> <c-h> :wincmd h<cr>
+nnoremap <silent> <c-l> :wincmd l<cr>
+
+" Alias Alt-arrows to window navigation
+nmap <silent> <a-up> <c-k>
+nmap <silent> <a-down> <c-j>
+nmap <silent> <a-left> <c-h>
+nmap <silent> <a-right> <c-l>
+
 if has('nvim')
   " Exit terminal mod with <esc>
   tnoremap <esc> <c-\><c-n>
   " Set scrollback much lower to avoid lag issues
-  set scrollback=4000
+  set scrollback=2000
 endif
 
 "
@@ -205,18 +217,18 @@ else
 endif
 
 " Diagnostics navigation
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo navigation
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
 
 " Show code actions for selection
-nmap <silent> <leader>a <Plug>(coc-codeaction-cursor)
-vmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+nnoremap <silent> <leader>a <Plug>(coc-codeaction-cursor)
+vnoremap <silent> <leader>a <Plug>(coc-codeaction-selected)
 
 " Show documentation window
 nnoremap <silent> <leader>d :call <sid>show_documentation()<cr>
@@ -232,8 +244,8 @@ function! s:show_documentation()
 endfunction
 
 " Format selection
-nmap <silent> <leader>f <Plug>(coc-format-selected)
-vmap <silent> <leader>f <Plug>(coc-format-selected)
+nnoremap <silent> <leader>f <Plug>(coc-format-selected)
+vnoremap <silent> <leader>f <Plug>(coc-format-selected)
 
 " Highlight symbol references on hold
 autocmd CursorHold * silent call CocActionAsync('highlight')
