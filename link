@@ -13,9 +13,7 @@ function link_package() {
         done
 }
 
-PKG="$1"
-if [ -z "$PKG" ] || [ ! -d "$PKG" ]; then
-    exit 1
-fi
-
-link_package "$PKG"
+while [ -n "$1" ]; do
+    link_package "$1"
+    shift
+done
