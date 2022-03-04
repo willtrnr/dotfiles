@@ -211,27 +211,27 @@ let g:ale_linters = {
 "
 " Use <c-space> to trigger completion.
 if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
+  imap <silent><expr> <c-space> coc#refresh()
 else
-  inoremap <silent><expr> <c-@> coc#refresh()
+  imap <silent><expr> <c-@> coc#refresh()
 endif
 
 " Diagnostics navigation
-nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
-nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo navigation
-nnoremap <silent> gd <Plug>(coc-definition)
-nnoremap <silent> gy <Plug>(coc-type-definition)
-nnoremap <silent> gi <Plug>(coc-implementation)
-nnoremap <silent> gr <Plug>(coc-references)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 " Show code actions for selection
-nnoremap <silent> <leader>a <Plug>(coc-codeaction-cursor)
-vnoremap <silent> <leader>a <Plug>(coc-codeaction-selected)
+nmap <silent> <leader>a <Plug>(coc-codeaction-cursor)
+vmap <silent> <leader>a <Plug>(coc-codeaction-selected)
 
 " Show documentation window
-nnoremap <silent> <leader>d :call <sid>show_documentation()<cr>
+nmap <silent> <leader>d :call <sid>show_documentation()<cr>
 
 function! s:show_documentation()
   if index(['vim','help'], &filetype) >= 0
@@ -244,8 +244,8 @@ function! s:show_documentation()
 endfunction
 
 " Format selection
-nnoremap <silent> <leader>f <Plug>(coc-format-selected)
-vnoremap <silent> <leader>f <Plug>(coc-format-selected)
+nmap <silent> <leader>f <Plug>(coc-format-selected)
+vmap <silent> <leader>f <Plug>(coc-format-selected)
 
 " Highlight symbol references on hold
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -256,11 +256,11 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 let g:NERDTreeQuitOnOpen = 3
 let g:NERDTreeMinimalUI = 1
 
-nnoremap <silent> <leader>e :NERDTreeFocus<cr>
-nnoremap <silent> <c-e> :NERDTreeToggle<cr>
+nmap <silent> <leader>e :NERDTreeFocus<cr>
+nmap <silent> <c-e> :NERDTreeToggle<cr>
 
 "
 " Tagbar
 "
-nnoremap <silent> <leader>t :TagbarOpenAutoClose<cr>
-nnoremap <silent> <c-t> :TagbarToggle<cr>
+nmap <silent> <leader>t :TagbarOpenAutoClose<cr>
+nmap <silent> <c-t> :TagbarToggle<cr>
