@@ -1,4 +1,12 @@
 {
   "diagnostic.displayByAle": true,
-  "metals.sbtScript": "/usr/bin/sbt"
+  "metals.sbtScript": "/usr/bin/sbt",
+  "languageserver": {
+    "solidity": {
+      "command": "solidity-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["solidity"],
+      "rootPatterns": ["package.json"]
+    }
+  }
 }
