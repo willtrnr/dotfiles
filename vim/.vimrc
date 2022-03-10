@@ -111,6 +111,7 @@ Plug 'tpope/vim-sensible'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
+Plug 'wakatime/vim-wakatime'
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeOpen', 'NERDTreeToggle', 'NERDTreeFocus'] }
 Plug 'Yggdroot/indentLine'
 
