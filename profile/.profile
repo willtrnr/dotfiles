@@ -55,10 +55,10 @@ fi
 
 # Select the best available terminal, overrides the i3-sensible-terminal selection order
 
-if (command -v alacritty > /dev/null); then
-  export TERMINAL="$(command -v alacritty)"
-elif (command -v kitty > /dev/null); then
+if (command -v kitty > /dev/null); then
   export TERMINAL="$(command -v kitty)"
+elif (command -v alacritty > /dev/null); then
+  export TERMINAL="$(command -v alacritty)"
 elif (command -v urxvt > /dev/null); then
   export TERMINAL="$(command -v urxvt)"
 fi
