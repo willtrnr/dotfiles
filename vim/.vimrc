@@ -96,6 +96,7 @@ let g:polyglot_disabled = ['python-compiler', 'autoindent']
 "
 call plug#begin()
 
+Plug 'arcticicestudio/nord-vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'frazrepo/vim-rainbow'
@@ -109,7 +110,6 @@ Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeOpen', 'NERDTreeToggle', 'NERDTreeFocus'] }
@@ -118,10 +118,8 @@ Plug 'Yggdroot/indentLine'
 if has('nvim')
   Plug 'akinsho/nvim-bufferline.lua'
   Plug 'kyazdani42/nvim-web-devicons'
-  Plug 'ray-x/material_plus.nvim'
   Plug 'akinsho/toggleterm.nvim'
 else
-  Plug 'altercation/vim-colors-solarized'
   Plug 'ryanoasis/vim-devicons'
 endif
 
@@ -138,18 +136,14 @@ call plug#end()
 "
 let g:airline_powerline_fonts = 1
 
+" Use Nord theme
+set background=dark
+colorscheme nord
+let g:airline_theme = 'nord'
+
 if has('nvim')
   " Enable true-color mode
   set termguicolors
-
-  " Use the mariana material theme
-  let g:material_style = 'mariana'
-  let g:material_style_fix = v:true
-  set background=dark
-  colorscheme material
-
-  " Pick an appropriate Airline theme for the color scheme
-  let g:airline_theme = 'deus'
 
   " Enable colored file type icons
   lua require('nvim-web-devicons').setup {}
@@ -172,14 +166,6 @@ if has('nvim')
   \  open_mapping = [[<c-\>]],
   \}
 else
-  " Use good'ol solarized on standard vim
-  set background=dark
-  colorscheme solarized
-
-  " Pick an appropriate Airline theme for the color scheme
-  let g:airline_theme = 'solarized'
-  let g:airline_solarized_bg = 'dark'
-
   " Use the Airline provided tabline
   let g:airline#extensions#tabline#enabled = 1
 endif

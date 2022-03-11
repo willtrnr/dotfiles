@@ -8,8 +8,8 @@
 #
 # All imports must either be absolute paths starting with `/`, or paths relative
 # to the user's home directory starting with `~/`.
-#import:
-#  - /path/to/alacritty.yml
+import:
+  - ~/.config/alacritty/nord.yml
 
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
@@ -117,7 +117,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: FiraCode NF
+    family: FiraCode Nerd Font Mono
 
     # The `style` can be specified to pick a specific face.
     style: Regular
@@ -128,7 +128,7 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: FiraCode NF
+    family: FiraCode Nerd Font Mono
 
     # The `style` can be specified to pick a specific face.
     style: Bold
@@ -139,7 +139,7 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: FiraCode NF
+    family: FiraCode Nerd Font Mono
 
     # The `style` can be specified to pick a specific face.
     style: Light
@@ -150,13 +150,13 @@ font:
     #
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: FiraCode NF
+    family: FiraCode Nerd Font Mono
 
     # The `style` can be specified to pick a specific face.
     style: Medium
 
   # Point size
-  size: 10
+  size: 9.5
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -189,11 +189,11 @@ font:
 #draw_bold_text_with_bright_colors: false
 
 # Colors
-colors:
+#colors:
   # Default colors
-  primary:
-    background: '#343d46'
-    foreground: '#d8dee9'
+  #primary:
+    #background: '#343d46'
+    #foreground: '#d8dee9'
 
     # Bright and dim foreground colors
     #
@@ -275,31 +275,31 @@ colors:
   #
   # Allowed values are CellForeground/CellBackground, which reference the
   # affected cell, or hexadecimal colors like #ff00ff.
-  selection:
-    text: '#d8dee9'
-    background: '#4e5a65'
+  #selection:
+    #text: '#d8dee9'
+    #background: '#4e5a65'
 
   # Normal colors
-  normal:
-    black:   '#000000'
-    red:     '#ec5f66'
-    green:   '#99c794'
-    yellow:  '#f9ae58'
-    blue:    '#6699cc'
-    magenta: '#c695c6'
-    cyan:    '#5fb4b4'
-    white:   '#f7f7f7'
+  #normal:
+    #black:   '#000000'
+    #red:     '#ec5f66'
+    #green:   '#99c794'
+    #yellow:  '#f9ae58'
+    #blue:    '#6699cc'
+    #magenta: '#c695c6'
+    #cyan:    '#5fb4b4'
+    #white:   '#f7f7f7'
 
   # Bright colors
-  bright:
-    black:   '#333333'
-    red:     '#f97b58'
-    green:   '#acd1a8'
-    yellow:  '#fac761'
-    blue:    '#85add6'
-    magenta: '#d8b6d8'
-    cyan:    '#82c4c4'
-    white:   '#ffffff'
+  #bright:
+    #black:   '#333333'
+    #red:     '#f97b58'
+    #green:   '#acd1a8'
+    #yellow:  '#fac761'
+    #blue:    '#85add6'
+    #magenta: '#d8b6d8'
+    #cyan:    '#82c4c4'
+    #white:   '#ffffff'
 
   # Dim colors
   #
