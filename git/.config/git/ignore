@@ -1,0 +1,11 @@
+# IDE/editor config stuff
+*.iml
+/.idea
+/.vim
+/.vscode
+/.wakatime*
+
+# IDE/editor temp files
+*.swp
+*~
+~*
