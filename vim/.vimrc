@@ -214,8 +214,19 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Show code actions for selection
+nmap <silent> <leader>A <Plug>(coc-codeaction)
 nmap <silent> <leader>a <Plug>(coc-codeaction-cursor)
 vmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+
+" Rename symbol
+nmap <silent> <leader>r <Plug>(coc-rename)
+
+" Format selection
+nmap <silent> <leader>f <Plug>(coc-format-selected)
+vmap <silent> <leader>f <Plug>(coc-format-selected)
+
+" Search workspace symbols
+nmap <silent> <leader>s :<c-u>CocList -I symbols<cr>
 
 " Show documentation window
 nmap <silent> <leader>d :call <sid>show_documentation()<cr>
@@ -229,10 +240,6 @@ function! s:show_documentation()
     execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
-
-" Format selection
-nmap <silent> <leader>f <Plug>(coc-format-selected)
-vmap <silent> <leader>f <Plug>(coc-format-selected)
 
 " Highlight symbol references on hold
 autocmd CursorHold * silent call CocActionAsync('highlight')
