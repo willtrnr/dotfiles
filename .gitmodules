@@ -1,3 +1,6 @@
 [submodule "xcompose"]
 	path = xcompose
 	url = https://github.com/kragen/xcompose.git
+[submodule "tmux/.tmux/plugins/tpm"]
+	path = tmux/.tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm

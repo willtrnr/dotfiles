@@ -1,19 +1,37 @@
-#! /usr/bin/env bash
+#! /bin/env bash
 
-function link_package() {
-  local pkg="$1" src dst rel
-
-  find "$pkg" -not -type d -print0 |
-    while IFS= read -r -d '' src; do
-      dst="$HOME/$(printf '%s\n' "$src" | cut -d/ -f2-)"
-      mkdir -p "$(dirname "$dst")"
-      rel="$(realpath --relative-to="$(dirname "$dst")" "$src")"
-      ln -sf "$rel" "$dst"
-      printf '%s -> %s\n' "$dst" "$rel"
-    done
+function package_submodules() {
+  find "$1" \
+    -type d \
+    -exec git config -f .gitmodules -z --fixed-value --get 'submodule.{}.path' '{}' \; \
+    -prune
 }
 
-while [ -n "$1" ]; do
-  link_package "$1"
+function link_file() {
+  local src="$1" dst
+  dst="$HOME/${src#*/}"
+  mkdir -p "$(dirname "$dst")"
+  ln -rsfT "$src" "$dst"
+  printf '%s -> %s\n' "$dst" "$src"
+}
+
+function link_package() {
+  local pkg="$1" args f
+
+  args=()
+  while IFS= read -r -d '' f; do
+    args+=(\! -wholename "$f"'/*')
+    link_file "$f"
+  done < <(package_submodules "$pkg")
+
+  while IFS= read -r -d '' f; do
+    link_file "$f"
+  done < <(find "$pkg" ! -type d "${args[@]}" -print0)
+}
+
+while [ $# -gt 0 ]; do
+  if [ -n "$1" ]; then
+    link_package "${1%/}"
+  fi
   shift
 done
