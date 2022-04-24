@@ -124,12 +124,6 @@ else
   Plug 'ryanoasis/vim-devicons'
 endif
 
-if has('nvim') || has('patch-8.0.902')
-  Plug 'mhinz/vim-signify'
-else
-  Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
-endif
-
 call plug#end()
 
 "
@@ -207,7 +201,7 @@ let g:ale_linters = {
 let g:fzf_command_prefix = 'Fzf'
 
 let g:fzf_action = {
-\  'return': 'tab split',
+\  'return': 'edit',
 \  'ctrl-t': 'tab split',
 \  'ctrl-x': 'split',
 \  'ctrl-v': 'vsplit',
@@ -227,26 +221,26 @@ else
 endif
 
 " Diagnostics navigation
-nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
-nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo navigation
-nnoremap <silent> gd <Plug>(coc-definition)
-nnoremap <silent> gy <Plug>(coc-type-definition)
-nnoremap <silent> gi <Plug>(coc-implementation)
-nnoremap <silent> gr <Plug>(coc-references)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 " Show code actions for selection
-nnoremap <silent> <leader>A <Plug>(coc-codeaction)
-nnoremap <silent> <leader>a <Plug>(coc-codeaction-cursor)
-vnoremap <silent> <leader>a <Plug>(coc-codeaction-selected)
+nmap <silent> <leader>A <Plug>(coc-codeaction)
+nmap <silent> <leader>a <Plug>(coc-codeaction-cursor)
+vmap <silent> <leader>a <Plug>(coc-codeaction-selected)
 
 " Rename symbol
-nnoremap <silent> <leader>r <Plug>(coc-rename)
+nmap <silent> <leader>r <Plug>(coc-rename)
 
 " Format selection
-nnoremap <silent> <leader>f <Plug>(coc-format-selected)
-vnoremap <silent> <leader>f <Plug>(coc-format-selected)
+nmap <silent> <leader>f <Plug>(coc-format-selected)
+vmap <silent> <leader>f <Plug>(coc-format-selected)
 
 " Search workspace symbols
 nnoremap <silent> <leader>s :<c-u>CocList -I symbols<cr>
