@@ -79,10 +79,10 @@ nmap <silent> <a-left> <c-h>
 nmap <silent> <a-right> <c-l>
 
 if has('nvim')
-  " Exit terminal mod with <esc>
-  tnoremap <esc> <c-\><c-n>
-  " Set scrollback much lower to avoid lag issues
-  set scrollback=2000
+  " Set terminal scrollback much lower to avoid lag issues
+  set scrollback=4000
+  " Exit terminal mode with <esc>
+  tnoremap <expr> <esc> (&filetype == "fzf") ? "<esc>" : "<c-\><c-n>"
 endif
 
 "
@@ -97,9 +97,9 @@ let g:polyglot_disabled = ['python-compiler', 'autoindent']
 call plug#begin()
 
 Plug 'arcticicestudio/nord-vim'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'frazrepo/vim-rainbow'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'lilydjwg/colorizer'
 Plug 'majutsushi/tagbar', { 'on': ['TagbarOpen', 'TagbarToggle', 'TagbarOpenAutoClose'] }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
@@ -109,7 +109,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
-Plug 'vim-airline/vim-airline'
 Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeOpen', 'NERDTreeToggle', 'NERDTreeFocus'] }
@@ -117,9 +116,11 @@ Plug 'Yggdroot/indentLine'
 
 if has('nvim')
   Plug 'akinsho/nvim-bufferline.lua'
-  Plug 'kyazdani42/nvim-web-devicons'
   Plug 'akinsho/toggleterm.nvim'
+  Plug 'kyazdani42/nvim-web-devicons'
+  Plug 'nvim-lualine/lualine.nvim'
 else
+  Plug 'vim-airline/vim-airline'
   Plug 'ryanoasis/vim-devicons'
 endif
 
@@ -134,12 +135,10 @@ call plug#end()
 "
 " Ricing
 "
-let g:airline_powerline_fonts = 1
 
 " Use Nord theme
 set background=dark
 colorscheme nord
-let g:airline_theme = 'nord'
 
 if has('nvim')
   " Enable true-color mode
@@ -148,8 +147,23 @@ if has('nvim')
   " Enable colored file type icons
   lua require('nvim-web-devicons').setup {}
 
-  " Make sure the Airline tabline is disabled to make room for bufferline
-  let g:airline#extensions#tabline#enabled = 0
+  " Setup toggleterm
+  lua require('toggleterm').setup {
+  \  open_mapping = [[<c-\>]],
+  \}
+
+  " Setup lualine
+  lua require('lualine').setup {
+  \  options = {
+  \    theme = 'nord'
+  \  },
+  \  extensions = {
+  \    'fugitive',
+  \    'fzf',
+  \    'nerdtree',
+  \    'toggleterm',
+  \  },
+  \}
 
   " Setup buffline
   lua require('bufferline').setup {
@@ -160,13 +174,9 @@ if has('nvim')
   \    always_show_bufferline = true,
   \  }
   \}
-
-  " Enable toggleterm
-  lua require('toggleterm').setup {
-  \  open_mapping = [[<c-\>]],
-  \}
 else
-  " Use the Airline provided tabline
+  let g:airline_theme = 'nord'
+  let g:airline_powerline_fonts = 1
   let g:airline#extensions#tabline#enabled = 1
 endif
 
@@ -178,11 +188,9 @@ let g:indentLine_leadingSpaceChar = '·'
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_concealcursor = ''
 
-"
-" CtrlP
-"
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+if has('nvim')
+  autocmd TermOpen * silent IndentLinesDisable
+endif
 
 "
 " ALE
@@ -194,45 +202,60 @@ let g:ale_linters = {
 \}
 
 "
+" FZF
+"
+let g:fzf_command_prefix = 'Fzf'
+
+let g:fzf_action = {
+\  'return': 'tab split',
+\  'ctrl-t': 'tab split',
+\  'ctrl-x': 'split',
+\  'ctrl-v': 'vsplit',
+\}
+
+nnoremap <silent> <leader><tab> :FzfGFiles<cr>
+nnoremap <silent> <c-p> :FzfGFiles<cr>
+
+"
 " CoC
 "
 " Use <c-space> to trigger completion.
 if has('nvim')
-  imap <silent><expr> <c-space> coc#refresh()
+  inoremap <silent><expr> <c-space> coc#refresh()
 else
-  imap <silent><expr> <c-@> coc#refresh()
+  inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
 " Diagnostics navigation
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo navigation
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
 
 " Show code actions for selection
-nmap <silent> <leader>A <Plug>(coc-codeaction)
-nmap <silent> <leader>a <Plug>(coc-codeaction-cursor)
-vmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+nnoremap <silent> <leader>A <Plug>(coc-codeaction)
+nnoremap <silent> <leader>a <Plug>(coc-codeaction-cursor)
+vnoremap <silent> <leader>a <Plug>(coc-codeaction-selected)
 
 " Rename symbol
-nmap <silent> <leader>r <Plug>(coc-rename)
+nnoremap <silent> <leader>r <Plug>(coc-rename)
 
 " Format selection
-nmap <silent> <leader>f <Plug>(coc-format-selected)
-vmap <silent> <leader>f <Plug>(coc-format-selected)
+nnoremap <silent> <leader>f <Plug>(coc-format-selected)
+vnoremap <silent> <leader>f <Plug>(coc-format-selected)
 
 " Search workspace symbols
-nmap <silent> <leader>s :<c-u>CocList -I symbols<cr>
+nnoremap <silent> <leader>s :<c-u>CocList -I symbols<cr>
 
 " Show documentation window
-nmap <silent> <leader>d :call <sid>show_documentation()<cr>
+nnoremap <silent> <leader>d :call <sid>show_documentation()<cr>
 
 function! s:show_documentation()
-  if index(['vim','help'], &filetype) >= 0
+  if index(['vim', 'help'], &filetype) >= 0
     execute 'h '.expand('<cword>')
   elseif coc#rpc#ready()
     call CocActionAsync('doHover')
@@ -250,11 +273,11 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 let g:NERDTreeQuitOnOpen = 3
 let g:NERDTreeMinimalUI = 1
 
-nmap <silent> <leader>e :NERDTreeFocus<cr>
-nmap <silent> <c-e> :NERDTreeToggle<cr>
+nnoremap <silent> <leader>e :NERDTreeFocus<cr>
+nnoremap <silent> <c-e> :NERDTreeToggle<cr>
 
 "
 " Tagbar
 "
-nmap <silent> <leader>t :TagbarOpenAutoClose<cr>
-nmap <silent> <c-t> :TagbarToggle<cr>
+nnoremap <silent> <leader>t :TagbarOpenAutoClose<cr>
+nnoremap <silent> <c-t> :TagbarToggle<cr>
