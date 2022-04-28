@@ -209,6 +209,7 @@ let g:fzf_action = {
 
 nnoremap <silent> <leader><tab> :FzfGFiles --cached --others --exclude-standard<cr>
 nnoremap <silent> <leader><leader><tab> :FzfRg<cr>
+nmap <silent> <c-p> <leader><tab>
 
 "
 " CoC
