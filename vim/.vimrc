@@ -207,8 +207,8 @@ let g:fzf_action = {
 \  'ctrl-v': 'vsplit',
 \}
 
-nnoremap <silent> <leader><tab> :FzfGFiles<cr>
-nnoremap <silent> <c-p> :FzfGFiles<cr>
+nnoremap <silent> <leader><tab> :FzfGFiles --cached --others --exclude-standard<cr>
+nnoremap <silent> <leader><leader><tab> :FzfRg<cr>
 
 "
 " CoC
