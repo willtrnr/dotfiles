@@ -4,10 +4,10 @@
 
   "codeLens.enable": true,
 
-  "diagnostic.errorSign": "❌",
-  "diagnostic.warningSign": "⚠️",
-  "diagnostic.infoSign": "💬",
-  "diagnostic.hintSign": "💭",
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": "",
 
   "languageserver": {
     "solidity": {
