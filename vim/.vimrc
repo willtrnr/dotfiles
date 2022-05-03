@@ -36,7 +36,7 @@ set mouse=nv
 set noshowmode
 
 " More space for diagnostic messages in the command bar
-set cmdheight=2
+"set cmdheight=2
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
@@ -101,17 +101,14 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'lilydjwg/colorizer'
-Plug 'majutsushi/tagbar', { 'on': ['TagbarOpen', 'TagbarToggle', 'TagbarOpenAutoClose'] }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'preservim/nerdcommenter'
-Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeOpen', 'NERDTreeToggle', 'NERDTreeFocus'] }
 Plug 'sheerun/vim-polyglot'
 Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeOpen', 'NERDTreeToggle', 'NERDTreeFocus'] }
 Plug 'Yggdroot/indentLine'
 
 if has('nvim')
@@ -149,17 +146,32 @@ if has('nvim')
   " Setup lualine
   lua require('lualine').setup {
   \  options = {
-  \    theme = 'nord'
+  \    theme = 'nord',
+  \  },
+  \  sections = {
+  \    lualine_b = {
+  \      'branch',
+  \      'diff',
+  \    },
+  \    lualine_c = {
+  \      {
+  \        'diagnostics',
+  \        sources = { 'nvim_diagnostic', 'coc', 'ale' },
+  \        sections = { 'error', 'warn', 'info' },
+  \        symbols = { error = ' ', warn = ' ', info = ' ' },
+  \      },
+  \      'g:coc_status',
+  \      'b:coc_current_function',
+  \    },
   \  },
   \  extensions = {
   \    'fugitive',
   \    'fzf',
-  \    'nerdtree',
   \    'toggleterm',
   \  },
   \}
 
-  " Setup buffline
+  " Setup bufferline
   lua require('bufferline').setup {
   \  options = {
   \    right_mouse_command = nil,
@@ -209,6 +221,7 @@ let g:fzf_action = {
 
 nnoremap <silent> <leader><tab> :FzfGFiles --cached --others --exclude-standard<cr>
 nnoremap <silent> <leader><s-tab> :FzfRg<cr>
+" Until I get used to leader-tab
 nmap <silent> <c-p> <leader><tab>
 
 "
@@ -222,33 +235,35 @@ else
 endif
 
 " Diagnostics navigation
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> [g <plug>(coc-diagnostic-prev)
+nmap <silent> ]g <plug>(coc-diagnostic-next)
 
 " GoTo navigation
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gd <plug>(coc-definition)
+nmap <silent> gy <plug>(coc-type-definition)
+nmap <silent> gi <plug>(coc-implementation)
+nmap <silent> gr <plug>(coc-references)
 
-" Show code actions for selection
-nmap <silent> <leader>A <Plug>(coc-codeaction)
-nmap <silent> <leader>a <Plug>(coc-codeaction-cursor)
-vmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+" Show code actions
+nmap <silent> <leader>a <plug>(coc-codeaction-cursor)
+vmap <silent> <leader>a <plug>(coc-codeaction-selected)
+
+if has('nvim')
+  " Show actions for codelens
+  nmap <silent> <leader>l <plug>(coc-codelens-action)
+endif
 
 " Rename symbol
-nmap <silent> <leader>r <Plug>(coc-rename)
+nmap <silent> <leader>r <plug>(coc-rename)
 
 " Format selection
-nmap <silent> <leader>f <Plug>(coc-format-selected)
-vmap <silent> <leader>f <Plug>(coc-format-selected)
+nmap <silent> <leader>f <plug>(coc-format-selected)
+vmap <silent> <leader>f <plug>(coc-format-selected)
 
 " Search workspace symbols
 nnoremap <silent> <leader>s :<c-u>CocList -I symbols<cr>
 
-" Show documentation window
-nnoremap <silent> <leader>d :call <sid>show_documentation()<cr>
-
+" Show documentation float
 function! s:show_documentation()
   if index(['vim', 'help'], &filetype) >= 0
     execute 'h '.expand('<cword>')
@@ -259,20 +274,10 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight symbol references on hold
+nnoremap <silent> <leader>d :call <sid>show_documentation()<cr>
+
+" Handle highlight actions on cursor hold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-"
-" NERDTree
-"
-let g:NERDTreeQuitOnOpen = 3
-let g:NERDTreeMinimalUI = 1
-
-nnoremap <silent> <leader>e :NERDTreeFocus<cr>
-nnoremap <silent> <c-e> :NERDTreeToggle<cr>
-
-"
-" Tagbar
-"
-nnoremap <silent> <leader>t :TagbarOpenAutoClose<cr>
-nnoremap <silent> <c-t> :TagbarToggle<cr>
+" Show signature help when jumping to param placeholders
+autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')

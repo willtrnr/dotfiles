@@ -1,6 +1,14 @@
 {
-  "diagnostic.displayByAle": true,
-  "metals.sbtScript": "/usr/bin/sbt",
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "coc.preferences.maxFileSize": "2MB",
+
+  "codeLens.enable": true,
+
+  "diagnostic.errorSign": "❌",
+  "diagnostic.warningSign": "⚠️",
+  "diagnostic.infoSign": "💬",
+  "diagnostic.hintSign": "💭",
+
   "languageserver": {
     "solidity": {
       "command": "solidity-language-server",
