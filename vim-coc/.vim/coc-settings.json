@@ -1,6 +1,7 @@
 {
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.maxFileSize": "2MB",
+  "coc.preferences.useQuickfixForLocations": true,
 
   "codeLens.enable": true,
 
@@ -8,6 +9,8 @@
   "diagnostic.warningSign": "",
   "diagnostic.infoSign": "",
   "diagnostic.hintSign": "",
+
+  "rust-analyzer.checkOnSave.command": "clippy",
 
   "languageserver": {
     "solidity": {
