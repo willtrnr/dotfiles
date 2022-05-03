@@ -163,8 +163,8 @@ if has('nvim')
   \        sections = { 'error', 'warn', 'info' },
   \        symbols = { error = ' ', warn = ' ', info = ' ' },
   \      },
-  \      'g:coc_status',
   \      'b:coc_current_function',
+  \      'g:coc_status',
   \    },
   \  },
   \  extensions = {
