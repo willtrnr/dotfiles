@@ -78,6 +78,9 @@ nmap <silent> <a-down> <c-j>
 nmap <silent> <a-left> <c-h>
 nmap <silent> <a-right> <c-l>
 
+" Use leader-s to sort selected lines
+vnoremap <silent> <leader>s :'<,'>sort<cr>
+
 if has('nvim')
   " Set terminal scrollback much lower to avoid lag issues
   set scrollback=4000
