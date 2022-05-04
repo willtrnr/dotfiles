@@ -35,9 +35,6 @@ set mouse=nv
 " Disable mode display
 set noshowmode
 
-" More space for diagnostic messages in the command bar
-"set cmdheight=2
-
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
@@ -91,8 +88,10 @@ endif
 "
 " Polyglot
 "
-" This needs to happen before the plugin is loaded
-let g:polyglot_disabled = ['python-compiler', 'autoindent']
+let g:polyglot_disabled = [
+\  'python-compiler',
+\  'autoindent',
+\]
 
 "
 " Load plugins
@@ -115,13 +114,13 @@ Plug 'wakatime/vim-wakatime'
 Plug 'Yggdroot/indentLine'
 
 if has('nvim')
-  Plug 'akinsho/nvim-bufferline.lua'
+  Plug 'akinsho/bufferline.nvim', { 'tag': 'v1.*' }
   Plug 'akinsho/toggleterm.nvim'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'nvim-lualine/lualine.nvim'
 else
-  Plug 'vim-airline/vim-airline'
   Plug 'ryanoasis/vim-devicons'
+  Plug 'vim-airline/vim-airline'
 endif
 
 call plug#end()
@@ -189,8 +188,7 @@ if has('nvim')
   " Setup bufferline
   lua require('bufferline').setup {
   \  options = {
-  \    right_mouse_command = nil,
-  \    middle_mouse_command = 'bdelete! %d',
+  \    diagnostics = "coc",
   \    separator_style = 'slant',
   \    always_show_bufferline = true,
   \  }
@@ -216,14 +214,29 @@ endif
 "
 " ALE
 "
+let g:ale_linters = {
+\  'python': ['black', 'isort', 'pylint'],
+\  'rust': ['rustfmt'],
+\  'scala': [],
+\}
+
 let g:ale_disable_lsp = 1
+
+let g:ale_sign_error = ' '
+let g:ale_sign_warning = ' '
+let g:ale_sign_info = ' '
+let g:ale_sign_hint = ' ~'
 
 let g:ale_sign_highlight_linenrs = 1
 
-let g:ale_sign_error = ' '
-let g:ale_sign_warn = ' '
-let g:ale_sign_info = ' '
-let g:ale_sign_hint = ''
+let g:ale_python_auto_pipenv = 1
+let g:ale_python_auto_poetry = 1
+let g:ale_python_black_auto_pipenv = 1
+let g:ale_python_black_auto_poetry = 1
+let g:ale_python_isort_auto_pipenv = 1
+let g:ale_python_isort_auto_poetry = 1
+let g:ale_python_pylint_auto_pipenv = 1
+let g:ale_python_pylint_auto_poetry = 1
 
 "
 " FZF
