@@ -6,10 +6,10 @@
   "codeLens.enable": true,
 
   "diagnostic.enableSign": true,
-  "diagnostic.errorSign": "\u00a0\uf057",    //  - cross in filled circle
-  "diagnostic.warningSign": "\u00a0\uf071",  //  - exclamation in filled triangle
-  "diagnostic.infoSign": "\u00a0\uf06a",     //  - exclamation in filled circle
-  "diagnostic.hintSign": "\u00a0~",          // ~ - regular tilde
+  "diagnostic.errorSign": "\uf057",    //  - cross in filled circle
+  "diagnostic.warningSign": "\uf071",  //  - exclamation in filled triangle
+  "diagnostic.infoSign": "\uf06a",     //  - exclamation in filled circle
+  "diagnostic.hintSign": "~",          // ~ - regular tilde
 
 
   "suggest.completionItemKindLabels": {
@@ -26,18 +26,18 @@
     "class": "\ue79b",          //  - box
     "interface": "\uf1e6",      //  - power plug
     "text": "\ue612",           //  - paragraph
-    "enum": "\uf778",           //  - bullet list
+    "enum": "\uf0ca",           //  - bullet list
     "enumMember": "\uf02b",     //  - tag
     "module": "\uf40d",         //  - code file
     "color": "\ue22b",          //  - paint palette
     "property": "\uf0ad",       //  - wrench
     "field": "\uf0ad",          //  - wrench
-    "unit": "\uf475",           //  - ellipsis in filled rectangle
+    "unit": "\ue21b",           //  - triangle ruler
     "event": "\uf0e7",          //  - lightning bolt
     "file": "\uf723",           //  - blank file
     "folder": "\uf114",         //  - closed folder
     "snippet": "\ue60b",        //  - self-closing curly braces
-    "typeParameter": "\uf595",  //  - erlenmeyer flask
+    "typeParameter": "\uf5a0",  //  - greek letter 'b' beta
     "default": "\uf29c"         //  - question mark in circle
   },
 
