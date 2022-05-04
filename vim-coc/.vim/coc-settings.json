@@ -5,19 +5,54 @@
 
   "codeLens.enable": true,
 
-  "diagnostic.errorSign": "",
-  "diagnostic.warningSign": "",
-  "diagnostic.infoSign": "",
+  "diagnostic.errorSign": " ",
+  "diagnostic.warningSign": " ",
+  "diagnostic.infoSign": " ",
   "diagnostic.hintSign": "",
+
+  "suggest.completionItemKindLabels": {
+    "keyword": "",
+    "variable": "",
+    "value": "",
+    "operator": "Σ",
+    "constructor": "",
+    "function": "λ",
+    "reference": "",
+    "constant": "",
+    "method": "",
+    "struct": "פּ",
+    "class": "",
+    "interface": "",
+    "text": "",
+    "enum": "",
+    "enumMember": "",
+    "module": "",
+    "color": "",
+    "property": "",
+    "field": "",
+    "unit": "",
+    "event": "",
+    "file": "",
+    "folder": "",
+    "snippet": "",
+    "typeParameter": "",
+    "default": ""
+  },
 
   "rust-analyzer.checkOnSave.command": "clippy",
 
   "languageserver": {
     "solidity": {
       "command": "solidity-language-server",
-      "args": ["--stdio"],
-      "filetypes": ["solidity"],
-      "rootPatterns": ["package.json"]
+      "args": [
+        "--stdio"
+      ],
+      "filetypes": [
+        "solidity"
+      ],
+      "rootPatterns": [
+        "package.json"
+      ]
     }
   }
 }

@@ -159,9 +159,21 @@ if has('nvim')
   \    lualine_c = {
   \      {
   \        'diagnostics',
-  \        sources = { 'nvim_diagnostic', 'coc', 'ale' },
-  \        sections = { 'error', 'warn', 'info' },
-  \        symbols = { error = ' ', warn = ' ', info = ' ' },
+  \        sources = {
+  \          'nvim_diagnostic',
+  \          'coc',
+  \          'ale',
+  \        },
+  \        sections = {
+  \          'error',
+  \          'warn',
+  \          'info',
+  \        },
+  \        symbols = {
+  \          error = ' ',
+  \          warn = ' ',
+  \          info = ' ',
+  \        },
   \      },
   \      'b:coc_current_function',
   \      'g:coc_status',
@@ -206,9 +218,12 @@ endif
 "
 let g:ale_disable_lsp = 1
 
-let g:ale_sign_error = ''
-let g:ale_sign_warning = ''
-let g:ale_sign_info = ''
+let g:ale_sign_highlight_linenrs = 1
+
+let g:ale_sign_error = ' '
+let g:ale_sign_warn = ' '
+let g:ale_sign_info = ' '
+let g:ale_sign_hint = ''
 
 "
 " FZF
