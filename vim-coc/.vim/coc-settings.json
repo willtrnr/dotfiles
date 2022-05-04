@@ -22,7 +22,7 @@
     "reference": "\uf4a8",      //  - share arrow icon
     "constant": "\uf8fe",       //  - greek letter 'p' pi
     "method": "\uf794",         //  - stylized 'f'
-    "struct": "\ufb44",         // פּ - tree structure
+    "struct": "\uf0e8",         //  - tree structure
     "class": "\ue79b",          //  - box
     "interface": "\uf1e6",      //  - power plug
     "text": "\ue612",           //  - paragraph
