@@ -111,6 +111,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
+Plug 'weihanglo/polar.vim'
 Plug 'Yggdroot/indentLine'
 
 if has('nvim')
