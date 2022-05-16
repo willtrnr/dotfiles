@@ -76,7 +76,7 @@ nmap <silent> <a-left> <c-h>
 nmap <silent> <a-right> <c-l>
 
 " Use leader-s to sort selected lines
-vnoremap <silent> <leader>s :'<,'>sort<cr>
+vnoremap <silent> <f9> :'<,'>sort<cr>
 
 if has('nvim')
   " Set terminal scrollback much lower to avoid lag issues
@@ -253,8 +253,6 @@ let g:fzf_action = {
 
 nnoremap <silent> <leader><tab> :FzfGFiles --cached --others --exclude-standard<cr>
 nnoremap <silent> <leader><s-tab> :FzfRg<cr>
-" Until I get used to leader-tab
-nmap <silent> <c-p> <leader><tab>
 
 "
 " CoC
