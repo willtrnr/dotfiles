@@ -11,3 +11,4 @@ alias p=poetry
 
 # Cargo shorthand
 alias c=cargo
+alias cn='cargo +nightly'
