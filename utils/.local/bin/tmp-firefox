@@ -1,0 +1,14 @@
+#! /usr/bin/env bash
+
+set -e
+
+profile="$(mktemp -d -t tmp.XXXXXXXXXX)"
+function cleanup() {
+  rm -rf "$profile"
+}
+trap cleanup EXIT
+
+firefox \
+  --profile "$profile" \
+  --new-instance \
+  --no-remote
