@@ -44,14 +44,18 @@
   "rust-analyzer.checkOnSave.command": "clippy",
 
   "languageserver": {
+    "rescript": {
+      "module": "~/.local/share/nvim/plugged/vim-rescript/server/out/server.js",
+      "args": ["--node-ipc"],
+      "filetypes": ["rescript"],
+      "rootPatterns": [
+        "bsconfig.json"
+      ]
+    },
     "solidity": {
       "command": "solidity-language-server",
-      "args": [
-        "--stdio"
-      ],
-      "filetypes": [
-        "solidity"
-      ],
+      "args": ["--stdio"],
+      "filetypes": ["solidity"],
       "rootPatterns": [
         "package.json"
       ]
