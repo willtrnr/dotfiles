@@ -12,15 +12,18 @@
 	default = simple
 [pull]
 	ff = only
+[diff]
+	tool = vimdiff
 
 [alias]
 	graph = log --graph --abbrev-commit --decorate --all
-  addnw = !sh -c 'git diff -w --no-color "$@" | git apply --cached --ignore-whitespace' -
+	addnw = !sh -c 'git diff -w --no-color "$@" | git apply --cached --ignore-whitespace' -
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
-  required = true
+	required = true
+	process = git-lfs filter-process
 
 [diff "hex"]
 	textconv = hexdump -v -C
