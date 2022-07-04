@@ -69,4 +69,5 @@ fi
 if (command -v dunst > /dev/null); then
   dunst --config ~/.config/dunst/dunstrc &
 fi
+
 exec i3
