@@ -1,10 +1,11 @@
 # IDE/editor config stuff
 *.iml
+/*/.vim/coc-settings.json
 /.idea
+/.metals
 /.vim
 /.vscode
 /.wakatime*
-/*/.vim/coc-settings.json
 
 # IDE/editor temp files
 *.swp

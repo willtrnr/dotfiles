@@ -118,6 +118,8 @@ Plug 'Yggdroot/indentLine'
 if has('nvim')
   Plug 'akinsho/bufferline.nvim', { 'tag': 'v1.*' }
   Plug 'akinsho/toggleterm.nvim'
+  Plug 'andrewferrier/textobj-diagnostic.nvim'
+  Plug 'folke/trouble.nvim'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'nvim-lualine/lualine.nvim'
 else
@@ -195,6 +197,12 @@ if has('nvim')
   \    always_show_bufferline = true,
   \  }
   \}
+
+  " Setup trouble diagnostic display
+  lua require('trouble').setup {}
+
+  " Setup diagnostic motions
+  lua require('textobj-diagnostic').setup {}
 else
   let g:airline_theme = 'nord'
   let g:airline_powerline_fonts = 1
