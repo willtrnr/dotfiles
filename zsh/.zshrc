@@ -55,14 +55,13 @@ HIST_STAMPS="yyyy-mm-dd"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   archlinux
-  bazel
   docker
   gcloud
   gem
   git
   git-extras
   gitignore
-  jsontools
+  gpg-agent
   kubectl
   node
   npm
@@ -74,7 +73,6 @@ plugins=(
   sbt
   sudo
   svn
-  urltools
   virtualenv
   yarn
 )
