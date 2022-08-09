@@ -122,6 +122,7 @@ if has('nvim')
   Plug 'andrewferrier/textobj-diagnostic.nvim'
   Plug 'folke/trouble.nvim'
   Plug 'kyazdani42/nvim-web-devicons'
+  Plug 'mfussenegger/nvim-dap'
   Plug 'nvim-lualine/lualine.nvim'
 else
   Plug 'ryanoasis/vim-devicons'
