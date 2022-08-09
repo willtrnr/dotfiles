@@ -83,7 +83,7 @@ if has('nvim')
   " Set terminal scrollback much lower to avoid lag issues
   set scrollback=4000
   " Exit terminal mode with <esc>
-  tnoremap <expr> <esc> (&filetype == "fzf") ? "<esc>" : "<c-\><c-n>"
+  tnoremap <silent><expr> <esc> (&filetype == "fzf") ? "<esc>" : "<c-\><c-n>"
 endif
 
 "
@@ -275,6 +275,9 @@ else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
+" Accept auto-complete with <cr>
+inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "<cr>"
+
 " Diagnostics navigation
 nmap <silent> [g <plug>(coc-diagnostic-prev)
 nmap <silent> ]g <plug>(coc-diagnostic-next)
@@ -286,6 +289,7 @@ nmap <silent> gi <plug>(coc-implementation)
 nmap <silent> gr <plug>(coc-references)
 
 " Show code actions
+nmap <silent> <leader>A <plug>(coc-codeaction)
 nmap <silent> <leader>a <plug>(coc-codeaction-cursor)
 vmap <silent> <leader>a <plug>(coc-codeaction-selected)
 
