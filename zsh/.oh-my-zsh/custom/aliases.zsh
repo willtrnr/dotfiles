@@ -1,6 +1,7 @@
 # Handy aliases to start sbt with a specific JDK version
 alias sbt8='sbt -java-home /usr/lib/jvm/java-8-openjdk'
 alias sbt11='sbt -java-home /usr/lib/jvm/java-11-openjdk'
+alias sbt17='sbt -java-home /usr/lib/jvm/java-17-openjdk'
 
 # Vim shorthands
 alias nv=nvim
