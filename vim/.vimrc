@@ -123,8 +123,10 @@ if has('nvim')
   Plug 'folke/trouble.nvim'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'mfussenegger/nvim-dap'
+  Plug 'mhinz/vim-signify'
   Plug 'nvim-lualine/lualine.nvim'
 else
+  Plug 'mhinz/vim-signify', { 'tag': 'legacy' }
   Plug 'ryanoasis/vim-devicons'
   Plug 'vim-airline/vim-airline'
 endif
