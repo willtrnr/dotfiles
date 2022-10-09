@@ -43,6 +43,7 @@ M.lualine.setup {
         },
       },
       -- For some reason passing the function directly doesn't work
+      -- Also, this is garbage
       "require'lsp-status'.status()",
     },
   },
