@@ -2,16 +2,22 @@
 	name = William Turner
 	email = willtur.will@gmail.com
 	signingkey = C8469D68E4820C43
+
 [core]
-	autocrlf = input
+  autocrlf = input
+
 [init]
-	defaultBranch = master
+  defaultBranch = master
+
 [commit]
-	gpgsign = true
+  gpgsign = true
+
 [push]
-	default = simple
+  default = simple
+
 [pull]
-	ff = only
+  ff = only
+
 [diff]
 	tool = vimdiff
 
