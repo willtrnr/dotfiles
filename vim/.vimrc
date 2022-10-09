@@ -23,11 +23,14 @@ set smartcase
 set wildmode=longest,list,full
 set wildmenu
 
+" Force selection of an autocomplete item, even with only one
+set completeopt=menuone,noinsert,noselect
+
 " Always show sign gutter to avoid jitter
 set signcolumn=yes
 
-" Adjust refresh for async stuff
-set updatetime=100
+" Used for hover and async stuff
+set updatetime=150
 
 " Enable mouse in normal and visual
 set mouse=nv
@@ -75,16 +78,17 @@ nmap <silent> <a-down> <c-j>
 nmap <silent> <a-left> <c-h>
 nmap <silent> <a-right> <c-l>
 
-" Use F9 to sort selected lines
-vnoremap <silent> <f9> :'<,'>sort<cr>
+" Use F9 to sort selected lines in visual or paragraph in normal
 nnoremap <silent> <f9> vip:'<,'>sort<cr>
+vnoremap <silent> <f9> :'<,'>sort<cr>
 
-if has('nvim')
-  " Set terminal scrollback much lower to avoid lag issues
-  set scrollback=4000
-  " Exit terminal mode with <esc>
-  tnoremap <silent><expr> <esc> (&filetype == "fzf") ? "<esc>" : "<c-\><c-n>"
-endif
+" Yank to system clipboard
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+
+" Paste from system clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
 
 "
 " Polyglot
@@ -101,32 +105,62 @@ call plug#begin()
 
 Plug 'arcticicestudio/nord-vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'lilydjwg/colorizer'
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'preservim/nerdcommenter'
-Plug 'rescript-lang/vim-rescript'
 Plug 'sheerun/vim-polyglot'
-Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
-Plug 'weihanglo/polar.vim'
 Plug 'Yggdroot/indentLine'
 
 if has('nvim')
-  Plug 'akinsho/bufferline.nvim', { 'tag': 'v1.*' }
-  Plug 'akinsho/toggleterm.nvim'
-  Plug 'andrewferrier/textobj-diagnostic.nvim'
-  Plug 'folke/trouble.nvim'
+  " Libraries
+  Plug 'nvim-lua/plenary.nvim'
+
+  " Ricing
+  Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
   Plug 'kyazdani42/nvim-web-devicons'
-  Plug 'mfussenegger/nvim-dap'
   Plug 'mhinz/vim-signify'
   Plug 'nvim-lualine/lualine.nvim'
+  Plug 'rcarriga/nvim-notify'
+  Plug 'stevearc/dressing.nvim'
+
+  " Completion & Finders
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-calc'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-path'
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/vim-vsnip'
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+  Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
+  Plug 'saecki/crates.nvim'
+  Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
+
+  " LSP & Diagnostics
+  Plug 'RRethy/vim-illuminate'
+  Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
+  Plug 'kosayoda/nvim-lightbulb'
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'nvim-lua/lsp-status.nvim'
+  Plug 'scalameta/nvim-metals', { 'tag': 'v0.7.x' }
+  Plug 'simrat39/rust-tools.nvim'
+  Plug 'tamago324/nlsp-settings.nvim'
+  Plug 'williamboman/mason-lspconfig.nvim'
+  Plug 'williamboman/mason.nvim'
+
+  " QOL
+  Plug 'akinsho/toggleterm.nvim'
+
+  " Fix CursorHold, for some reason it's not fixed for me on 800
+  if v:version < 801
+    Plug 'antoinemadec/FixCursorHold.nvim'
+  endif
 else
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
   Plug 'mhinz/vim-signify', { 'tag': 'legacy' }
+  Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'ryanoasis/vim-devicons'
   Plug 'vim-airline/vim-airline'
 endif
@@ -137,77 +171,14 @@ call plug#end()
 " Ricing
 "
 
-" Use Nord theme
+" Nord theme
 set background=dark
 colorscheme nord
 
-if has('nvim')
-  " Enable true-color mode
-  set termguicolors
-
-  " Enable colored file type icons
-  lua require('nvim-web-devicons').setup {}
-
-  " Setup toggleterm
-  lua require('toggleterm').setup {
-  \  open_mapping = [[<c-\>]],
-  \}
-
-  " Setup lualine
-  lua require('lualine').setup {
-  \  options = {
-  \    theme = 'nord',
-  \  },
-  \  sections = {
-  \    lualine_b = {
-  \      'branch',
-  \      'diff',
-  \    },
-  \    lualine_c = {
-  \      {
-  \        'diagnostics',
-  \        sources = {
-  \          'nvim_diagnostic',
-  \          'coc',
-  \          'ale',
-  \        },
-  \        sections = {
-  \          'error',
-  \          'warn',
-  \          'info',
-  \        },
-  \        symbols = {
-  \          error = ' ',
-  \          warn = ' ',
-  \          info = ' ',
-  \        },
-  \      },
-  \      'b:coc_current_function',
-  \      'g:coc_status',
-  \    },
-  \  },
-  \  extensions = {
-  \    'fugitive',
-  \    'fzf',
-  \    'toggleterm',
-  \  },
-  \}
-
-  " Setup bufferline
-  lua require('bufferline').setup {
-  \  options = {
-  \    diagnostics = "coc",
-  \    separator_style = 'slant',
-  \    always_show_bufferline = true,
-  \  }
-  \}
-
-  " Setup trouble diagnostic display
-  lua require('trouble').setup {}
-
-  " Setup diagnostic motions
-  lua require('textobj-diagnostic').setup {}
-else
+"
+" Airline on base vim
+"
+if !has('nvim')
   let g:airline_theme = 'nord'
   let g:airline_powerline_fonts = 1
   let g:airline#extensions#tabline#enabled = 1
@@ -216,14 +187,11 @@ endif
 "
 " IndentLine
 "
-let g:indentLine_enabled = 0
-let g:indentLine_leadingSpaceChar = '·'
-let g:indentLine_leadingSpaceEnabled = 1
-let g:indentLine_concealcursor = ''
-
-if has('nvim')
-  autocmd TermOpen * silent IndentLinesDisable
-endif
+let g:indentLine_enabled = 1
+let g:indentLine_char_list = ['|', '┊', '┆', '¦']
+let g:indentLine_concealcursor = 'nc'
+let g:indentLine_conceallevel = '1'
+let g:indentLine_bufTypeExclude = ['help', 'terminal']
 
 "
 " ALE
@@ -252,79 +220,78 @@ let g:ale_python_isort_auto_poetry = 1
 let g:ale_python_pylint_auto_pipenv = 1
 let g:ale_python_pylint_auto_poetry = 1
 
-"
-" FZF
-"
-let g:fzf_command_prefix = 'Fzf'
+if !has('nvim')
+  "
+  " FZF
+  "
+  let g:fzf_command_prefix = 'Fzf'
 
-let g:fzf_action = {
-\  'return': 'edit',
-\  'ctrl-t': 'tab split',
-\  'ctrl-x': 'split',
-\  'ctrl-v': 'vsplit',
-\}
+  let g:fzf_action = {
+  \  'return': 'edit',
+  \  'ctrl-t': 'tab split',
+  \  'ctrl-x': 'split',
+  \  'ctrl-v': 'vsplit',
+  \}
 
-nnoremap <silent> <leader><tab> :FzfGFiles --cached --others --exclude-standard<cr>
-nnoremap <silent> <leader><s-tab> :FzfRg<cr>
+  nnoremap <silent> <leader><tab> :FzfGFiles --cached --others --exclude-standard<cr>
+  nnoremap <silent> <leader><s-tab> :FzfRg<cr>
 
-"
-" CoC
-"
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
+  "
+  " CoC
+  "
+
+  " Use <c-space> to trigger completion.
   inoremap <silent><expr> <c-@> coc#refresh()
-endif
 
-" Accept auto-complete with <cr>
-inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "<cr>"
+  " Accept auto-complete with <cr>
+  inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "<cr>"
 
-" Diagnostics navigation
-nmap <silent> [g <plug>(coc-diagnostic-prev)
-nmap <silent> ]g <plug>(coc-diagnostic-next)
+  " Diagnostics navigation
+  nmap <silent> [g <plug>(coc-diagnostic-prev)
+  nmap <silent> ]g <plug>(coc-diagnostic-next)
 
-" GoTo navigation
-nmap <silent> gd <plug>(coc-definition)
-nmap <silent> gy <plug>(coc-type-definition)
-nmap <silent> gi <plug>(coc-implementation)
-nmap <silent> gr <plug>(coc-references)
+  " GoTo navigation
+  nmap <silent> gd <plug>(coc-definition)
+  nmap <silent> gy <plug>(coc-type-definition)
+  nmap <silent> gi <plug>(coc-implementation)
+  nmap <silent> gr <plug>(coc-references)
 
-" Show code actions
-nmap <silent> <leader>A <plug>(coc-codeaction)
-nmap <silent> <leader>a <plug>(coc-codeaction-cursor)
-vmap <silent> <leader>a <plug>(coc-codeaction-selected)
+  " Show code actions
+  nmap <silent> <leader>A <plug>(coc-codeaction)
+  nmap <silent> <leader>a <plug>(coc-codeaction-cursor)
+  vmap <silent> <leader>a <plug>(coc-codeaction-selected)
 
-if has('nvim')
-  " Show actions for codelens
-  nmap <silent> <leader>l <plug>(coc-codelens-action)
-endif
-
-" Rename symbol
-nmap <silent> <leader>r <plug>(coc-rename)
-
-" Format selection
-nmap <silent> <leader>f <plug>(coc-format-selected)
-vmap <silent> <leader>f <plug>(coc-format-selected)
-
-" Search workspace symbols
-nnoremap <silent> <leader>s :<c-u>CocList -I symbols<cr>
-
-" Show documentation float
-function! s:show_documentation()
-  if index(['vim', 'help'], &filetype) >= 0
-    execute 'h '.expand('<cword>')
-  elseif coc#rpc#ready()
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
+  if has('nvim')
+    " Show actions for codelens
+    nmap <silent> <leader>l <plug>(coc-codelens-action)
   endif
-endfunction
 
-nnoremap <silent> <leader>d :call <sid>show_documentation()<cr>
+  " Rename symbol
+  nmap <silent> <leader>r <plug>(coc-rename)
 
-" Handle highlight actions on cursor hold
-autocmd CursorHold * silent call CocActionAsync('highlight')
+  " Format selection
+  nmap <silent> <leader>f <plug>(coc-format-selected)
+  vmap <silent> <leader>f <plug>(coc-format-selected)
 
-" Show signature help when jumping to param placeholders
-autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
+  " Search workspace symbols
+  nnoremap <silent> <leader>s :<c-u>CocList -I symbols<cr>
+
+  " Show documentation float
+  function! s:show_documentation()
+    if index(['vim', 'help'], &filetype) >= 0
+      execute 'h '.expand('<cword>')
+    elseif coc#rpc#ready()
+      call CocActionAsync('doHover')
+    else
+      execute '!' . &keywordprg . " " . expand('<cword>')
+    endif
+  endfunction
+
+  nnoremap <silent> <leader>d :call <sid>show_documentation()<cr>
+
+  " Handle highlight actions on cursor hold
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+
+  " Show signature help when jumping to param placeholders
+  autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
+endif
