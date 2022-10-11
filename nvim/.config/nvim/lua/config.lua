@@ -37,16 +37,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Start in insert mode for git commits
-vim.api.nvim_create_autocmd('FileType', {
-  group = augroup,
-  pattern = {
-    'gitcommit',
-    'gitrebase',
-  },
-  command = 'startinsert | 1',
-})
-
 --
 -- Completion & Finders
 --
