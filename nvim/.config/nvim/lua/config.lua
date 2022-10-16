@@ -84,6 +84,7 @@ telescope.setup {
 }
 telescope.load_extension('fzf')
 telescope.load_extension('lsp_handlers')
+telescope.load_extension('notify')
 
 local telescope_builtin = require('telescope.builtin')
 util.noremap('n', '<leader><tab>', telescope_builtin.find_files)
@@ -94,7 +95,6 @@ require('crates').setup {}
 
 -- Setup cmp for completion
 local cmp = require('cmp')
-
 cmp.setup {
   formatting = ricing.cmp_formatting,
   mapping = cmp.mapping.preset.insert({
@@ -162,55 +162,51 @@ mason_lspconfig.setup {}
 local lightbulb = require('nvim-lightbulb')
 lightbulb.setup {}
 
-local lsp_on_attach = function(client, bufnr)
+local function lsp_notify_unsupported(feature)
+  local msg = 'Unsuppported ' .. util.capitalize(feature)
+  return function() vim.notify(msg, 'info') end
+end
+
+local function lsp_on_attach(client, bufnr)
   local caps = client.server_capabilities
+
+  local function lsp_nmap(feature, key, action)
+    if caps[feature] then
+      util.noremap('n', key, action, bufnr)
+    else
+      util.noremap('n', key, lsp_notify_unsupported(feature), bufnr, true)
+    end
+  end
 
   -- Attach the client to lsp-status
   ricing.lsp_status.on_attach(client)
 
   -- Show symbol documentation
-  if caps.hoverProvider then
-    util.noremap('n', '<leader>d', vim.lsp.buf.hover, bufnr)
-  end
+  lsp_nmap('hoverProvider', '<leader>d', vim.lsp.buf.hover)
 
   -- Show signature help
-  if caps.signatureHelpProvider then
-    util.noremap('n', '<c-s>', vim.lsp.buf.signature_help, bufnr)
-  end
+  lsp_nmap('signatureHelpProvider', '<c-s>', vim.lsp.buf.signature_help)
 
   -- Code navigation
-  if caps.definitionProvider then
-    util.noremap('n', 'gd', vim.lsp.buf.definition, bufnr)
-  end
-  if caps.typeDefinitionProvider then
-    util.noremap('n', 'gy', vim.lsp.buf.type_definition, bufnr)
-  end
-  if caps.implementationProvider then
-    util.noremap('n', 'gi', vim.lsp.buf.implementation, bufnr)
-  end
-  if caps.referencesProvider then
-    util.noremap('n', 'gr', vim.lsp.buf.references, bufnr)
-  end
+  lsp_nmap('definitionProvider', 'gd', vim.lsp.buf.definition)
+  lsp_nmap('typeDefinitionProvider', 'gy', vim.lsp.buf.type_definition)
+  lsp_nmap('implementationProvider', 'gi', vim.lsp.buf.implementation)
+  lsp_nmap('referencesProvider', 'gr', vim.lsp.buf.references)
+
+  -- Rename symbol
+  lsp_nmap('renameProvider', '<leader>r', vim.lsp.buf.rename)
+
+  -- Format
+  lsp_nmap('documentFormattingProvider', '<leader>f', vim.lsp.buf.format or vim.lsp.buf.formatting)
 
   -- Code actions
+  lsp_nmap('codeActionProvider', '<leader>a', vim.lsp.buf.code_action)
   if caps.codeActionProvider then
-    util.noremap('n', '<leader>a', vim.lsp.buf.code_action, bufnr)
-
     vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
       group = augroup,
       buffer = bufnr,
       callback = util.thunkify(lightbulb.update_lightbulb),
     })
-  end
-
-  -- Rename symbol
-  if caps.renameProvider then
-    util.noremap('n', '<leader>r', vim.lsp.buf.rename, bufnr)
-  end
-
-  -- Format
-  if caps.documentFormattingProvider or caps.documentRangeFormattingProvider then
-    util.noremap('n', '<leader>f', vim.lsp.buf.format or vim.lsp.buf.formatting, bufnr)
   end
 end
 
