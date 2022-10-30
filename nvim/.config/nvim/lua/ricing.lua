@@ -82,9 +82,19 @@ require('illuminate').configure {
     'regex',
   },
 }
-vim.highlight.link('IlluminatedWordText', 'LspReferenceText', true)
-vim.highlight.link('IlluminatedWordRead', 'LspReferenceRead', true)
-vim.highlight.link('IlluminatedWordWrite', 'LspReferenceWrite', true)
+
+vim.api.nvim_set_hl(0, 'IlluminatedWordText', {
+  link = 'LspReferenceText',
+  default = true,
+})
+vim.api.nvim_set_hl(0, 'IlluminatedWordRead', {
+  link = 'LspReferenceRead',
+  default = true,
+})
+vim.api.nvim_set_hl(0, 'IlluminatedWordWrite', {
+  link = 'LspReferenceWrite',
+  default = true,
+})
 
 -- Setup diagnostic signs
 M.sign_icons = {
@@ -139,43 +149,44 @@ end
 
 --- Setup cmp menu styling
 M.cmp_highlight_groups = {
-  Pmenu =    { guifg = '#C5CDD9', guibg = '#22252A' },
-  PmenuSel = { guifg = 'NONE',    guibg = '#282C34' },
+  Pmenu =    { fg = '#C5CDD9', bg = '#22252A' },
+  PmenuSel = { fg = 'NONE',    bg = '#282C34' },
 
-  CmpItemMenu = { guifg = '#C792EA', guibg = 'NONE', gui = 'italic' },
+  CmpItemMenu = { fg = '#C792EA', bg = 'NONE', italic = true },
 
-  CmpItemAbbrDeprecated = { guifg = '#7E8294', guibg = 'NONE', gui = 'strikethrough' },
-  CmpItemAbbrMatch =      { guifg = '#82AAFF', guibg = 'NONE', gui = 'bold' },
-  CmpItemAbbrMatchFuzzy = { guifg = '#82AAFF', guibg = 'NONE', gui = 'bold' },
+  CmpItemAbbrDeprecated = { fg = '#7E8294', bg = 'NONE', strikethrough = true },
+  CmpItemAbbrMatch =      { fg = '#82AAFF', bg = 'NONE', bold = true },
+  CmpItemAbbrMatchFuzzy = { fg = '#82AAFF', bg = 'NONE', bold = true },
 
-  CmpItemKindClass =         { guifg = '#EADFF0', guibg = '#A377BF' },
-  CmpItemKindColor =         { guifg = '#D8EEEB', guibg = '#58B5A8' },
-  CmpItemKindConstant =      { guifg = '#FFE082', guibg = '#D4BB6C' },
-  CmpItemKindConstructor =   { guifg = '#FFE082', guibg = '#D4BB6C' },
-  CmpItemKindEnum =          { guifg = '#C3E88D', guibg = '#9FBD73' },
-  CmpItemKindEnumMember =    { guifg = '#DDE5F5', guibg = '#6C8ED4' },
-  CmpItemKindEvent =         { guifg = '#EED8DA', guibg = '#B5585F' },
-  CmpItemKindField =         { guifg = '#EED8DA', guibg = '#B5585F' },
-  CmpItemKindFile =          { guifg = '#C5CDD9', guibg = '#7E8294' },
-  CmpItemKindFolder =        { guifg = '#F5EBD9', guibg = '#D4A959' },
-  CmpItemKindFunction =      { guifg = '#EADFF0', guibg = '#A377BF' },
-  CmpItemKindInterface =     { guifg = '#D8EEEB', guibg = '#58B5A8' },
-  CmpItemKindKeyword =       { guifg = '#C3E88D', guibg = '#9FBD73' },
-  CmpItemKindMethod =        { guifg = '#DDE5F5', guibg = '#6C8ED4' },
-  CmpItemKindModule =        { guifg = '#EADFF0', guibg = '#A377BF' },
-  CmpItemKindOperator =      { guifg = '#EADFF0', guibg = '#A377BF' },
-  CmpItemKindProperty =      { guifg = '#EED8DA', guibg = '#B5585F' },
-  CmpItemKindReference =     { guifg = '#FFE082', guibg = '#D4BB6C' },
-  CmpItemKindSnippet =       { guifg = '#F5EBD9', guibg = '#D4A959' },
-  CmpItemKindStruct =        { guifg = '#EADFF0', guibg = '#A377BF' },
-  CmpItemKindText =          { guifg = '#C3E88D', guibg = '#9FBD73' },
-  CmpItemKindTypeParameter = { guifg = '#D8EEEB', guibg = '#58B5A8' },
-  CmpItemKindUnit =          { guifg = '#F5EBD9', guibg = '#D4A959' },
-  CmpItemKindValue =         { guifg = '#DDE5F5', guibg = '#6C8ED4' },
-  CmpItemKindVariable =      { guifg = '#C5CDD9', guibg = '#7E8294' },
+  CmpItemKindClass =         { fg = '#EADFF0', bg = '#A377BF' },
+  CmpItemKindColor =         { fg = '#D8EEEB', bg = '#58B5A8' },
+  CmpItemKindConstant =      { fg = '#FFE082', bg = '#D4BB6C' },
+  CmpItemKindConstructor =   { fg = '#FFE082', bg = '#D4BB6C' },
+  CmpItemKindEnum =          { fg = '#C3E88D', bg = '#9FBD73' },
+  CmpItemKindEnumMember =    { fg = '#DDE5F5', bg = '#6C8ED4' },
+  CmpItemKindEvent =         { fg = '#EED8DA', bg = '#B5585F' },
+  CmpItemKindField =         { fg = '#EED8DA', bg = '#B5585F' },
+  CmpItemKindFile =          { fg = '#C5CDD9', bg = '#7E8294' },
+  CmpItemKindFolder =        { fg = '#F5EBD9', bg = '#D4A959' },
+  CmpItemKindFunction =      { fg = '#EADFF0', bg = '#A377BF' },
+  CmpItemKindInterface =     { fg = '#D8EEEB', bg = '#58B5A8' },
+  CmpItemKindKeyword =       { fg = '#C3E88D', bg = '#9FBD73' },
+  CmpItemKindMethod =        { fg = '#DDE5F5', bg = '#6C8ED4' },
+  CmpItemKindModule =        { fg = '#EADFF0', bg = '#A377BF' },
+  CmpItemKindOperator =      { fg = '#EADFF0', bg = '#A377BF' },
+  CmpItemKindProperty =      { fg = '#EED8DA', bg = '#B5585F' },
+  CmpItemKindReference =     { fg = '#FFE082', bg = '#D4BB6C' },
+  CmpItemKindSnippet =       { fg = '#F5EBD9', bg = '#D4A959' },
+  CmpItemKindStruct =        { fg = '#EADFF0', bg = '#A377BF' },
+  CmpItemKindText =          { fg = '#C3E88D', bg = '#9FBD73' },
+  CmpItemKindTypeParameter = { fg = '#D8EEEB', bg = '#58B5A8' },
+  CmpItemKindUnit =          { fg = '#F5EBD9', bg = '#D4A959' },
+  CmpItemKindValue =         { fg = '#DDE5F5', bg = '#6C8ED4' },
+  CmpItemKindVariable =      { fg = '#C5CDD9', bg = '#7E8294' },
 }
+
 for group, info in pairs(M.cmp_highlight_groups) do
-  vim.highlight.create(group, info, false)
+  vim.api.nvim_set_hl(0, group, info)
 end
 
 local cmp_source_renames = {

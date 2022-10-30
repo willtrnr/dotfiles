@@ -1,18 +1,23 @@
+--
+-- Config Entrypoint
+--
+
 local util = require('util')
+
+-- We will need to collect LSP capabilities as we setup plugins
+local lsp_caps = vim.lsp.protocol.make_client_capabilities()
+
+-- Make a group for all our custom autocmd
+local augroup = vim.api.nvim_create_augroup('aftermarket', {
+  clear = true,
+})
 
 --
 -- Rice our ride first
 --
 
 local ricing = require('ricing')
-
--- Initialize the LSP caps map with lsp-status from the ricing
-local lsp_caps = ricing.lsp_status.capabilities
-
--- Make a group for all our custom autocmd
-local augroup = vim.api.nvim_create_augroup('aftermarket', {
-  clear = true,
-})
+lsp_caps = util.update_capabilities(lsp_caps, ricing.lsp_status.capabilities)
 
 --
 -- QOL stuff
@@ -122,7 +127,8 @@ cmp.setup {
 }
 
 -- Extend the LSP caps with the cmp caps
-lsp_caps = require('cmp_nvim_lsp').update_capabilities(lsp_caps)
+local cmp_lsp = require('cmp_nvim_lsp')
+lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
 
 --
 -- LSP & Diagnostics

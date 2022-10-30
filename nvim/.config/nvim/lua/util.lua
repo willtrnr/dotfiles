@@ -1,3 +1,7 @@
+--
+-- General utilities
+--
+
 local M = {}
 
 --- Capitalize the first character in a string
@@ -20,6 +24,11 @@ end
 --- Concatenate two list-like tables into a new table
 function M.list_concat(a, b)
   return vim.list_extend(vim.list_extend({}, a), b)
+end
+
+--- Update LSP capabilities and return result
+function M.update_capabilities(a, b)
+  return vim.tbl_deep_extend('keep', a, b)
 end
 
 --- Shorthand to map key silent
