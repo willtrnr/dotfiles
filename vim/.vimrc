@@ -109,7 +109,6 @@ Plug 'lilydjwg/colorizer'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
-Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
 Plug 'Yggdroot/indentLine'
 
@@ -163,26 +162,16 @@ else
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'ryanoasis/vim-devicons'
   Plug 'vim-airline/vim-airline'
+  Plug 'w0rp/ale'
 endif
 
 call plug#end()
 
 "
-" Ricing
-"
-
 " Nord theme
+"
 set background=dark
 colorscheme nord
-
-"
-" Airline on base vim
-"
-if !has('nvim')
-  let g:airline_theme = 'nord'
-  let g:airline_powerline_fonts = 1
-  let g:airline#extensions#tabline#enabled = 1
-endif
 
 "
 " IndentLine
@@ -193,34 +182,41 @@ let g:indentLine_concealcursor = 'nc'
 let g:indentLine_conceallevel = '1'
 let g:indentLine_bufTypeExclude = ['help', 'terminal']
 
-"
-" ALE
-"
-let g:ale_linters = {
-\  'python': ['black', 'isort', 'pylint'],
-\  'rust': ['rustfmt'],
-\  'scala': [],
-\}
-
-let g:ale_disable_lsp = 1
-
-let g:ale_sign_error = ''
-let g:ale_sign_warning = ''
-let g:ale_sign_info = ''
-let g:ale_sign_hint = '~'
-
-let g:ale_sign_highlight_linenrs = 1
-
-let g:ale_python_auto_pipenv = 1
-let g:ale_python_auto_poetry = 1
-let g:ale_python_black_auto_pipenv = 1
-let g:ale_python_black_auto_poetry = 1
-let g:ale_python_isort_auto_pipenv = 1
-let g:ale_python_isort_auto_poetry = 1
-let g:ale_python_pylint_auto_pipenv = 1
-let g:ale_python_pylint_auto_poetry = 1
-
 if !has('nvim')
+  "
+  " Airline
+  "
+  let g:airline_theme = 'nord'
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 1
+
+  "
+  " ALE
+  "
+  let g:ale_linters = {
+  \  'python': ['black', 'isort', 'pylint'],
+  \  'rust': ['rustfmt'],
+  \  'scala': [],
+  \}
+
+  let g:ale_disable_lsp = 1
+
+  let g:ale_sign_error = ''
+  let g:ale_sign_warning = ''
+  let g:ale_sign_info = ''
+  let g:ale_sign_hint = '~'
+
+  let g:ale_sign_highlight_linenrs = 1
+
+  let g:ale_python_auto_pipenv = 1
+  let g:ale_python_auto_poetry = 1
+  let g:ale_python_black_auto_pipenv = 1
+  let g:ale_python_black_auto_poetry = 1
+  let g:ale_python_isort_auto_pipenv = 1
+  let g:ale_python_isort_auto_poetry = 1
+  let g:ale_python_pylint_auto_pipenv = 1
+  let g:ale_python_pylint_auto_poetry = 1
+
   "
   " FZF
   "
