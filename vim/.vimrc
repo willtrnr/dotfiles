@@ -194,6 +194,7 @@ if !has('nvim')
   " ALE
   "
   let g:ale_linters = {
+  \  'asm': [],
   \  'python': ['black', 'isort', 'pylint'],
   \  'rust': ['rustfmt'],
   \  'scala': [],
