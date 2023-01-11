@@ -170,7 +170,9 @@ lightbulb.setup {}
 
 local function lsp_notify_unsupported(feature)
   local msg = 'Unsuppported ' .. util.capitalize(feature)
-  return function() vim.notify(msg, 'info') end
+  return function()
+    vim.notify(msg, 'info')
+  end
 end
 
 local function lsp_on_attach(client, bufnr)
@@ -231,10 +233,23 @@ mason_lspconfig.setup_handlers {
         on_attach = lsp_on_attach,
         settings = {
           ['rust-analyzer'] = {
+            cargo = {
+              buildScripts = {
+                enable = true,
+              },
+            },
             checkOnSave = {
               command = 'clippy',
             },
-          }
+            imports = {
+              group = {
+                enable = false,
+              },
+            },
+            procMacro = {
+              enable = true,
+            },
+          },
         },
       },
     }

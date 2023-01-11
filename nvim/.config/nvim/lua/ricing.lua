@@ -73,7 +73,25 @@ M.notify.setup {
 vim.notify = M.notify.notify
 
 -- Get nice UI elements for input and select
-require('dressing').setup {}
+require('dressing').setup {
+  input = {
+    win_options = {
+      winblend = 0,
+    },
+  },
+  select = {
+    nui = {
+      win_options = {
+        winblend = 0,
+      },
+    },
+    builtin = {
+      win_options = {
+        winblend = 0,
+      },
+    },
+  },
+}
 
 -- Nicer symbol highlighting
 require('illuminate').configure {
