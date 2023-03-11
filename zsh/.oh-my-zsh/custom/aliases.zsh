@@ -16,7 +16,7 @@ alias cn='cargo +nightly'
 
 # Secret generation, OWASP character set with problematic elemments removed
 alias secgen="tr -dc 'A-Za-z0-9!%&()*+,-./<=>?[]^_|~' < /dev/urandom | head -c"
-alias passgen="tr -dc 'A-Za-z0-9-_' < /dev/urandom | head -c"
+alias passgen="tr -dc 'A-Za-z0-9-_.' < /dev/urandom | head -c"
 
 # Additional git aliases missing in git plugin
 alias glr='git pull --rebase'
