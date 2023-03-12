@@ -33,3 +33,5 @@
 
 [diff "hex"]
 	textconv = hexdump -v -C
+[http]
+	cookiefile = /home/will/.gitcookies
