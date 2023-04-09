@@ -1,0 +1,67 @@
+#! /usr/bin/env sh
+
+STEPS=10
+
+
+bl_get_dev() {
+  find /sys/class/backlight -maxdepth 1 -type l -printf '%f' -quit
+}
+
+bl_get_level() {
+  cat "/sys/class/backlight/$1/brightness"
+}
+
+bl_get_max() {
+  cat "/sys/class/backlight/$1/max_brightness"
+}
+
+bl_step_size() {
+  echo $(( $(bl_get_max "$1") / STEPS ))
+}
+
+bl_set() {
+  level="$2"
+  max="$(bl_get_max "$1")"
+  if [ "$level" -gt "$max" ]; then
+    echo "$max" > "/sys/class/backlight/$1/brightness"
+  elif [ "$level" -lt 0 ]; then
+    echo 0 > "/sys/class/backlight/$1/brightness"
+  else
+    echo "$level" > "/sys/class/backlight/$1/brightness"
+  fi
+}
+
+bl_up() {
+  bl_set "$1" $(( $(bl_get_level "$1") + $(bl_step_size "$1") ))
+}
+
+bl_down() {
+  bl_set "$1" $(( $(bl_get_level "$1") - $(bl_step_size "$1") ))
+}
+
+
+BL_DEV="$(bl_get_dev)"
+if [ -z "$BL_DEV" ]; then
+  exit 1
+fi
+
+case "$1" in
+  up)
+    bl_up "$BL_DEV"
+    ;;
+  down)
+    bl_down "$BL_DEV"
+    ;;
+  set)
+    bl_set "$BL_DEV" "$2"
+    ;;
+  get)
+    bl_get_level "$BL_DEV"
+    ;;
+  max)
+    bl_get_max "$BL_DEV"
+    ;;
+  *)
+    exit 1
+    ;;
+esac

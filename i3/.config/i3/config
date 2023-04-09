@@ -89,13 +89,13 @@ bindsym $mod+Shift+grave move scratchpad
 bindsym $mod+grave scratchpad show
 
 # backlight control
-bindsym XF86MonBrightnessUp exec xbacklight +10
-bindsym XF86MonBrightnessDown exec xbacklight -10
+bindsym XF86MonBrightnessUp exec ~/.local/bin/backlight up
+bindsym XF86MonBrightnessDown exec ~/.local/bin/backlight down
 
 # volume control (untested)
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
-bindsym XF86AudioMute exec pamixer -t
+bindsym XF86AudioRaiseVolume exec amixer -q set Master 10%+
+bindsym XF86AudioLowerVolume exec amixer -q set Master 10%-
+bindsym XF86AudioMute exec amixer -q set Master toggle
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
