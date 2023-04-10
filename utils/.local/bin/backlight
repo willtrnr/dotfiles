@@ -19,16 +19,29 @@ bl_step_size() {
   echo $(( $(bl_get_max "$1") / STEPS ))
 }
 
+bl_step_max() {
+  echo $(( $(bl_step_size "$1") * STEPS ))
+}
+
+bl_notify_level() {
+  if [ -n "$DISPLAY" ]; then
+    notify_cmd="$(command -v notify-send)"
+    if [ -n "$notify_cmd" ]; then
+      $notify_cmd -u low -t 1000 -e Brightness "$1"
+    fi
+  fi
+}
+
 bl_set() {
   level="$2"
-  max="$(bl_get_max "$1")"
+  max="$(bl_step_max "$1")"
   if [ "$level" -gt "$max" ]; then
-    echo "$max" > "/sys/class/backlight/$1/brightness"
+    level="$max"
   elif [ "$level" -lt 0 ]; then
-    echo 0 > "/sys/class/backlight/$1/brightness"
-  else
-    echo "$level" > "/sys/class/backlight/$1/brightness"
+    level=0
   fi
+  echo "$level" > "/sys/class/backlight/$1/brightness"
+  bl_notify_level $(( (level * 100) / max ))
 }
 
 bl_up() {
@@ -52,11 +65,11 @@ case "$1" in
   down)
     bl_down "$BL_DEV"
     ;;
+  get|'')
+    bl_get_level "$BL_DEV"
+    ;;
   set)
     bl_set "$BL_DEV" "$2"
-    ;;
-  get)
-    bl_get_level "$BL_DEV"
     ;;
   max)
     bl_get_max "$BL_DEV"
