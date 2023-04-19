@@ -1,0 +1,12 @@
+#! /usr/bin/env sh
+
+wget -r -np -nH \
+  --cut-dirs=1 \
+  --directory-prefix="${2:-.}" \
+  --execute=robots=off \
+  --reject='*.asc' \
+  --reject='*.asc.*' \
+  --reject='*.md5' \
+  --reject='index.*' \
+  --user-agent='Mozilla/5.0' \
+  "https://repo1.maven.org/maven2/$1/"
