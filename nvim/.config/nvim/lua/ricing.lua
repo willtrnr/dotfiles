@@ -135,29 +135,29 @@ end
 M.kind_icons = {
   Class = '',          -- box
   Color = '',          -- paint palette
-  Constant = '',       -- greek letter 'p' pi
+  Constant = 'π',       -- greek letter 'p' pi
   Constructor = '',    -- magic wand
   Enum = '',           -- bullet list
   EnumMember = '',     -- tag
   Event = '',          -- lightning bolt
   Field = '',          -- wrench
-  File = '',           -- blank file
-  Folder = '',         -- closed folder
+  File = '',           -- file
+  Folder = '',         -- directory
   Function = 'λ',       -- greek letter 'l' lambda
   Interface = '',      -- power plug
   Keyword = '',        -- pound sign
-  Method = '',         -- stylized 'f'
-  Module =  '',        -- code file
+  Method = '󰊕',         -- function
+  Module =  '',        -- code file
   Operator = 'Σ',       -- greek letter 'S' sigma
   Property = '',       -- wrench
   Reference = '',      -- share arrow icon
   Snippet = '',        -- self-closing curly braces
   Struct = '',         -- tree structure
   Text = '',           -- paragraph
-  TypeParameter = '',  -- greek letter 'b' beta
+  TypeParameter = 'β',  -- greek letter 'b' beta
   Unit = '',           -- triangle ruler
-  Value = '',          -- number format icon
-  Variable = '',       -- greek letter 'a' alpha
+  Value = '',          -- number format icon
+  Variable = 'α',       -- greek letter 'a' alpha
 }
 
 local comp_kind = vim.lsp.protocol.CompletionItemKind
