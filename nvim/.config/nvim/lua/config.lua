@@ -216,6 +216,16 @@ local function lsp_on_attach(client, bufnr)
       callback = util.thunkify(lightbulb.update_lightbulb),
     })
   end
+
+  -- Code lens
+  lsp_nmap('codeLensProvider', '<leader>l', vim.lsp.codelens.run)
+  if caps.codeLensProvider then
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+      group = augroup,
+      buffer = bufnr,
+      callback = util.thunkify(vim.lsp.codelens.refresh),
+    })
+  end
 end
 
 mason_lspconfig.setup_handlers {
@@ -227,7 +237,11 @@ mason_lspconfig.setup_handlers {
   end,
   ['rust_analyzer'] = function ()
     require('rust-tools').setup {
-      tools = {},
+      tools = {
+        runnables = {
+          use_telescope = true
+        },
+      },
       server = {
         capabilities = lsp_caps,
         on_attach = lsp_on_attach,
