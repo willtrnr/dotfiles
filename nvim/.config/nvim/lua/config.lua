@@ -220,7 +220,7 @@ local function lsp_on_attach(client, bufnr)
   -- Code lens
   lsp_nmap('codeLensProvider', '<leader>l', vim.lsp.codelens.run)
   if caps.codeLensProvider then
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave' }, {
       group = augroup,
       buffer = bufnr,
       callback = util.thunkify(vim.lsp.codelens.refresh),
