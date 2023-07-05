@@ -65,7 +65,6 @@ plugins=(
   kubectl
   node
   npm
-  nvm
   pip
   pyenv
   python
