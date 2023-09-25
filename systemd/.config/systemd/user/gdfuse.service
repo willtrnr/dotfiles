@@ -1,0 +1,13 @@
+[Unit]
+Description=Google Drive (gdfuse)
+After=network-online.target network.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/google-drive-ocamlfuse %h/Drive
+ExecStop=-/usr/bin/fusermount -zu %h/Drive
+
+[Install]
+WantedBy=default.target
