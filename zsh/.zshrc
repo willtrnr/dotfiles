@@ -55,6 +55,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   archlinux
+  bazel
   colorize
   docker
   gcloud
