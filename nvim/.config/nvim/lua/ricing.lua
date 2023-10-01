@@ -73,25 +73,27 @@ M.notify.setup {
 vim.notify = M.notify.notify
 
 -- Get nice UI elements for input and select
-require('dressing').setup {
-  input = {
-    win_options = {
-      winblend = 0,
-    },
-  },
-  select = {
-    nui = {
+if vim.fn.has("nvim-0.8") == 1 then
+  require('dressing').setup {
+    input = {
       win_options = {
         winblend = 0,
       },
     },
-    builtin = {
-      win_options = {
-        winblend = 0,
+    select = {
+      nui = {
+        win_options = {
+          winblend = 0,
+        },
+      },
+      builtin = {
+        win_options = {
+          winblend = 0,
+        },
       },
     },
-  },
-}
+  }
+end
 
 -- Nicer symbol highlighting
 require('illuminate').configure {

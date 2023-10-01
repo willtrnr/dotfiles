@@ -122,7 +122,9 @@ if has('nvim')
   Plug 'mhinz/vim-signify'
   Plug 'nvim-lualine/lualine.nvim'
   Plug 'rcarriga/nvim-notify'
-  Plug 'stevearc/dressing.nvim'
+  if has('nvim-0.8')
+    Plug 'stevearc/dressing.nvim'
+  endif
 
   " Completion & Finders
   Plug 'hrsh7th/cmp-buffer'
