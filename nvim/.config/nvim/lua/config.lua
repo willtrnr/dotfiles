@@ -24,9 +24,12 @@ lsp_caps = util.update_capabilities(lsp_caps, ricing.lsp_status.capabilities)
 --
 
 -- Setup toggleterm
-require('toggleterm').setup {
-  open_mapping = [[<c-\>]],
-}
+local ok, toggleterm = pcall(require, 'toggleterm')
+if ok and toggleterm then
+  toggleterm.setup {
+    open_mapping = [[<c-\>]],
+  }
+end
 
 -- Exit terminal mode with simple <esc>
 util.noremap('t', '<esc>', [[<c-\><c-n>]])

@@ -12,6 +12,9 @@ trim_trailing_whitespace = true
 [*.{java,py,cs,vb,rs,bazel,bzl}]
 indent_size = 4
 
+[*.{lua,tl}]
+indent_size = 3
+
 [*.md]
 max_line_length = 88
 
@@ -19,4 +22,5 @@ max_line_length = 88
 indent_size = 4
 
 [Makefile]
+indent_size = 4
 indent_style = tab

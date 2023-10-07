@@ -123,7 +123,7 @@ if has('nvim')
   Plug 'mhinz/vim-signify'
   Plug 'nvim-lualine/lualine.nvim'
   Plug 'rcarriga/nvim-notify'
-  if has('nvim-0.8')
+  if has('nvim-8.0')
     Plug 'stevearc/dressing.nvim'
   endif
 
@@ -152,7 +152,9 @@ if has('nvim')
   Plug 'williamboman/mason.nvim'
 
   " QOL
-  Plug 'akinsho/toggleterm.nvim'
+  if has('nvim-8.0')
+    Plug 'akinsho/toggleterm.nvim'
+  endif
 
   " Fix CursorHold, for some reason it's not fixed for me on 800
   if v:version < 801

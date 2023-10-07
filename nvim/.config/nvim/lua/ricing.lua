@@ -73,8 +73,9 @@ M.notify.setup {
 vim.notify = M.notify.notify
 
 -- Get nice UI elements for input and select
-if vim.fn.has("nvim-0.8") == 1 then
-  require('dressing').setup {
+local ok, dressing = pcall(require, 'dressing')
+if ok and dressing then
+  dressing.setup {
     input = {
       win_options = {
         winblend = 0,
