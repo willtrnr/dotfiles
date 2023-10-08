@@ -122,7 +122,7 @@ M.sign_icons = {
   Error = '',
   Warn = '',
   Info = '',
-  Hint = '~',
+  Hint = '󰟶',
 }
 
 for kind, sign in pairs(M.sign_icons) do
@@ -133,6 +133,9 @@ for kind, sign in pairs(M.sign_icons) do
     numhl = hl,
   })
 end
+
+-- Extra lightbulb diagnostic
+M.lightbulb_icon = '󱠃'
 
 -- Setup LSP kind symbols
 M.kind_icons = {

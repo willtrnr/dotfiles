@@ -169,7 +169,11 @@ mason_lspconfig.setup {}
 
 -- Code actions indicator
 local lightbulb = require('nvim-lightbulb')
-lightbulb.setup {}
+lightbulb.setup {
+   sign = {
+      text = ricing.lightbulb_icon,
+   },
+}
 
 local function lsp_notify_unsupported(feature)
   local msg = 'Unsuppported ' .. util.capitalize(feature)
