@@ -144,12 +144,12 @@ M.kind_icons = {
   EnumMember = '',     -- tag
   Event = '',          -- lightning bolt
   Field = '',          -- wrench
-  File = '',           -- blank file
+  File = '󰈤',           -- blank file
   Folder = '',         -- closed folder
   Function = 'λ',       -- greek letter 'l' lambda
   Interface = '',      -- power plug
   Keyword = '',        -- pound sign
-  Method = '',         -- stylized 'f'
+  Method = '󰊕',         -- stylized 'f'
   Module =  '',        -- code file
   Operator = 'Σ',       -- greek letter 'S' sigma
   Property = '',       -- wrench
@@ -159,7 +159,7 @@ M.kind_icons = {
   Text = '',           -- paragraph
   TypeParameter = 'β',  -- greek letter 'b' beta
   Unit = '',           -- triangle ruler
-  Value = '',          -- number format icon
+  Value = '󰎠',          -- number format icon
   Variable = 'α',       -- greek letter 'a' alpha
 }
 

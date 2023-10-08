@@ -15,13 +15,13 @@
   "suggest.completionItemKindLabels": {
     "keyword": "\uf292",        //  - pound sign
     "variable": "\uf52a",       //  - greek letter 'a' alpha
-    "value": "\uf89f",          //  - number format icon
+    "value": "\uf89f",          // 󰎠 - number format icon
     "operator": "\u03a3",       // Σ - greek letter 'S' sigma
     "constructor": "\uf0d0",    //  - magic wand
     "function": "\u03bb",       // λ - greek letter 'l' lambda
     "reference": "\uf4a8",      //  - share arrow icon
-    "constant": "\uf8fe",       //  - greek letter 'p' pi
-    "method": "\uf794",         //  - stylized 'f'
+    "constant": "\uf8fe",       // 󰏿 - greek letter 'p' pi
+    "method": "\uf794",         // 󰊕 - stylized 'f'
     "struct": "\uf0e8",         //  - tree structure
     "class": "\ue79b",          //  - box
     "interface": "\uf1e6",      //  - power plug
@@ -34,10 +34,10 @@
     "field": "\uf0ad",          //  - wrench
     "unit": "\ue21b",           //  - triangle ruler
     "event": "\uf0e7",          //  - lightning bolt
-    "file": "\uf723",           //  - blank file
+    "file": "\uf723",           // 󰈤 - blank file
     "folder": "\uf114",         //  - closed folder
     "snippet": "\ue60b",        //  - self-closing curly braces
-    "typeParameter": "\uf5a0",  //  - greek letter 'b' beta
+    "typeParameter": "\uf5a0",  // 󰂡 - greek letter 'b' beta
     "default": "\uf29c"         //  - question mark in circle
   },
 

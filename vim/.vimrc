@@ -118,14 +118,12 @@ if has('nvim')
   Plug 'nvim-lua/plenary.nvim'
 
   " Ricing
-  Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
-  Plug 'kyazdani42/nvim-web-devicons'
   Plug 'mhinz/vim-signify'
   Plug 'nvim-lualine/lualine.nvim'
+  Plug 'nvim-tree/nvim-web-devicons'
   Plug 'rcarriga/nvim-notify'
-  if has('nvim-8.0')
-    Plug 'stevearc/dressing.nvim'
-  endif
+  Plug 'akinsho/bufferline.nvim', { 'tag': 'v4.*' }
+  Plug 'stevearc/dressing.nvim'
 
   " Completion & Finders
   Plug 'hrsh7th/cmp-buffer'
@@ -152,9 +150,7 @@ if has('nvim')
   Plug 'williamboman/mason.nvim'
 
   " QOL
-  if has('nvim-8.0')
-    Plug 'akinsho/toggleterm.nvim'
-  endif
+  Plug 'akinsho/toggleterm.nvim'
 
   " Fix CursorHold, for some reason it's not fixed for me on 800
   if v:version < 801
