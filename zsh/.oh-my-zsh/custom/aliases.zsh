@@ -14,6 +14,9 @@ alias p=poetry
 alias c=cargo
 alias cn='cargo +nightly'
 
+# Bazel shorthand
+alias b=bazel
+
 # Secret generation, OWASP character set with problematic elemments removed
 alias secgen="tr -dc 'A-Za-z0-9!%&()*+,-./<=>?[]^_|~' < /dev/urandom | head -c"
 alias passgen="tr -dc 'A-Za-z0-9-_.' < /dev/urandom | head -c"

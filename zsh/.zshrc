@@ -24,7 +24,7 @@ HYPHEN_INSENSITIVE="true"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-DISABLE_AUTO_TITLE="true"
+# DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -55,6 +55,8 @@ HIST_STAMPS="yyyy-mm-dd"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   archlinux
+  aws
+  azure
   bazel
   colorize
   docker
@@ -64,6 +66,7 @@ plugins=(
   git-extras
   gitignore
   gpg-agent
+  helm
   kubectl
   node
   npm
@@ -74,6 +77,7 @@ plugins=(
   sbt
   sudo
   svn
+  terraform
   virtualenv
   yarn
 )
