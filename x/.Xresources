@@ -1,5 +1,8 @@
-#include ".Xresources.d/nord"
+!! cursor
+Xcursor.theme: Adwaita
 
 !! xft adjustments
-
 Xft.dpi: 96
+
+!! Nord color scheme
+#include ".Xresources.d/nord"

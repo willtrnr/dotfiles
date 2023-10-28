@@ -1,5 +1,6 @@
-gtk-theme-name = "Adwaita-Dark"
-gtk-icon-theme-name = "adwaita-dark"
+gtk-theme-name = "Adwaita-dark"
+gtk-icon-theme-name = "Adwaita"
+gtk-cursor-theme-name = "Adwaita"
 gtk-font-name = "Sans 11"
 gtk-xft-antialias = 1
 gtk-xft-hinting = 1
