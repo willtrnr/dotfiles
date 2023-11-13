@@ -106,8 +106,6 @@ call plug#begin()
 Plug 'arcticicestudio/nord-vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'lilydjwg/colorizer'
-Plug 'sheerun/vim-polyglot'
-Plug 'teal-language/vim-teal'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'wakatime/vim-wakatime'
@@ -143,6 +141,7 @@ if has('nvim')
   Plug 'kosayoda/nvim-lightbulb'
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/lsp-status.nvim'
+  Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
   Plug 'scalameta/nvim-metals', { 'tag': 'v0.7.x' }
   Plug 'simrat39/rust-tools.nvim'
   Plug 'tamago324/nlsp-settings.nvim'
@@ -162,6 +161,7 @@ else
   Plug 'mhinz/vim-signify', { 'tag': 'legacy' }
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'ryanoasis/vim-devicons'
+  Plug 'sheerun/vim-polyglot'
   Plug 'vim-airline/vim-airline'
   Plug 'w0rp/ale'
 endif
