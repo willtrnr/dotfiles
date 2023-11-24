@@ -7,19 +7,33 @@ local util = require('util')
 local M = {}
 
 -- Enable colored file type icons
-require('nvim-web-devicons').setup {}
+require('nvim-web-devicons').setup()
+
+-- Color values highlight
+require('colorizer').setup()
 
 -- LSP status
 M.lsp_status = require('lsp-status')
 M.lsp_status.register_progress()
 
 -- Setup lualine
+local function fmt_mode(v)
+   if v == "COMMAND" then
+      return "CMD"
+   else
+      return string.sub(v, 1, 1) .. string.gsub(string.sub(v, 2), "[AEIOU]", "")
+   end
+end
+
 M.lualine = require('lualine')
-M.lualine.setup {
+M.lualine.setup({
    options = {
       theme = 'nord',
    },
    sections = {
+      lualine_a = {
+         { 'mode', fmt = fmt_mode },
+      },
       lualine_b = {
          'branch',
          'diff',
@@ -52,30 +66,30 @@ M.lualine.setup {
       'fzf',
       'toggleterm',
    },
-}
+})
 
 -- Setup bufferline
 M.bufferline = require('bufferline')
-M.bufferline.setup {
+M.bufferline.setup({
    options = {
       diagnostics = 'coc',
       separator_style = 'slant',
       always_show_bufferline = true,
    }
-}
+})
 
 -- Use vim-notify as the default notification handler
 M.notify = require('notify')
-M.notify.setup {
+M.notify.setup({
    top_down = false,
-}
+})
 
 vim.notify = M.notify.notify
 
 -- Get nice UI elements for input and select
 local ok, dressing = pcall(require, 'dressing')
 if ok and dressing then
-   dressing.setup {
+   dressing.setup({
       input = {
          win_options = {
             winblend = 0,
@@ -93,16 +107,17 @@ if ok and dressing then
             },
          },
       },
-   }
+   })
 end
 
 -- Nicer symbol highlighting
-require('illuminate').configure {
+require('illuminate').configure({
    providers = {
       'lsp',
+      'treesitter',
       'regex',
    },
-}
+})
 
 vim.api.nvim_set_hl(0, 'IlluminatedWordText', {
    link = 'LspReferenceText',

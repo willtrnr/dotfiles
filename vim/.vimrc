@@ -105,7 +105,6 @@ call plug#begin()
 
 Plug 'arcticicestudio/nord-vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'lilydjwg/colorizer'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'wakatime/vim-wakatime'
@@ -116,11 +115,12 @@ if has('nvim')
   Plug 'nvim-lua/plenary.nvim'
 
   " Ricing
+  Plug 'akinsho/bufferline.nvim', { 'tag': 'v4.*' }
   Plug 'mhinz/vim-signify'
+  Plug 'norcalli/nvim-colorizer.lua'
   Plug 'nvim-lualine/lualine.nvim'
   Plug 'nvim-tree/nvim-web-devicons'
   Plug 'rcarriga/nvim-notify'
-  Plug 'akinsho/bufferline.nvim', { 'tag': 'v4.*' }
   Plug 'stevearc/dressing.nvim'
 
   " Completion & Finders
@@ -158,6 +158,7 @@ if has('nvim')
 else
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
+  Plug 'lilydjwg/colorizer'
   Plug 'mhinz/vim-signify', { 'tag': 'legacy' }
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'ryanoasis/vim-devicons'

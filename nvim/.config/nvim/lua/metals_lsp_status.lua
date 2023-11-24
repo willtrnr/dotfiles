@@ -36,7 +36,7 @@ end
 
 function M.setup()
    -- Trigger the hacked init
-   require('lsp-status').config {}
+   require('lsp-status').config({})
    return M._handlers
 end
 

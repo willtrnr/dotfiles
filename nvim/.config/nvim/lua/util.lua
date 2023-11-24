@@ -6,7 +6,7 @@ local M = {}
 
 --- Capitalize the first character in a string
 function M.capitalize(s)
-   return s:sub(1, 1):upper() .. s:sub(2)
+   return string.upper(string.sub(s, 1, 1)) .. string.sub(s, 2)
 end
 
 --- Partially apply a function with a given argument

@@ -26,9 +26,9 @@ lsp_caps = util.update_capabilities(lsp_caps, ricing.lsp_status.capabilities)
 -- Setup toggleterm
 local ok, toggleterm = pcall(require, 'toggleterm')
 if ok and toggleterm then
-   toggleterm.setup {
+   toggleterm.setup({
       open_mapping = [[<c-\>]],
-   }
+   })
 end
 
 -- Exit terminal mode with simple <esc>
@@ -99,11 +99,11 @@ util.noremap('n', '<leader><tab>', telescope_builtin.find_files)
 util.noremap('n', '<leader><s-tab>', telescope_builtin.live_grep)
 
 -- Setup crates.io version completion and annotations
-require('crates').setup {}
+require('crates').setup()
 
 -- Setup cmp for completion
 local cmp = require('cmp')
-cmp.setup {
+cmp.setup({
    formatting = ricing.cmp_formatting,
    mapping = cmp.mapping.preset.insert({
       -- Call up the autocomplete on <ctrl-space>
@@ -127,7 +127,7 @@ cmp.setup {
       { name = 'crates' },
    }),
    window = ricing.cmp_window,
-}
+})
 
 -- Extend the LSP caps with the cmp caps
 local cmp_lsp = require('cmp_nvim_lsp')
@@ -137,7 +137,7 @@ lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
 -- LSP & Diagnostics
 --
 
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
    ensure_installed = {
       'bash',
       'c',
@@ -172,10 +172,10 @@ require('nvim-treesitter.configs').setup {
    textobjects = {
       enable = true,
    },
-}
+})
 
 -- Mason package manager for LSP servers and linters
-require('mason').setup {}
+require('mason').setup()
 
 -- Diagnostics navigation
 util.noremap('n', 'g[', vim.diagnostic.goto_prev)
@@ -202,15 +202,15 @@ vim.api.nvim_create_autocmd('CursorHold', {
 local lspconfig = require('lspconfig')
 
 local mason_lspconfig = require('mason-lspconfig')
-mason_lspconfig.setup {}
+mason_lspconfig.setup()
 
 -- Code actions indicator
 local lightbulb = require('nvim-lightbulb')
-lightbulb.setup {
+lightbulb.setup({
    sign = {
       text = ricing.lightbulb_icon,
    },
-}
+})
 
 local function lsp_notify_unsupported(feature)
    local msg = 'Unsuppported ' .. util.capitalize(feature)
@@ -272,15 +272,15 @@ local function lsp_on_attach(client, bufnr)
    end
 end
 
-mason_lspconfig.setup_handlers {
+mason_lspconfig.setup_handlers({
    function(server_name)
-      lspconfig[server_name].setup {
+      lspconfig[server_name].setup({
          capabilities = lsp_caps,
          on_attach = lsp_on_attach,
-      }
+      })
    end,
    ['rust_analyzer'] = function()
-      require('rust-tools').setup {
+      require('rust-tools').setup({
          tools = {
             runnables = {
                use_telescope = true
@@ -310,9 +310,9 @@ mason_lspconfig.setup_handlers {
                },
             },
          },
-      }
+      })
    end
-}
+})
 
 local metals = require('metals')
 local metals_lsp_status = require('metals_lsp_status')
@@ -347,6 +347,6 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- Allow overriding LSP settings locally, use vim dir for .gitignore compat
-require('nlspsettings').setup {
+require('nlspsettings').setup({
    local_settings_dir = '.vim',
-}
+})
