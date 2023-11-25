@@ -105,6 +105,7 @@ call plug#begin()
 
 Plug 'arcticicestudio/nord-vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'slint-ui/vim-slint'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'wakatime/vim-wakatime'
