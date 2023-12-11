@@ -141,6 +141,7 @@ require('nvim-treesitter.configs').setup({
    ensure_installed = {
       'bash',
       'c',
+      'c_sharp',
       'comment',
       'cpp',
       'css',
