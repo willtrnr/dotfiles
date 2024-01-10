@@ -19,7 +19,9 @@ elif (command -v more > /dev/null); then
 fi
 
 # Select the best available terminal, overrides the i3-sensible-terminal selection order
-if (command -v kitty > /dev/null); then
+if (command -v st > /dev/null); then
+  export TERMINAL="$(command -v st)"
+elif (command -v kitty > /dev/null); then
   export TERMINAL="$(command -v kitty)"
 elif (command -v alacritty > /dev/null); then
   export TERMINAL="$(command -v alacritty)"
