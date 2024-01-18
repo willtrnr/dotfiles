@@ -4,8 +4,8 @@ alias sv='sudo vim'
 
 # Handy aliases to start sbt with a specific JDK version
 alias sbt8='sbt -java-home /usr/lib/jvm/java-8-openjdk'
-alias sbt11='sbt -java-home /usr/lib/jvm/java-11-openjdk'
-alias sbt17='sbt -java-home /usr/lib/jvm/java-17-openjdk'
+alias sbt11='sbt -java-home /usr/lib/jvm/java-11-temurin'
+alias sbt17='sbt -java-home /usr/lib/jvm/java-17-temurin'
 
 # Vim shorthands
 alias nv=nvim
@@ -21,7 +21,7 @@ alias cn='cargo +nightly'
 # Bazel shorthand
 alias b=bazel
 
-# Secret generation, OWASP character set with problematic elemments removed
+# Secret generation, OWASP character set with some remove for compatibility
 alias secgen="tr -dc 'A-Za-z0-9!%&()*+,-./<=>?[]^_|~' < /dev/urandom | head -c"
 alias passgen="tr -dc 'A-Za-z0-9-_.' < /dev/urandom | head -c"
 

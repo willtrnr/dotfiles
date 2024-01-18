@@ -59,7 +59,6 @@ plugins=(
   azure
   bazel
   colorize
-  docker
   gcloud
   gem
   git
@@ -71,6 +70,7 @@ plugins=(
   node
   npm
   pip
+  podman
   pyenv
   python
   rust
