@@ -69,6 +69,7 @@ plugins=(
   kubectl
   node
   npm
+  pass
   pip
   podman
   pyenv
