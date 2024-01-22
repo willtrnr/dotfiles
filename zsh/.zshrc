@@ -56,13 +56,12 @@ HIST_STAMPS="yyyy-mm-dd"
 plugins=(
   archlinux
   aws
-  azure
   bazel
   colorize
   gcloud
   gem
   git
-  git-extras
+  gitfast
   gitignore
   gpg-agent
   helm
