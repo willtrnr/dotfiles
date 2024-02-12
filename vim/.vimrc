@@ -91,14 +91,6 @@ nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 
 "
-" Polyglot
-"
-let g:polyglot_disabled = [
-\  'python-compiler',
-\  'autoindent',
-\]
-
-"
 " Load plugins
 "
 call plug#begin()
@@ -124,15 +116,18 @@ if has('nvim')
   Plug 'rcarriga/nvim-notify'
   Plug 'stevearc/dressing.nvim'
 
-  " Completion & Finders
+  " Navigation
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+  Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
+  Plug 'nvim-tree/nvim-tree.lua'
+
+  " Completion
   Plug 'hrsh7th/cmp-buffer'
   Plug 'hrsh7th/cmp-calc'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/vim-vsnip'
-  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-  Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
   Plug 'saecki/crates.nvim'
   Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 
@@ -157,6 +152,11 @@ if has('nvim')
     Plug 'antoinemadec/FixCursorHold.nvim'
   endif
 else
+  let g:polyglot_disabled = [
+  \  'python-compiler',
+  \  'autoindent',
+  \]
+
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
   Plug 'lilydjwg/colorizer'

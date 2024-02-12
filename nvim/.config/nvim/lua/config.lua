@@ -46,7 +46,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 --
--- Completion & Finders
+-- Navigation
 --
 
 -- Telescope finders and menus
@@ -97,6 +97,32 @@ telescope.load_extension('notify')
 local telescope_builtin = require('telescope.builtin')
 util.noremap('n', '<leader><tab>', telescope_builtin.find_files)
 util.noremap('n', '<leader><s-tab>', telescope_builtin.live_grep)
+
+local tree = require("nvim-tree")
+tree.setup({
+   view = {
+      width = 35,
+   },
+   actions = {
+      open_file = {
+         window_picker = {
+            enable = false,
+         },
+      },
+   },
+   filters = {
+      custom = {
+         '^.git$',
+      },
+   },
+})
+
+local tree_api = require("nvim-tree.api").tree;
+util.noremap('n', '<leader>t', tree_api.open)
+
+--
+-- Completion
+--
 
 -- Setup crates.io version completion and annotations
 require('crates').setup()
@@ -150,7 +176,6 @@ require('nvim-treesitter.configs').setup({
       'javascript',
       'json',
       'lua',
-      'luau',
       'proto',
       'python',
       'query',
