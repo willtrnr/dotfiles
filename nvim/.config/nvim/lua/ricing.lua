@@ -17,11 +17,18 @@ M.lsp_status = require('lsp-status')
 M.lsp_status.register_progress()
 
 -- Setup lualine
-local function fmt_mode(v)
+local function lualine_fmt_mode(v)
    if v == "COMMAND" then
       return "CMD"
    else
       return string.sub(v, 1, 1) .. string.gsub(string.sub(v, 2), "[AEIOU]", "")
+   end
+end
+
+local function lualine_lsp_status()
+   local success, res = pcall(M.lsp_status.status)
+   if success then
+      return string.gsub(res, "%%", "%%%%")
    end
 end
 
@@ -32,7 +39,7 @@ M.lualine.setup({
    },
    sections = {
       lualine_a = {
-         { 'mode', fmt = fmt_mode },
+         { 'mode', fmt = lualine_fmt_mode },
       },
       lualine_b = {
          'branch',
@@ -43,7 +50,6 @@ M.lualine.setup({
             'diagnostics',
             sources = {
                'nvim_diagnostic',
-               'ale',
             },
             sections = {
                'error',
@@ -56,14 +62,13 @@ M.lualine.setup({
                info = ' ',
             },
          },
-         function()
-            return M.lsp_status.status()
-         end,
+         lualine_lsp_status,
       },
    },
    extensions = {
       'fugitive',
       'fzf',
+      'mason',
       'toggleterm',
    },
 })
@@ -72,7 +77,7 @@ M.lualine.setup({
 M.bufferline = require('bufferline')
 M.bufferline.setup({
    options = {
-      diagnostics = 'coc',
+      diagnostics = 'nvim_lsp',
       separator_style = 'slant',
       always_show_bufferline = true,
    }

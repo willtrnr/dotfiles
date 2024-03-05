@@ -135,6 +135,7 @@ if has('nvim')
   Plug 'RRethy/vim-illuminate'
   Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
   Plug 'kosayoda/nvim-lightbulb'
+  Plug 'mfussenegger/nvim-jdtls'
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/lsp-status.nvim'
   Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
