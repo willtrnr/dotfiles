@@ -1,3 +1,11 @@
+[alias]
+x = "xwin"
+xc = "x check --target=x86_64-pc-windows-msvc"
+xb = "x build --target=x86_64-pc-windows-msvc"
+xbr = "xb --release"
+xr = "x run --target=x86_64-pc-windows-msvc"
+xrr = "xr --release"
+
 [target.'cfg(target_arch = "x86_64")']
 rustflags = "-C target-cpu=x86-64-v3"
 
