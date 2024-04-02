@@ -1,0 +1,7 @@
+upip='noglob uv pip'
+upipgi='upip freeze | grep'
+upipi='upip install'
+upipir='upip install -r requirements.txt'
+upiplo='upip list -o'
+upipreq='upip freeze > requirements.txt'
+upipun='upip uninstall'
