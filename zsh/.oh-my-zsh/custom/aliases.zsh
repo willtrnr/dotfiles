@@ -8,8 +8,8 @@ alias sbt11='sbt -java-home /usr/lib/jvm/java-11-temurin'
 alias sbt17='sbt -java-home /usr/lib/jvm/java-17-temurin'
 
 # Vim shorthands
-alias nv=nvim
 alias v=nvim
+alias nv=nvim
 
 # Poetry shorthand
 alias p=poetry
