@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+PKGNAME="$2"
+if [ -z "$PKGNAME" ]; then
+  exit 1
+fi
+
+set -e
+
+mkdir -p "${PKGNAME}/${PKGNAME}/src"
+
+pushd "${PKGNAME}" || exit 1
+trap 'popd' EXIT
+
+git init
+
+curl -sSf https://www.toptal.com/developers/gitignore/api/rust \
+  | sed 's/^Cargo.lock/#Cargo.lock/' > .gitignore
+
+cat > .editorconfig <<EOF
+# http://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.rs]
+indent_size = 4
+
+[*.md]
+max_line_length = 88
+EOF
+
+cat > Cargo.toml <<EOF
+[workspace]
+members = [
+  "${PKGNAME}",
+]
+resolver = "2"
+
+[workspace.dependencies]
+
+[profile.dev.build-override]
+opt-level = 0
+codegen-units = 256
+debug = false
+
+[profile.release]
+lto = "thin"
+
+[profile.release.build-override]
+opt-level = 0
+codegen-units = 256
+debug = false
+
+[profile.release-lto]
+inherits = "release"
+lto = true
+EOF
+
+cat > "${PKGNAME}/Cargo.toml" <<EOF
+[package]
+name = "${PKGNAME}"
+version = "0.1.0"
+authors = [
+  "github.com/willtrnr",
+]
+edition = "2021"
+description = ""
+repository = "https://github.com/willtrnr/${PKGNAME}"
+license = "MIT"
+publish = false
+
+[dependencies]
+EOF
+
+cat > "${PKGNAME}/src/main.rs" <<EOF
+fn main() { }
+EOF
