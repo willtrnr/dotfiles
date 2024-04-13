@@ -44,6 +44,7 @@ members = [
 resolver = "2"
 
 [workspace.dependencies]
+mimalloc = "0.1"
 
 [profile.dev.build-override]
 opt-level = 0
@@ -77,8 +78,12 @@ license = "MIT"
 publish = false
 
 [dependencies]
+mimalloc = { workspace = true }
 EOF
 
 cat > "${PKGNAME}/src/main.rs" <<EOF
-fn main() { }
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+
+pub fn main() {}
 EOF
