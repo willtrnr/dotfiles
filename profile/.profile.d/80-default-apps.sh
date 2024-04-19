@@ -1,4 +1,4 @@
-#! /bin/env sh
+#!/usr/bin/env sh
 
 # Select the best available editor
 if (command -v nvim > /dev/null); then

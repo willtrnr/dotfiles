@@ -1,4 +1,4 @@
-#! /bin/env sh
+#!/usr/bin/env sh
 
 export PATH="$HOME/.local/perl5/bin${PATH:+:${PATH}}"
 export PERL5LIB="$HOME/.local/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"

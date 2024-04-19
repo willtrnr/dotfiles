@@ -1,4 +1,4 @@
-#! /bin/env sh
+#!/usr/bin/env sh
 
 export PATH="$HOME/.nodebrew/current/bin${PATH:+:${PATH}}"
 

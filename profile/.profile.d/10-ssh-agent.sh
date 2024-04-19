@@ -1,4 +1,4 @@
-#! /bin/env sh
+#!/usr/bin/env sh
 
 if (command -v ssh-agent > /dev/null); then
   if ! (pgrep -u "$USER" ssh-agent > /dev/null); then
