@@ -12,6 +12,12 @@ trim_trailing_whitespace = true
 [*.{java,py,cs,vb,rs,bazel,bzl}]
 indent_size = 4
 
+[*.{cs,vb}]
+dotnet_style_qualification_for_field = true
+dotnet_style_qualification_for_property = true
+dotnet_style_qualification_for_method = true
+dotnet_style_qualification_for_event = true
+
 [*.{lua,luau,tl}]
 indent_size = 3
 
