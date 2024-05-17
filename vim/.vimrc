@@ -90,6 +90,10 @@ vnoremap <leader>y "+y
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 
+" Set correct ft for Ghidra SLEIGH files
+autocmd BufNewFile,BufRead *.ldefs,*.cspec,*.pspec,*.sla set filetype=xml
+autocmd BufNewFile,BufRead *.slaspec,*.sinc set filetype=sleigh
+
 "
 " Load plugins
 "
