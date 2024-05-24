@@ -164,31 +164,6 @@ lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
 --
 
 require('nvim-treesitter.configs').setup({
-   ensure_installed = {
-      'bash',
-      'c',
-      'c_sharp',
-      'comment',
-      'cpp',
-      'css',
-      'csv',
-      'html',
-      'javascript',
-      'json',
-      'lua',
-      'proto',
-      'python',
-      'query',
-      'regex',
-      'rust',
-      'scss',
-      'toml',
-      'typescript',
-      'vim',
-      'vimdoc',
-      'xml',
-      'yaml',
-   },
    highlight = {
       enable = true,
    },
@@ -343,32 +318,28 @@ mason_lspconfig.setup_handlers({
 local metals = require('metals')
 local metals_lsp_status = require('metals_lsp_status')
 
-local metals_opts = {
-   capabilities = lsp_caps,
-   handlers = metals_lsp_status.setup(),
-   init_options = {
-      compilerOptions = {},
-      statusBarProvider = 'on',
-   },
-   on_attach = lsp_on_attach,
-   settings = {
-      disabledMode = true,
-      showImplicitArguments = true,
-   },
-   tvp = {},
-}
-
 vim.api.nvim_create_autocmd('FileType', {
    group = vim.api.nvim_create_augroup('nvim-metals', {
       clear = true,
    }),
    pattern = {
-      'java',
       'sbt',
       'scala',
    },
    callback = function()
-      metals.initialize_or_attach(metals_opts)
+      metals.initialize_or_attach({
+         capabilities = lsp_caps,
+         handlers = metals_lsp_status.setup(),
+         init_options = {
+            compilerOptions = {},
+            statusBarProvider = 'on',
+         },
+         on_attach = lsp_on_attach,
+         settings = {
+            showImplicitArguments = true,
+         },
+         tvp = {},
+      })
    end,
 })
 

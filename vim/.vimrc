@@ -143,7 +143,7 @@ if has('nvim')
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/lsp-status.nvim'
   Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
-  Plug 'scalameta/nvim-metals', { 'tag': 'v0.7.x' }
+  Plug 'scalameta/nvim-metals'
   Plug 'simrat39/rust-tools.nvim'
   Plug 'tamago324/nlsp-settings.nvim'
   Plug 'williamboman/mason-lspconfig.nvim'
