@@ -9,6 +9,21 @@ local M = {}
 -- Enable colored file type icons
 require('nvim-web-devicons').setup()
 
+-- Nice dashboard
+require('dashboard').setup({
+   config = {
+      packages = {
+         enable = false
+      },
+      project = {
+         enable = false
+      },
+      mru = {
+         cwd_only = true,
+      },
+   },
+})
+
 -- Color values highlight
 require('colorizer').setup()
 
@@ -21,7 +36,7 @@ local function lualine_fmt_mode(v)
    if v == "COMMAND" then
       return "CMD"
    else
-      return string.sub(v, 1, 1) .. string.gsub(string.sub(v, 2), "[AEIOU]", "")
+      return string.gsub(v, "[AEIOU]", "")
    end
 end
 

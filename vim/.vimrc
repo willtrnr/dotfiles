@@ -117,6 +117,7 @@ if has('nvim')
   Plug 'norcalli/nvim-colorizer.lua'
   Plug 'nvim-lualine/lualine.nvim'
   Plug 'nvim-tree/nvim-web-devicons'
+  Plug 'nvimdev/dashboard-nvim'
   Plug 'rcarriga/nvim-notify'
   Plug 'stevearc/dressing.nvim'
 
