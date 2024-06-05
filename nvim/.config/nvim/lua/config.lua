@@ -297,9 +297,6 @@ mason_lspconfig.setup_handlers({
                         enable = true,
                      },
                   },
-                  checkOnSave = {
-                     command = 'clippy',
-                  },
                   imports = {
                      group = {
                         enable = false,
