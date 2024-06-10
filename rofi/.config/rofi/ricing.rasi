@@ -28,7 +28,7 @@
 }
 
 window {
-  font: "FiraCode Nerd Font Mono 10";
+  font: "Monospace 10";
   border: 1px;
   border-color: var(separatorcolor);
 }
