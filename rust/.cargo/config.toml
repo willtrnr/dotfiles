@@ -1,19 +1,19 @@
 [alias]
 x = "xwin"
-xc = "x check --target=x86_64-pc-windows-msvc"
-xb = "x build --target=x86_64-pc-windows-msvc"
+xc = "x check --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
+xb = "x build --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
 xbr = "xb --release"
-xr = "x run --target=x86_64-pc-windows-msvc"
+xr = "x run --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
 xrr = "xr --release"
 
 [target.'cfg(target_arch = "x86_64")']
-rustflags = "-C target-cpu=x86-64-v3"
+rustflags = ["-C", "target-cpu=x86-64-v3"]
 
 [target.'cfg(target_arch = "aarch64")']
-rustflags = "-C target-feature=+neon"
+rustflags = ["-C", "target-feature=+neon"]
 
 [target.'cfg(target_env = "musl")']
-rustflags = "-C target-feature=+crt-static"
+rustflags = ["-C", "target-feature=+crt-static"]
 
 [target.'cfg(all(target_arch = "x86_64", target_os = "linux", target_env = "musl"))']
 linker = "x86_64-linux-musl-gcc"
