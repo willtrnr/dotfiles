@@ -53,9 +53,10 @@ filetype plugin on
 " Syntax highlight
 syntax enable
 
-" Make Wq, W and Q behave as if lowercased
+" Make W and Q behave as if lowercased
 :command W w
 :command Wq wq
+:command Wa wa
 :command Q q
 :command Qa qa
 
