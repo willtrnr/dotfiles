@@ -163,21 +163,6 @@ lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
 -- LSP & Diagnostics
 --
 
-require('nvim-treesitter.configs').setup({
-   highlight = {
-      enable = true,
-   },
-   incremental_selection = {
-      enable = true,
-   },
-   textobjects = {
-      enable = true,
-   },
-})
-
--- Mason package manager for LSP servers and linters
-require('mason').setup()
-
 -- Diagnostics navigation
 util.noremap('n', 'g[', vim.diagnostic.goto_prev)
 util.noremap('n', 'g]', vim.diagnostic.goto_next)
@@ -199,11 +184,29 @@ vim.api.nvim_create_autocmd('CursorHold', {
    end
 })
 
--- LSP server auto-configuration
-local lspconfig = require('lspconfig')
+-- Use TS for semantic highlight
+require('nvim-treesitter.configs').setup({
+   highlight = {
+      enable = true,
+   },
+   incremental_selection = {
+      enable = true,
+   },
+   textobjects = {
+      enable = true,
+   },
+})
 
+-- Mason package manager for LSP servers and linters
+require('mason').setup()
+
+-- LSP server auto-configuration
 local mason_lspconfig = require('mason-lspconfig')
-mason_lspconfig.setup()
+mason_lspconfig.setup({
+   automatic_installation = true,
+})
+
+local lspconfig = require('lspconfig')
 
 -- Code actions indicator
 local lightbulb = require('nvim-lightbulb')
@@ -280,6 +283,31 @@ mason_lspconfig.setup_handlers({
          on_attach = lsp_on_attach,
       })
    end,
+   ['jsonls'] = function()
+      lspconfig.jsonls.setup({
+         settings = {
+            json = {
+               schemas = require('schemastore').json.schemas(),
+               validate = {
+                  enable = true,
+               },
+            },
+         },
+      })
+   end,
+   ['yamlls'] = function()
+      lspconfig.yamlls.setup({
+         settings = {
+            yaml = {
+               schemaStore = {
+                  enable = false,
+                  url = "",
+               },
+               schemas = require('schemastore').json.schemas(),
+            },
+         },
+      })
+   end,
    ['rust_analyzer'] = function()
       require('rust-tools').setup({
          tools = {
@@ -309,7 +337,7 @@ mason_lspconfig.setup_handlers({
             },
          },
       })
-   end
+   end,
 })
 
 local metals = require('metals')

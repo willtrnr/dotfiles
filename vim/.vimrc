@@ -139,6 +139,7 @@ if has('nvim')
 
   " LSP & Diagnostics
   Plug 'RRethy/vim-illuminate'
+  Plug 'b0o/SchemaStore.nvim'
   Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
   Plug 'kosayoda/nvim-lightbulb'
   Plug 'mfussenegger/nvim-jdtls'
