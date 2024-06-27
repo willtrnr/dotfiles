@@ -18,6 +18,10 @@ dotnet_style_qualification_for_property = true
 dotnet_style_qualification_for_method = true
 dotnet_style_qualification_for_event = true
 
+[*.{patch,diff}]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
 [*.{lua,luau,tl}]
 indent_size = 3
 
