@@ -303,7 +303,7 @@ mason_lspconfig.setup_handlers({
                   enable = false,
                   url = "",
                },
-               schemas = require('schemastore').json.schemas(),
+               schemas = require('schemastore').yaml.schemas(),
             },
          },
       })
