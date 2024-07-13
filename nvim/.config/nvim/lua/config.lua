@@ -186,6 +186,7 @@ vim.api.nvim_create_autocmd('CursorHold', {
 
 -- Use TS for semantic highlight
 require('nvim-treesitter.configs').setup({
+   auto_install = true,
    highlight = {
       enable = true,
    },
