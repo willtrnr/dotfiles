@@ -104,4 +104,7 @@ plugins=(
   z
 )
 
+# Use XDG path for the z history database
+ZSHZ_DATA="${XDG_STATE_HOME:-${HOME}/.local/state}/z"
+
 source $ZSH/oh-my-zsh.sh
