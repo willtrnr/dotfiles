@@ -95,11 +95,9 @@ plugins=(
   rust
   safe-paste
   sbt
-  screen
   sudo
   systemd
   terraform
-  tmux
   virtualenv
   yarn
   z
