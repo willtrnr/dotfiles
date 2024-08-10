@@ -9,7 +9,7 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{java,py,cs,vb,rs,bazel,bzl}]
+[*.{java,py,pyi,cs,vb,rs,bazel,bzl}]
 indent_size = 4
 
 [*.{cs,vb}]
