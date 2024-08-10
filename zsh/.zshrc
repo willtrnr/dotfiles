@@ -100,6 +100,7 @@ plugins=(
   systemd
   terraform
   tmux
+  virtualenv
   yarn
   z
 )

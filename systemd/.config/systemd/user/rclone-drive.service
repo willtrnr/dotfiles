@@ -1,5 +1,6 @@
 [Unit]
 Description=Google Drive (rclone)
+ConditionPathExists=%h/.config/rclone/rclone.conf
 After=network-online.target
 Wants=network-online.target
 
