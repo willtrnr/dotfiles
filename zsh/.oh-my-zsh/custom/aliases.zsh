@@ -13,6 +13,7 @@ alias nv=nvim
 
 # Poetry shorthand
 alias p=poetry
+alias pp='poetry run poe'
 
 # Cargo shorthand
 alias c=cargo
