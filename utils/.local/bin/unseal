@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+set -e
+
+SOURCE="${XDG_CONFIG_DIR:-$HOME/.config}/secrets"
+TARGET="${XDG_RUNTIME_DIR:-/tmp/$UID}/secrets"
+
+if ! [ -r "$TARGET/.unsealed" ]; then
+  fusermount3 -u "$TARGET" > /dev/null 2>&1 || true
+
+  mkdir -p "$TARGET"
+
+  gocryptfs -extpass='pass CryptFS/password' "$SOURCE" "$TARGET"
+
+  touch "$TARGET/.unsealed"
+
+  while IFS= read -r -d '' f; do
+    mkdir -p "$(dirname "$HOME/$f")"
+    ln -sfT "$TARGET/$f" "$HOME/$f"
+  done < <(find "$TARGET" ! -type d ! -name '.unsealed' -printf '%P\0')
+fi
