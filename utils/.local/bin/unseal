@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
 
@@ -10,7 +10,9 @@ if ! [ -r "$TARGET/.unsealed" ]; then
 
   mkdir -p "$TARGET"
 
-  gocryptfs -extpass='pass CryptFS/password' "$SOURCE" "$TARGET"
+  gocryptfs -allow_other -extpass='pass CryptFS/password' "$SOURCE" "$TARGET"
+
+  chmod 0700 "$TARGET"
 
   touch "$TARGET/.unsealed"
 
