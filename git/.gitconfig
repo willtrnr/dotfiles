@@ -4,34 +4,26 @@
 	signingkey = C8469D68E4820C43
 
 [core]
-  autocrlf = input
-
+	autocrlf = input
 [init]
-  defaultBranch = master
-
+	defaultBranch = master
 [commit]
-  gpgsign = true
-
+	gpgsign = true
 [push]
-  default = simple
-
+	default = simple
 [pull]
-  ff = only
+	ff = only
 
 [diff]
 	tool = vimdiff
+[diff "hex"]
+	textconv = hexdump -v -C
 
-[alias]
-	graph = log --graph --abbrev-commit --decorate --all
-	addnw = !sh -c 'git diff -w --no-color "$@" | git apply --cached --ignore-whitespace' -
+[credential]
+	helper = netrc
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	required = true
 	process = git-lfs filter-process
-
-[diff "hex"]
-	textconv = hexdump -v -C
-[http]
-	cookiefile = /home/will/.gitcookies
