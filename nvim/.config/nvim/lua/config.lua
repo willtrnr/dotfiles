@@ -217,8 +217,8 @@ lightbulb.setup({
    },
 })
 
-local function lsp_notify_unsupported(feature)
-   local msg = 'Unsuppported ' .. util.capitalize(feature)
+local function lsp_notify_unsupported(cap)
+   local msg = 'Unsuppported ' .. util.capitalize(cap)
    return function()
       vim.notify(msg, 'info')
    end
@@ -227,11 +227,11 @@ end
 local function lsp_on_attach(client, bufnr)
    local caps = client.server_capabilities
 
-   local function lsp_nmap(feature, key, action)
-      if caps[feature] then
+   local function lsp_nmap(cap, key, action)
+      if caps[cap] then
          util.noremap('n', key, action, bufnr)
       else
-         util.noremap('n', key, lsp_notify_unsupported(feature), bufnr, true)
+         util.noremap('n', key, lsp_notify_unsupported(cap), bufnr, true)
       end
    end
 
@@ -335,6 +335,37 @@ mason_lspconfig.setup_handlers({
                      enable = true,
                   },
                },
+            },
+         },
+      })
+   end,
+   ['omnisharp'] = function()
+      lspconfig.omnisharp.setup({
+         capabilities = lsp_caps,
+         on_attach = function(client, bufnr)
+            -- For some reason OmniSharp mis-represents its capabilities, so we patch it here
+            client.server_capabilities = util.update_capabilities(client.server_capabilities, {
+               codeActionProvider = vim.empty_dict(),
+               documentFormattingProvider = true,
+               documentRangeFormattingProvider = true,
+               hoverProvider = true,
+               renameProvider = vim.empty_dict(),
+            })
+
+            lsp_on_attach(client, bufnr)
+         end,
+         settings = {
+            formattingOptions = {
+               enableEditorConfigSupport = true,
+               organizeImports = true,
+            },
+            msbuild = {
+               loadProjectsOnDemand = false,
+            },
+            roslynExtensionsOptions = {
+               enableAnalyzerSupport = true,
+               enableDecompilationSupport = true,
+               enableImportCompletion = true,
             },
          },
       })
