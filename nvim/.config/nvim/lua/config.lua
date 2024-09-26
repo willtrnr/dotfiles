@@ -302,7 +302,7 @@ mason_lspconfig.setup_handlers({
             yaml = {
                schemaStore = {
                   enable = false,
-                  url = "",
+                  url = '',
                },
                schemas = require('schemastore').yaml.schemas(),
             },
@@ -368,6 +368,13 @@ mason_lspconfig.setup_handlers({
                enableImportCompletion = true,
             },
          },
+      })
+   end,
+   ['terraformls'] = function()
+      lspconfig.terraformls.setup({
+         filetypes = { 'tf', 'tfvars' },
+         capabilities = lsp_caps,
+         on_attach = lsp_on_attach,
       })
    end,
 })
