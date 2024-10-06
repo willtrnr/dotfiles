@@ -370,9 +370,8 @@ mason_lspconfig.setup_handlers({
          },
       })
    end,
-   ['terraformls'] = function()
-      lspconfig.terraformls.setup({
-         filetypes = { 'tf', 'tfvars' },
+   ['pest_ls'] = function()
+      require('pest-vim').setup({
          capabilities = lsp_caps,
          on_attach = lsp_on_attach,
       })

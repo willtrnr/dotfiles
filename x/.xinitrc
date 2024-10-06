@@ -54,7 +54,8 @@ export QT_IM_MODULE=xim
 
 # setup compose key on right-alt and remape escape to caps lock
 if (command -v setxkbmap > /dev/null); then
-  setxkbmap -option compose:ralt -option caps:escape
+  setxkbmap -option caps:escape
+  setxkbmap -option compose:ralt
 fi
 
 # enable numlock by default
