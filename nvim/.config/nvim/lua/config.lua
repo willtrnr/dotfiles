@@ -346,6 +346,7 @@ mason_lspconfig.setup_handlers({
             -- For some reason OmniSharp mis-represents its capabilities, so we patch it here
             client.server_capabilities = util.update_capabilities(client.server_capabilities, {
                codeActionProvider = vim.empty_dict(),
+               definitionProvider = true,
                documentFormattingProvider = true,
                documentRangeFormattingProvider = true,
                hoverProvider = true,
@@ -377,6 +378,9 @@ mason_lspconfig.setup_handlers({
       })
    end,
 })
+
+require('avalonia').setup()
+lspconfig.avalonials.setup({})
 
 local metals = require('metals')
 local metals_lsp_status = require('metals_lsp_status')

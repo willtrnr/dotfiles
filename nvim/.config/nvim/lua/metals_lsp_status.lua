@@ -2,8 +2,8 @@
 -- lsp-status integration for nvim-metals
 --
 
-local lsp_status_util = require('lsp-status/util')
-local lsp_status_redraw = require('lsp-status/redraw')
+local lsp_status_util = require('lsp-status.util')
+local lsp_status_redraw = require('lsp-status.redraw')
 
 local M = {}
 
@@ -26,7 +26,7 @@ M._handlers = {
 --
 -- HACK: Inject our init in the clangd init
 --
-local ext = require('lsp-status/extensions/clangd')
+local ext = require('lsp-status.extensions.clangd')
 
 local super_init = ext._init
 function ext._init(messages, config)
