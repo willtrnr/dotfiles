@@ -379,9 +379,6 @@ mason_lspconfig.setup_handlers({
    end,
 })
 
-require('avalonia').setup()
-lspconfig.avalonials.setup({})
-
 local metals = require('metals')
 local metals_lsp_status = require('metals_lsp_status')
 
