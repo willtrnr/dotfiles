@@ -318,7 +318,23 @@ mason_lspconfig.setup_handlers({
          },
          server = {
             capabilities = lsp_caps,
-            on_attach = lsp_on_attach,
+            on_attach = function(client, bufnr)
+               -- Workaround for ServerCancelled issue
+               -- See: https://github.com/neovim/neovim/issues/30985
+               for _, name in ipairs({'textDocument/diagnostic', 'workspace/diagnostic'}) do
+                  local handler = vim.lsp.handlers[name]
+                  if handler ~= nil then
+                     vim.lsp.handlers[name] = function(err, result, context, config)
+                        if err ~= nil and err.code == -32802 then
+                           return
+                        end
+                        return handler(err, result, context, config)
+                     end
+                  end
+               end
+
+               return lsp_on_attach(client, bufnr)
+            end,
             settings = {
                ['rust-analyzer'] = {
                   cargo = {
@@ -353,7 +369,7 @@ mason_lspconfig.setup_handlers({
                renameProvider = vim.empty_dict(),
             })
 
-            lsp_on_attach(client, bufnr)
+            return lsp_on_attach(client, bufnr)
          end,
          settings = {
             formattingOptions = {
@@ -395,14 +411,14 @@ vim.api.nvim_create_autocmd('FileType', {
          capabilities = lsp_caps,
          handlers = metals_lsp_status.setup(),
          init_options = {
-            compilerOptions = {},
+            compilerOptions = vim.empty_dict(),
             statusBarProvider = 'on',
          },
          on_attach = lsp_on_attach,
          settings = {
             showImplicitArguments = true,
          },
-         tvp = {},
+         tvp = vim.empty_dict(),
       })
    end,
 })
