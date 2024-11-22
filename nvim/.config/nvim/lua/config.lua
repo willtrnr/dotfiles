@@ -277,6 +277,24 @@ local function lsp_on_attach(client, bufnr)
    end
 end
 
+-- Workaround for ServerCancelled issue
+-- See: https://github.com/neovim/neovim/issues/30985
+local rust_analyzer_handlers = (function()
+   local handlers = {}
+   for _, name in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
+      local handler = vim.lsp.handlers[name]
+      if handler ~= nil then
+         handlers[name] = function(err, result, context, config)
+            if err ~= nil and err.code == -32802 then
+               return
+            end
+            return handler(err, result, context, config)
+         end
+      end
+   end
+   return handlers
+end)()
+
 mason_lspconfig.setup_handlers({
    function(server_name)
       lspconfig[server_name].setup({
@@ -319,20 +337,7 @@ mason_lspconfig.setup_handlers({
          server = {
             capabilities = lsp_caps,
             on_attach = function(client, bufnr)
-               -- Workaround for ServerCancelled issue
-               -- See: https://github.com/neovim/neovim/issues/30985
-               for _, name in ipairs({'textDocument/diagnostic', 'workspace/diagnostic'}) do
-                  local handler = vim.lsp.handlers[name]
-                  if handler ~= nil then
-                     vim.lsp.handlers[name] = function(err, result, context, config)
-                        if err ~= nil and err.code == -32802 then
-                           return
-                        end
-                        return handler(err, result, context, config)
-                     end
-                  end
-               end
-
+               for k, v in ipairs(rust_analyzer_handlers) do vim.lsp.handlers[k] = v end
                return lsp_on_attach(client, bufnr)
             end,
             settings = {
