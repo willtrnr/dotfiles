@@ -337,7 +337,7 @@ mason_lspconfig.setup_handlers({
          server = {
             capabilities = lsp_caps,
             on_attach = function(client, bufnr)
-               for k, v in ipairs(rust_analyzer_handlers) do vim.lsp.handlers[k] = v end
+               for k, v in pairs(rust_analyzer_handlers) do vim.lsp.handlers[k] = v end
                return lsp_on_attach(client, bufnr)
             end,
             settings = {
