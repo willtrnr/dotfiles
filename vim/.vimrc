@@ -151,6 +151,7 @@ if has('nvim')
   Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
   Plug 'scalameta/nvim-metals'
   Plug 'simrat39/rust-tools.nvim'
+  Plug 'someone-stole-my-name/yaml-companion.nvim'
   Plug 'tamago324/nlsp-settings.nvim'
   Plug 'williamboman/mason-lspconfig.nvim'
   Plug 'williamboman/mason.nvim'

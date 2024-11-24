@@ -43,7 +43,18 @@ end
 local function lualine_lsp_status()
    local success, res = pcall(M.lsp_status.status)
    if success then
-      return string.gsub(res, "%%", "%%%%")
+      return string.gsub(res, "%%+", "%%")
+   end
+end
+
+local yaml_companion = require('yaml-companion')
+
+local function yaml_schema()
+   local name = yaml_companion.get_buf_schema(0).result[1].name
+   if name ~= 'none' then
+      return name
+   else
+      return ''
    end
 end
 
@@ -77,7 +88,14 @@ M.lualine.setup({
                info = ' ',
             },
          },
+         'filename',
          lualine_lsp_status,
+      },
+      lualine_x = {
+         'encoding',
+         'fileformat',
+         'filetype',
+         yaml_schema,
       },
    },
    extensions = {

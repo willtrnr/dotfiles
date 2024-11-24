@@ -93,6 +93,7 @@ telescope.setup {
 telescope.load_extension('fzf')
 telescope.load_extension('lsp_handlers')
 telescope.load_extension('notify')
+telescope.load_extension('yaml_schema')
 
 local telescope_builtin = require('telescope.builtin')
 util.noremap('n', '<leader><tab>', telescope_builtin.find_files)
@@ -315,17 +316,24 @@ mason_lspconfig.setup_handlers({
       })
    end,
    ['yamlls'] = function()
-      lspconfig.yamlls.setup({
-         settings = {
-            yaml = {
-               schemaStore = {
-                  enable = false,
-                  url = '',
+      lspconfig.yamlls.setup(
+         require('yaml-companion').setup({
+            lspconfig = {
+               settings = {
+                  yaml = {
+                     schemaStore = {
+                        enable = false,
+                        url = '',
+                     },
+                     schemas = require('schemastore').yaml.schemas(),
+                     trace = {
+                        server = "info",
+                     },
+                  },
                },
-               schemas = require('schemastore').yaml.schemas(),
             },
-         },
-      })
+         })
+      )
    end,
    ['rust_analyzer'] = function()
       require('rust-tools').setup({
