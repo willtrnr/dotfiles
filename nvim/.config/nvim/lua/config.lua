@@ -355,6 +355,14 @@ mason_lspconfig.setup_handlers({
                         enable = true,
                      },
                   },
+                  check = {
+                     command = "clippy",
+                  },
+                  completion = {
+                     fullFunctionSignatures = {
+                        enable = true,
+                     },
+                  },
                   imports = {
                      group = {
                         enable = false,
