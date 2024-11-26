@@ -41,20 +41,20 @@ local function lualine_fmt_mode(v)
 end
 
 local function lualine_lsp_status()
-   local success, res = pcall(M.lsp_status.status)
+   local success, status = pcall(M.lsp_status.status)
    if success then
-      return string.gsub(res, "%%+", "%%")
+      return status
    end
 end
 
 local yaml_companion = require('yaml-companion')
 
 local function yaml_schema()
-   local name = yaml_companion.get_buf_schema(0).result[1].name
-   if name ~= 'none' then
+   local success, name = pcall(function()
+      return yaml_companion.get_buf_schema(0).result[1].name
+   end)
+   if success and name ~= 'none' then
       return name
-   else
-      return ''
    end
 end
 
