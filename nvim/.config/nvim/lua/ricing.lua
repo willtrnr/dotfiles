@@ -42,8 +42,11 @@ end
 
 local function lualine_lsp_status()
    local success, status = pcall(M.lsp_status.status)
-   if success then
+
+   if success and status then
       return status
+   else
+      return ''
    end
 end
 
@@ -53,8 +56,11 @@ local function yaml_schema()
    local success, name = pcall(function()
       return yaml_companion.get_buf_schema(0).result[1].name
    end)
+
    if success and name ~= 'none' then
       return name
+   else
+      return ''
    end
 end
 
