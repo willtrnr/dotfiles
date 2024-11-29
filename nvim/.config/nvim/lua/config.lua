@@ -164,6 +164,16 @@ lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
 -- LSP & Diagnostics
 --
 
+-- Only show virtual text for warnings and above
+vim.diagnostic.config({
+   underline = true,
+   virtual_text = {
+      severity = {
+         min = vim.diagnostic.severity.WARN,
+      }
+   },
+})
+
 -- Diagnostics navigation
 util.noremap('n', 'g[', vim.diagnostic.goto_prev)
 util.noremap('n', 'g]', vim.diagnostic.goto_next)
