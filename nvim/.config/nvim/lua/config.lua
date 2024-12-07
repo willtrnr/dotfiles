@@ -220,6 +220,13 @@ mason_lspconfig.setup({
 
 local lspconfig = require('lspconfig')
 
+-- Allow overriding LSP settings locally, use vim dir for .gitignore compat
+require('nlspsettings').setup({
+   local_settings_dir = '.vim',
+   append_default_schemas = true,
+   loader = 'json',
+})
+
 -- Code actions indicator
 local lightbulb = require('nvim-lightbulb')
 lightbulb.setup({
@@ -452,9 +459,4 @@ vim.api.nvim_create_autocmd('FileType', {
          tvp = vim.empty_dict(),
       })
    end,
-})
-
--- Allow overriding LSP settings locally, use vim dir for .gitignore compat
-require('nlspsettings').setup({
-   local_settings_dir = '.vim',
 })
