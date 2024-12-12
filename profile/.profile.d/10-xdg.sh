@@ -2,9 +2,11 @@
 
 # This will be already set by pam_systemd on systemd systems
 # It will probably fix some issues on WSL and Termux
-if [ -z "${XDG_RUNTIME_DIR}" ]; then
-  export XDG_RUNTIME_DIR="${TMPDIR:-/tmp}/user/${UID}"
+if [ -z "${XDG_RUNTIME_DIR}" ] || [ ! -w "${XDG_RUNTIME_DIR}" ]; then
+  XDG_RUNTIME_DIR="${TMPDIR:-/tmp}/user/$(id -u)"
+  # shellcheck disable=SC2174
   mkdir -p -m0700 "${XDG_RUNTIME_DIR}"
+  export XDG_RUNTIME_DIR
 fi
 
 # Explicitly set to the defaults for misbehaved programs
