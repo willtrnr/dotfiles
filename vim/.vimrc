@@ -109,6 +109,7 @@ Plug 'slint-ui/vim-slint'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'wakatime/vim-wakatime'
+Plug 'NoahTheDuke/vim-just'
 Plug 'Yggdroot/indentLine'
 
 if has('nvim')
