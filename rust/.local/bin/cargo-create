@@ -36,7 +36,7 @@ indent_size = 4
 max_line_length = 88
 EOF
 
-mit > LICENSE
+"${HOME}/.local/bin/mit" > LICENSE
 
 cat > README.md <<EOF
 ${PKGNAME}
@@ -53,44 +53,27 @@ resolver = "2"
 [workspace.dependencies]
 mimalloc = "0.1"
 
-[profile.dev.build-override]
-opt-level = 0
-codegen-units = 256
-debug = false
-
 [profile.release]
-lto = "thin"
-
-[profile.release.build-override]
-opt-level = 0
-codegen-units = 256
-debug = false
-
-[profile.release-lto]
-inherits = "release"
+codegen-units = 1
 lto = true
+opt-level = "s"
+panic = "unwind"
+split-debuginfo = "packed"
+strip = "debuginfo"
 EOF
 
-cat > "${PKGNAME}/Cargo.toml" <<EOF
-[package]
-name = "${PKGNAME}"
-version = "0.1.0"
-authors = [
-  "github.com/willtrnr",
+cat > rust-toolchain.toml <<EOF
+[toolchain]
+channel = "stable"
+profile = "default"
+targets = [
+  "x86_64-unknown-linux-gnu",
 ]
-edition = "2021"
-description = ""
-repository = "https://github.com/willtrnr/${PKGNAME}"
-license = "MIT"
-publish = false
-
-[dependencies]
-mimalloc = { workspace = true }
 EOF
 
 cat > .cargo/config.toml <<EOF
 [alias]
-br = "build --profile=release-lto"
+br = "build --profile=release"
 
 [target.'cfg(target_arch = "x86_64")']
 rustflags = ["-C", "target-cpu=x86-64-v3"]
@@ -107,6 +90,58 @@ linker = "x86_64-linux-musl-gcc"
 [target.'cfg(all(target_arch = "aarch64", target_os = "linux", target_env = "musl"))']
 linker = "aarch64-linux-musl-gcc"
 EOF
+
+cat > deny.toml <<EOF
+[graph]
+targets = [
+  "x86_64-unknown-linux-gnu",
+]
+all-features = true
+
+[advisories]
+version = 2
+git-fetch-with-cli = true
+
+[licenses]
+version = 2
+allow = [
+  "MIT",
+]
+
+[licenses.private]
+ignore = true
+
+[bans]
+deny = [
+  { crate = "cc:=1.0.91", reason = "breaks xwin" },
+  { crate = "log", deny-multiple-versions = true },
+  { crate = "serde_derive:>=1.0.172,<1.0.184", reason = "bundled binaries" },
+  { crate = "tracing", deny-multiple-versions = true },
+]
+
+[sources]
+unknown-git = "allow"
+EOF
+
+cat > "${PKGNAME}/Cargo.toml" <<EOF
+[package]
+name = "${PKGNAME}"
+version = "0.1.0"
+authors = [
+  "github.com/willtrnr",
+]
+edition = "2021"
+rust-version = "1.75"
+description = ""
+repository = "https://github.com/willtrnr/${PKGNAME}"
+license = "MIT"
+publish = false
+
+[dependencies]
+mimalloc = { workspace = true }
+EOF
+
+echo > "${PKGNAME}/src/lib.rs"
 
 cat > "${PKGNAME}/src/main.rs" <<EOF
 #[global_allocator]
