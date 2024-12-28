@@ -28,7 +28,7 @@
 }
 
 window {
-  font: "Monospace 11";
+  font: "monospace 11";
   border: 1px;
   border-color: var(separatorcolor);
 }
