@@ -4,16 +4,13 @@ alias sv='sudo vim'
 
 # Handy aliases to start sbt with a specific JDK version
 alias sbt8='sbt -java-home /usr/lib/jvm/java-8-openjdk'
-alias sbt11='sbt -java-home /usr/lib/jvm/java-11-temurin'
-alias sbt17='sbt -java-home /usr/lib/jvm/java-17-temurin'
+alias sbt11='sbt -java-home /usr/lib/jvm/java-11-openjdk'
+alias sbt17='sbt -java-home /usr/lib/jvm/java-17-openjdk'
+alias sbt21='sbt -java-home /usr/lib/jvm/java-21-openjdk'
 
 # Vim shorthands
 alias v=nvim
 alias nv=nvim
-
-# Poetry shorthand
-alias p=poetry
-alias pp='poetry run poe'
 
 # Cargo shorthand
 alias c=cargo

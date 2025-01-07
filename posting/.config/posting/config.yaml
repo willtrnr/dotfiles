@@ -1,0 +1,9 @@
+---
+theme: nord
+layout: vertical
+
+ssl:
+  ca_bundle: /etc/ssl/cert.pem
+
+text_input:
+  blinking_cursor: false
