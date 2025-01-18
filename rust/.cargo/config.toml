@@ -6,6 +6,9 @@ xbr = "xb --release"
 xr = "x run --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
 xrr = "xr --release"
 
+[net]
+git-fetch-with-cli = true
+
 [target.'cfg(target_arch = "x86_64")']
 rustflags = ["-C", "target-cpu=x86-64-v3"]
 
