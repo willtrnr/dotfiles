@@ -1,0 +1,5 @@
+{
+  "container-runtime": "containerd",
+  "driver": "podman",
+  "rootless": true
+}
