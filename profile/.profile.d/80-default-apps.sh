@@ -1,43 +1,32 @@
 #!/usr/bin/env sh
 
+find_first() {
+  while [ -n "$1" ]; do
+    if command -v "$1"; then
+      return 0
+    else
+      shift
+    fi
+  done
+  return 1
+}
+
 # Select the best available editor
-if command -v nvim > /dev/null; then
-  export EDITOR="$(command -v nvim)"
-elif command -v vim > /dev/null; then
-  export EDITOR="$(command -v vim)"
-elif command -v vi > /dev/null; then
-  export EDITOR="$(command -v vi)"
-elif command -v nano > /dev/null; then
-  export EDITOR="$(command -v nano)"
+if EDITOR="$(find_first nvim vim vi nano)"; then
+  export EDITOR
 fi
 
 # Select the best available pager
-if command -v less > /dev/null; then
-  export PAGER="$(command -v less)"
-elif command -v more > /dev/null; then
-  export PAGER="$(command -v more)"
+if PAGER="$(find_first less more)"; then
+  export PAGER
 fi
 
 # Select the best available terminal, overrides the i3-sensible-terminal selection order
-if command -v st > /dev/null; then
-  export TERMINAL="$(command -v st)"
-elif command -v kitty > /dev/null; then
-  export TERMINAL="$(command -v kitty)"
-elif command -v alacritty > /dev/null; then
-  export TERMINAL="$(command -v alacritty)"
-elif command -v urxvt > /dev/null; then
-  export TERMINAL="$(command -v urxvt)"
+if TERMINAL="$(find_first st kitty urxvt xterm)"; then
+  export TERMINAL
 fi
 
 # Select the best available browser
-if command -v google-chrome-beta > /dev/null; then
-  export BROWSER="$(command -v google-chrome-beta)"
-elif command -v google-chrome-stable > /dev/null; then
-  export BROWSER="$(command -v google-chrome-stable)"
-elif command -v chromium-snapshot-bin > /dev/null; then
-  export BROWSER="$(command -v chromium-snapshot-bin)"
-elif command -v chromium > /dev/null; then
-  export BROWSER="$(command -v chromium)"
-elif command -v firefox > /dev/null; then
-  export BROWSER="$(command -v firefox)"
+if BROWSER="$(find_first google-chrome-beta google-chrome-stable chromium-snapshot-bin chromium firefox)"; then
+  export BROWSER
 fi
