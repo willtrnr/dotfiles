@@ -144,7 +144,6 @@ if has('nvim')
   " LSP & Diagnostics
   Plug 'RRethy/vim-illuminate'
   Plug 'b0o/SchemaStore.nvim'
-  Plug 'cordx56/rustowl', { 'do': 'ln -sfT plugin lua' }
   Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
   Plug 'kosayoda/nvim-lightbulb'
   Plug 'mfussenegger/nvim-jdtls'
