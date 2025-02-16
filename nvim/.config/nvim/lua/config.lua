@@ -220,6 +220,8 @@ mason_lspconfig.setup({
 
 local lspconfig = require('lspconfig')
 
+require('rustowlsp')
+
 -- Allow overriding LSP settings locally, use vim dir for .gitignore compat
 require('nlspsettings').setup({
    local_settings_dir = '.vim',
