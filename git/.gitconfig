@@ -4,23 +4,28 @@
 	signingkey = C8469D68E4820C43
 
 [core]
-	autocrlf = input
+	autocrlf = false
+
 [init]
 	defaultBranch = master
+
 [commit]
 	gpgsign = true
+
 [push]
 	default = simple
+
 [pull]
 	ff = only
 
-[diff]
-	tool = vimdiff
-[diff "hex"]
-	textconv = hexdump -v -C
-
 [credential]
 	helper = netrc
+
+[diff]
+	tool = vimdiff
+
+[diff "hex"]
+	textconv = hexdump -v -C
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
