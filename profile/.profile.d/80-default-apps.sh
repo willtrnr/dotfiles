@@ -4,9 +4,8 @@ find_first() {
   while [ -n "$1" ]; do
     if command -v "$1"; then
       return 0
-    else
-      shift
     fi
+    shift
   done
   return 1
 }
@@ -22,7 +21,7 @@ if PAGER="$(find_first less more)"; then
 fi
 
 # Select the best available terminal, overrides the i3-sensible-terminal selection order
-if TERMINAL="$(find_first st kitty urxvt xterm)"; then
+if TERMINAL="$(find_first wezterm-gui wezterm st kitty urxvt ghostty alacritty xterm)"; then
   export TERMINAL
 fi
 
