@@ -1,4 +1,8 @@
+local wezterm = require("wezterm")
+
 local M = {}
+
+M.is_windows = not not wezterm.target_triple:find("-windows-")
 
 ---Converts pixels to points
 ---@param px number
