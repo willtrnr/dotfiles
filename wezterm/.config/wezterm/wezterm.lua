@@ -9,7 +9,7 @@ return helpers.doto(wezterm.config_builder(), function(config)
    config.color_scheme = "nord"
 
    -- Font config
-   config.font = wezterm.font(helpers.ternary(helpers.running_on_windows(), "TX-02", "TX02 Nerd Font Mono"))
+   config.font = wezterm.font_with_fallback({ "TX02 Nerd Font Mono", "TX-02", "monospace" })
    config.font_size = helpers.px_to_pt(14)
    config.command_palette_font_size = config.font_size
    config.freetype_load_target = "Light"
