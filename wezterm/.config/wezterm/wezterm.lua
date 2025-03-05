@@ -3,16 +3,25 @@ local helpers = require("helpers")
 
 local config = wezterm.config_builder()
 
+config.term = "wezterm"
+
+-- Standard ricing
+config.color_scheme = "nord"
+
 -- Font config
 config.font = wezterm.font("TX-02")
 config.font_size = helpers.px_to_pt(14)
-config.color_scheme = "nord"
-config.cell_width = 1
-config.line_height = 1.05
+config.command_palette_font_size = config.font_size
 config.underline_thickness = 1
+
+config.freetype_load_flags = "NO_BITMAP|FORCE_AUTOHINT"
 config.freetype_load_target = "Light"
 config.freetype_render_target = "HorizontalLcd"
-config.command_palette_font_size = config.font_size
+
+-- Adjusting line height breaks AA on windows
+if not helpers.is_windows then
+   config.line_height = 1.05
+end
 
 -- Tab bar config
 config.enable_tab_bar = true
@@ -21,18 +30,15 @@ config.tab_bar_at_bottom = true
 config.hide_tab_bar_if_only_one_tab = true
 
 -- Scroll config
-config.scrollback_lines = 10000
+config.scrollback_lines = 25000
 config.enable_scroll_bar = false
 
--- Render config
-config.max_fps = 144
+-- Perf tuning
+config.max_fps = helpers.fps
 config.front_end = "OpenGL"
 config.animation_fps = 1
 config.cursor_blink_ease_in = "Constant"
 config.cursor_blink_ease_out = "Constant"
-
--- Use terminfo
-config.term = "wezterm"
 
 -- Bell feedback config
 config.audible_bell = "Disabled"
