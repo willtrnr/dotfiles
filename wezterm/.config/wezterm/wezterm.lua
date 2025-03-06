@@ -50,32 +50,46 @@ return helpers.doto(wezterm.config_builder(), function(config)
       end
    end
 
-   -- Graphic config
-   if wezterm.gui and not helpers.running_in_vm() then
-      -- Find actual GPUs
-      local gpus = helpers.filter(wezterm.gui.enumerate_gpus(), function(gpu)
-         return gpu.device_type ~= "Cpu"
+   -- GUI mode config
+   if wezterm.gui then
+      -- Remove key bindings using the SUPER from the default, reserved for the WM
+      config.keys = helpers.filter(wezterm.gui.default_keys(), function(k)
+         return not k.mods or not k.mods:find("SUPER")
       end)
-
-      -- Select the integrated if available, otherwise dedicated, or else let if default on its own
-      local gpu = helpers.coalesce(
-         helpers.find(gpus, function(gpu)
-            return gpu.device_type == "IntegratedGpu" and gpu.backend == "Vulkan"
-         end),
-         helpers.find(gpus, function(gpu)
-            return gpu.device_type == "IntegratedGpu" and gpu.backend:find("^Dx")
-         end),
-         helpers.find(gpus, function(gpu)
-            return gpu.backend == "Vulkan"
-         end),
-         helpers.find(gpus, function(gpu)
-            return gpu.backend:find("^Dx")
+      config.key_tables = helpers.map_values(wezterm.gui.default_key_tables(), function(t)
+         return helpers.filter(t, function(k)
+            return not k.mods or not k.mods:find("SUPER")
          end)
-      )
+      end)
+      config.disable_default_key_bindings = true
 
-      if gpu ~= nil then
-         config.webgpu_preferred_adapter = gpu
-         config.front_end = "WebGpu"
+      -- Figure out the "proper" GPU to use, if any
+      if not helpers.running_in_vm() then
+         -- Find actual GPUs
+         local gpus = helpers.filter(wezterm.gui.enumerate_gpus(), function(gpu)
+            return gpu.device_type ~= "Cpu"
+         end)
+
+         -- Select the integrated if available, otherwise dedicated, or else let if default on its own
+         local gpu = helpers.coalesce(
+            helpers.find(gpus, function(gpu)
+               return gpu.device_type == "IntegratedGpu" and gpu.backend == "Vulkan"
+            end),
+            helpers.find(gpus, function(gpu)
+               return gpu.device_type == "IntegratedGpu" and gpu.backend:find("^Dx")
+            end),
+            helpers.find(gpus, function(gpu)
+               return gpu.backend == "Vulkan"
+            end),
+            helpers.find(gpus, function(gpu)
+               return gpu.backend:find("^Dx")
+            end)
+         )
+
+         if gpu ~= nil then
+            config.webgpu_preferred_adapter = gpu
+            config.front_end = "WebGpu"
+         end
       end
    end
 end)

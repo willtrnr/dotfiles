@@ -1,5 +1,12 @@
 ---@meta
 
+---@class Key
+---@field key string
+---@field mods? string
+---@field action any
+local Key = {}
+
+
 ---@class WslDomain
 ---@field name string
 ---@field distribution string
@@ -7,6 +14,7 @@
 ---@field default_cwd? string
 ---@field default_prog? string[]
 local WslDomain = {}
+
 
 local wezterm = {}
 

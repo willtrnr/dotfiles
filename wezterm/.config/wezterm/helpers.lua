@@ -83,6 +83,18 @@ function M.map(it, fn)
    return acc
 end
 
+---@generic K, T, U
+---@param it table<K, T>
+---@param fn fun(value: T, key: K): U
+---@return table<K, U>
+function M.map_values(it, fn)
+   local acc = {}
+   for k, v in pairs(it) do
+      acc[k] = fn(v, k)
+   end
+   return acc
+end
+
 ---@generic T
 ---@param it T[]
 ---@param pred fun(value: T): boolean?
@@ -95,6 +107,23 @@ function M.filter(it, pred)
       end
    end
    return acc
+end
+
+---@generic T
+---@param it T[]
+---@param pred fun(value: T): boolean?
+---@return T[], T[]
+function M.partition(it, pred)
+   local acc_true = {}
+   local acc_false = {}
+   for _, v in ipairs(it) do
+      if pred(v) then
+         table.insert(acc_true, v)
+      else
+         table.insert(acc_false, v)
+      end
+   end
+   return acc_true, acc_false
 end
 
 ---@generic T
