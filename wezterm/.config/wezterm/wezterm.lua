@@ -12,6 +12,8 @@ return helpers.doto(wezterm.config_builder(), function(config)
    config.font = wezterm.font_with_fallback({ "TX02 Nerd Font Mono", "TX-02", "monospace" })
    config.font_size = helpers.px_to_pt(14)
    config.command_palette_font_size = config.font_size
+   config.allow_square_glyphs_to_overflow_width = "Always"
+   config.treat_east_asian_ambiguous_width_as_wide = true
    config.freetype_load_target = "Light"
    config.freetype_render_target = "Light"
    config.underline_thickness = 1
