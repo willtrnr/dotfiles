@@ -2,16 +2,6 @@ local wezterm = require("wezterm")
 
 local M = {}
 
--- Defaults
-M.dpi = 96
-
----Converts pixels to points
----@param px number
----@return number
-function M.px_to_pt(px)
-   return (px / M.dpi) / (1 / 72)
-end
-
 ---@generic T
 ---@param fn fun(): T
 ---@return fun(): T
@@ -53,22 +43,6 @@ function M.ternary(cond, if_true, if_false)
    else
       return if_false
    end
-end
-
----@generic T
----@param value T
----@param fn fun(value: T)
----@return T
-function M.doto(value, fn)
-   fn(value)
-   return value
-end
-
----@generic K, V
----@param key K
----@return fun(t: table<K, V>): V?
-function M.getter(key)
-   return function(t) return t[key] end
 end
 
 ---@generic T, U
@@ -139,56 +113,30 @@ function M.find(it, pred)
 end
 
 ---@generic T
----@param head T?
----@vararg T?
+---@param it T[]
+---@param ... fun(value: T): boolean?
 ---@return T?
-function M.coalesce(head, ...)
-   if head then
-      return head
-   end
-   for _, v in ipairs({ ... }) do
-      if v then
-         return v
+function M.priority_find(it, ...)
+   local preds = { ... }
+
+   local best = math.maxinteger
+   local best_value = nil
+
+   for _, v in ipairs(it) do
+      for i, p in ipairs(preds) do
+         if p(v) then
+            if i <= 1 then
+               -- short circuit, we won't find better than the highest priority
+               return v
+            elseif i < best then
+               best = i
+               best_value = v
+            end
+         end
       end
    end
-end
 
-M.predicates = {}
-
----@generic T
----@param lhs T
----@return fun(rhs: T): boolean
-function M.predicates.eq(lhs)
-   return function(rhs) return lhs == rhs end
-end
-
----@generic T
----@param lhs T
----@return fun(rhs: T): boolean
-function M.predicates.ne(lhs)
-   return function(rhs) return lhs ~= rhs end
-end
-
----@param lhs string
----@return fun(rhs: string): boolean
-function M.predicates.starts_with(lhs)
-   return function(rhs) return not not rhs:find(lhs) end
-end
-
----@generic T
----@param a fun(lhs: T): boolean
----@param b fun(lhs: T): boolean
----@return fun(rhs: T): boolean
-function M.predicates._and(a, b)
-   return function(rhs) return a(rhs) and b(rhs) end
-end
-
----@generic T
----@param a fun(lhs: T): boolean
----@param b fun(lhs: T): boolean
----@return fun(rhs: T): boolean
-function M.predicates._or(a, b)
-   return function(rhs) return a(rhs) or b(rhs) end
+   return best_value
 end
 
 return M
