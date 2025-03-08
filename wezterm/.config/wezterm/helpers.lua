@@ -1,14 +1,22 @@
-local wezterm = require("wezterm")
+local wezterm <const> = require("wezterm")
 
-local M = {}
+local M <const> = {}
+
+---@class EMPTY
+local EMPTY <const> = setmetatable({}, {
+   __index = function(self, _k) return self end,
+   __newindex = function(_self, _k, _v) end,
+   __tostring = function(_self) return "<empty>" end,
+   __eq = rawequal,
+})
 
 ---@generic T
 ---@param fn fun(): T
 ---@return fun(): T
 function M.memoized(fn)
-   local value = nil
+   local value = EMPTY
    return function()
-      if value == nil then
+      if EMPTY == value then
          value = fn()
       end
       return value
@@ -22,10 +30,10 @@ end)
 
 M.running_in_vm = M.memoized(function()
    if not M.running_on_windows() then
-      local success, ret = pcall(wezterm.run_child_process, {
+      local ok <const>, ret <const> = pcall(wezterm.run_child_process, {
          "systemd-detect-virt", "--vm", "--quiet"
       })
-      return success and ret
+      return ok and ret
    else
       -- Probably won't matter here
       return false
@@ -50,7 +58,7 @@ end
 ---@param fn fun(value: T): U
 ---@return U[]
 function M.map(it, fn)
-   local acc = {}
+   local acc <const> = {}
    for _, v in ipairs(it) do
       table.insert(acc, fn(v))
    end
@@ -62,7 +70,7 @@ end
 ---@param fn fun(value: T, key: K): U
 ---@return table<K, U>
 function M.map_values(it, fn)
-   local acc = {}
+   local acc <const> = {}
    for k, v in pairs(it) do
       acc[k] = fn(v, k)
    end
@@ -74,7 +82,7 @@ end
 ---@param pred fun(value: T): boolean?
 ---@return T[]
 function M.filter(it, pred)
-   local acc = {}
+   local acc <const> = {}
    for _, v in ipairs(it) do
       if pred(v) then
          table.insert(acc, v)
@@ -88,8 +96,8 @@ end
 ---@param pred fun(value: T): boolean?
 ---@return T[], T[]
 function M.partition(it, pred)
-   local acc_true = {}
-   local acc_false = {}
+   local acc_true <const> = {}
+   local acc_false <const> = {}
    for _, v in ipairs(it) do
       if pred(v) then
          table.insert(acc_true, v)
@@ -117,7 +125,7 @@ end
 ---@param ... fun(value: T): boolean?
 ---@return T?
 function M.priority_find(it, ...)
-   local preds = { ... }
+   local preds <const> = { ... }
 
    local best = math.maxinteger
    local best_value = nil

@@ -385,6 +385,9 @@ mason_lspconfig.setup_handlers({
                         enable = false,
                      },
                   },
+                  lens = {
+                     enabled = false,
+                  },
                   procMacro = {
                      enable = true,
                   },

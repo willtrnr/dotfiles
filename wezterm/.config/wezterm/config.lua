@@ -1,7 +1,7 @@
-local wezterm = require("wezterm")
-local helpers = require("helpers")
+local wezterm <const> = require("wezterm")
+local helpers <const> = require("helpers")
 
-local config = wezterm.config_builder()
+local config <const> = wezterm.config_builder()
 
 config.term = "wezterm"
 
@@ -9,12 +9,14 @@ config.term = "wezterm"
 config.color_scheme = "nord"
 
 -- Font config
-config.font = wezterm.font("TX02 Nerd Font Mono")
+config.font = wezterm.font_with_fallback({ "TX02 Nerd Font Mono", "TX-02" })
 config.font_size = 10.5
 config.command_palette_font_size = config.font_size
+config.allow_square_glyphs_to_overflow_width = "Always"
 config.freetype_load_target = "Light"
 config.freetype_render_target = "Light"
 config.underline_thickness = 1
+config.unicode_version = 14
 
 -- Tab bar config
 config.enable_tab_bar = true
@@ -64,7 +66,7 @@ if wezterm.gui then
    config.disable_default_key_bindings = true
 
    -- Select the integrated if available, otherwise dedicated, or else whatever GL
-   local gpu = helpers.priority_find(
+   local gpu <const> = helpers.priority_find(
       helpers.filter(
          wezterm.gui.enumerate_gpus(),
          helpers.ternary(
