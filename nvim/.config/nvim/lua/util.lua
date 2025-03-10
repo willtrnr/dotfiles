@@ -18,7 +18,9 @@ end
 
 --- Create a thunk discarding any argument and return value for a function
 function M.thunkify(fn)
-   return function() fn() end
+   return function()
+      fn()
+   end
 end
 
 --- Concatenate two list-like tables into a new table
@@ -28,12 +30,14 @@ end
 
 --- Update LSP capabilities and return result
 function M.update_capabilities(a, b)
-   return vim.tbl_deep_extend('keep', a, b)
+   return vim.tbl_deep_extend("keep", a, b)
 end
 
 --- Shorthand to map key silent
 function M.noremap(mode, key, cb, bufnr, no_thunk)
-   if not cb then return end
+   if not cb then
+      return
+   end
 
    local opts = {
       noremap = true,
@@ -41,15 +45,15 @@ function M.noremap(mode, key, cb, bufnr, no_thunk)
    }
 
    if bufnr then
-      if type(bufnr) == 'table' then
-         opts = vim.tbl_extend('keep', bufnr, opts)
+      if type(bufnr) == "table" then
+         opts = vim.tbl_extend("keep", bufnr, opts)
       else
          opts.buffer = bufnr
       end
    end
 
    -- Auto-thunk the callback function
-   if not no_thunk and type(cb) == 'function' then
+   if not no_thunk and type(cb) == "function" then
       cb = M.thunkify(cb)
    end
 

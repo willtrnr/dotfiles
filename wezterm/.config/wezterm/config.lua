@@ -65,41 +65,39 @@ if wezterm.gui then
    end)
    config.disable_default_key_bindings = true
 
-   -- Select the integrated if available, otherwise dedicated, or else whatever GL
-   local gpu <const> = helpers.priority_find(
-      helpers.filter(
-         wezterm.gui.enumerate_gpus(),
-         helpers.ternary(
-            helpers.running_on_windows() or helpers.running_in_vm(),
-            function(g)
-               -- Ignore Vulkan backend on Windows and in VMs
+   if not helpers.running_in_vm() then
+      -- Select the integrated if available, otherwise dedicated, or else whatever GL
+      local gpu <const> = helpers.priority_find(
+         helpers.filter(
+            wezterm.gui.enumerate_gpus(),
+            helpers.ternary(helpers.running_on_windows(), function(g)
+               -- Ignore Vulkan backend on Windows
                return g.device_type ~= "Cpu" and g.backend ~= "Vulkan"
-            end,
-            function(g)
+            end, function(g)
                return g.device_type ~= "Cpu"
-            end
-         )
-      ),
-      function(g)
-         return g.device_type == "IntegratedGpu" and g.backend == "Vulkan"
-      end,
-      function(g)
-         return g.device_type == "IntegratedGpu" and g.backend:find("^Dx")
-      end,
-      function(g)
-         return g.backend == "Vulkan"
-      end,
-      function(g)
-         return g.backend:find("^Dx")
-      end,
-      function(g)
-         return g.backend == "Gl"
-      end
-   )
+            end)
+         ),
+         function(g)
+            return g.device_type == "IntegratedGpu" and g.backend == "Vulkan"
+         end,
+         function(g)
+            return g.device_type == "IntegratedGpu" and g.backend:find("^Dx")
+         end,
+         function(g)
+            return g.backend == "Vulkan"
+         end,
+         function(g)
+            return g.backend:find("^Dx")
+         end,
+         function(g)
+            return g.backend == "Gl"
+         end
+      )
 
-   if gpu ~= nil then
-      config.webgpu_preferred_adapter = gpu
-      config.front_end = "WebGpu"
+      if gpu ~= nil then
+         config.webgpu_preferred_adapter = gpu
+         config.front_end = "WebGpu"
+      end
    end
 end
 

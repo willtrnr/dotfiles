@@ -2,13 +2,13 @@
 -- Config Entrypoint
 --
 
-local util = require('util')
+local util = require("util")
 
 -- We will need to collect LSP capabilities as we setup plugins
 local lsp_caps = vim.lsp.protocol.make_client_capabilities()
 
 -- Make a group for all our custom autocmd
-local augroup = vim.api.nvim_create_augroup('aftermarket', {
+local augroup = vim.api.nvim_create_augroup("aftermarket", {
    clear = true,
 })
 
@@ -16,7 +16,7 @@ local augroup = vim.api.nvim_create_augroup('aftermarket', {
 -- Rice our ride first
 --
 
-local ricing = require('ricing')
+local ricing = require("ricing")
 lsp_caps = util.update_capabilities(lsp_caps, ricing.lsp_status.capabilities)
 
 --
@@ -24,7 +24,7 @@ lsp_caps = util.update_capabilities(lsp_caps, ricing.lsp_status.capabilities)
 --
 
 -- Setup toggleterm
-local ok, toggleterm = pcall(require, 'toggleterm')
+local ok, toggleterm = pcall(require, "toggleterm")
 if ok and toggleterm then
    toggleterm.setup({
       open_mapping = [[<c-\>]],
@@ -32,16 +32,16 @@ if ok and toggleterm then
 end
 
 -- Exit terminal mode with simple <esc>
-util.noremap('t', '<esc>', [[<c-\><c-n>]])
+util.noremap("t", "<esc>", [[<c-\><c-n>]])
 
 -- Highlight yanked text
-vim.api.nvim_create_autocmd('TextYankPost', {
+vim.api.nvim_create_autocmd("TextYankPost", {
    group = augroup,
    callback = function()
-      vim.highlight.on_yank {
+      vim.highlight.on_yank({
          timeout = 500,
          on_visual = false,
-      }
+      })
    end,
 })
 
@@ -50,33 +50,37 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 --
 
 -- Telescope finders and menus
-local telescope = require('telescope')
-local telescope_config = require('telescope.config')
-local telescope_actions = require('telescope.actions')
-telescope.setup {
+local telescope = require("telescope")
+local telescope_config = require("telescope.config")
+local telescope_actions = require("telescope.actions")
+telescope.setup({
    defaults = {
       mappings = {
          i = {
             -- Directly close on <esc> instead of going to normal
-            ['<esc>'] = telescope_actions.close,
+            ["<esc>"] = telescope_actions.close,
          },
       },
       vimgrep_arguments = util.list_concat(
-      -- Include dotfiles in search
-         telescope_config.values.vimgrep_arguments, {
-            '--hidden',
-            '--glob', '!.git/*',
+         -- Include dotfiles in search
+         telescope_config.values.vimgrep_arguments,
+         {
+            "--hidden",
+            "--glob",
+            "!.git/*",
          }
       ),
    },
    pickers = {
       find_files = {
          find_command = {
-            'rg',
-            '--files',
-            '--color', 'never',
+            "rg",
+            "--files",
+            "--color",
+            "never",
             -- We need to manually inject this with hidden=true
-            '--glob', '!.git/*',
+            "--glob",
+            "!.git/*",
          },
          hidden = true,
       },
@@ -85,19 +89,19 @@ telescope.setup {
       lsp_handlers = {
          disable = {
             -- Broken in recent versions, handled by Dressing instead
-            ['textDocument/codeAction'] = true,
+            ["textDocument/codeAction"] = true,
          },
       },
    },
-}
-telescope.load_extension('fzf')
-telescope.load_extension('lsp_handlers')
-telescope.load_extension('notify')
-telescope.load_extension('yaml_schema')
+})
+telescope.load_extension("fzf")
+telescope.load_extension("lsp_handlers")
+telescope.load_extension("notify")
+telescope.load_extension("yaml_schema")
 
-local telescope_builtin = require('telescope.builtin')
-util.noremap('n', '<leader><tab>', telescope_builtin.find_files)
-util.noremap('n', '<leader><s-tab>', telescope_builtin.live_grep)
+local telescope_builtin = require("telescope.builtin")
+util.noremap("n", "<leader><tab>", telescope_builtin.find_files)
+util.noremap("n", "<leader><s-tab>", telescope_builtin.live_grep)
 
 local tree = require("nvim-tree")
 tree.setup({
@@ -113,51 +117,51 @@ tree.setup({
    },
    filters = {
       custom = {
-         '^.git$',
+         "^.git$",
       },
    },
 })
 
-local tree_api = require("nvim-tree.api").tree;
-util.noremap('n', '<leader>t', tree_api.open)
+local tree_api = require("nvim-tree.api").tree
+util.noremap("n", "<leader>t", tree_api.open)
 
 --
 -- Completion
 --
 
 -- Setup crates.io version completion and annotations
-require('crates').setup()
+require("crates").setup()
 
 -- Setup cmp for completion
-local cmp = require('cmp')
+local cmp = require("cmp")
 cmp.setup({
    formatting = ricing.cmp_formatting,
    mapping = cmp.mapping.preset.insert({
       -- Call up the autocomplete on <ctrl-space>
-      ['<c-space>'] = cmp.mapping.complete(),
+      ["<c-space>"] = cmp.mapping.complete(),
       -- Accept the explicitly selected option
-      ['<cr>'] = cmp.mapping.confirm({ select = false }),
+      ["<cr>"] = cmp.mapping.confirm({ select = false }),
       -- Accept the first or selected option
-      ['<tab>'] = cmp.mapping.confirm({ select = true }),
+      ["<tab>"] = cmp.mapping.confirm({ select = true }),
    }),
    snippet = {
       expand = function(args)
-         vim.fn['vsnip#anonymous'](args.body)
+         vim.fn["vsnip#anonymous"](args.body)
       end,
    },
    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'calc' },
-      { name = 'buffer' },
-      { name = 'path' },
-      { name = 'cmp_tabnine' },
-      { name = 'crates' },
+      { name = "nvim_lsp" },
+      { name = "calc" },
+      { name = "buffer" },
+      { name = "path" },
+      { name = "cmp_tabnine" },
+      { name = "crates" },
    }),
    window = ricing.cmp_window,
 })
 
 -- Extend the LSP caps with the cmp caps
-local cmp_lsp = require('cmp_nvim_lsp')
+local cmp_lsp = require("cmp_nvim_lsp")
 lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
 
 --
@@ -170,33 +174,33 @@ vim.diagnostic.config({
    virtual_text = {
       severity = {
          min = vim.diagnostic.severity.WARN,
-      }
+      },
    },
 })
 
 -- Diagnostics navigation
-util.noremap('n', 'g[', vim.diagnostic.goto_prev)
-util.noremap('n', 'g]', vim.diagnostic.goto_next)
+util.noremap("n", "g[", vim.diagnostic.goto_prev)
+util.noremap("n", "g]", vim.diagnostic.goto_next)
 
 -- Show diagnostic at cursor position in a floating window
-vim.api.nvim_create_autocmd('CursorHold', {
+vim.api.nvim_create_autocmd("CursorHold", {
    group = augroup,
    callback = function()
       vim.diagnostic.open_float(nil, {
          focusable = false,
          close_events = {
-            'BufLeave',
-            'CursorMoved',
-            'InsertEnter',
+            "BufLeave",
+            "CursorMoved",
+            "InsertEnter",
          },
-         scope = 'cursor',
-         source = 'if_many',
+         scope = "cursor",
+         source = "if_many",
       })
-   end
+   end,
 })
 
 -- Use TS for semantic highlight
-require('nvim-treesitter.configs').setup({
+require("nvim-treesitter.configs").setup({
    auto_install = true,
    highlight = {
       enable = true,
@@ -210,25 +214,25 @@ require('nvim-treesitter.configs').setup({
 })
 
 -- Mason package manager for LSP servers and linters
-require('mason').setup()
+require("mason").setup()
 
 -- LSP server auto-configuration
-local mason_lspconfig = require('mason-lspconfig')
+local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
    automatic_installation = true,
 })
 
-local lspconfig = require('lspconfig')
+local lspconfig = require("lspconfig")
 
 -- Allow overriding LSP settings locally, use vim dir for .gitignore compat
-require('nlspsettings').setup({
-   local_settings_dir = '.vim',
+require("nlspsettings").setup({
+   local_settings_dir = ".vim",
    append_default_schemas = true,
-   loader = 'json',
+   loader = "json",
 })
 
 -- Code actions indicator
-local lightbulb = require('nvim-lightbulb')
+local lightbulb = require("nvim-lightbulb")
 lightbulb.setup({
    sign = {
       text = ricing.lightbulb_icon,
@@ -236,9 +240,9 @@ lightbulb.setup({
 })
 
 local function lsp_notify_unsupported(cap)
-   local msg = 'Unsuppported ' .. util.capitalize(cap)
+   local msg = "Unsuppported " .. util.capitalize(cap)
    return function()
-      vim.notify(msg, 'info')
+      vim.notify(msg, "info")
    end
 end
 
@@ -247,9 +251,9 @@ local function lsp_on_attach(client, bufnr)
 
    local function lsp_nmap(cap, key, action)
       if caps[cap] then
-         util.noremap('n', key, action, bufnr)
+         util.noremap("n", key, action, bufnr)
       else
-         util.noremap('n', key, lsp_notify_unsupported(cap), bufnr, true)
+         util.noremap("n", key, lsp_notify_unsupported(cap), bufnr, true)
       end
    end
 
@@ -257,27 +261,27 @@ local function lsp_on_attach(client, bufnr)
    ricing.lsp_status.on_attach(client)
 
    -- Show symbol documentation
-   lsp_nmap('hoverProvider', '<leader>d', vim.lsp.buf.hover)
+   lsp_nmap("hoverProvider", "<leader>d", vim.lsp.buf.hover)
 
    -- Show signature help
-   lsp_nmap('signatureHelpProvider', '<c-s>', vim.lsp.buf.signature_help)
+   lsp_nmap("signatureHelpProvider", "<c-s>", vim.lsp.buf.signature_help)
 
    -- Code navigation
-   lsp_nmap('definitionProvider', 'gd', vim.lsp.buf.definition)
-   lsp_nmap('typeDefinitionProvider', 'gy', vim.lsp.buf.type_definition)
-   lsp_nmap('implementationProvider', 'gi', vim.lsp.buf.implementation)
-   lsp_nmap('referencesProvider', 'gr', vim.lsp.buf.references)
+   lsp_nmap("definitionProvider", "gd", vim.lsp.buf.definition)
+   lsp_nmap("typeDefinitionProvider", "gy", vim.lsp.buf.type_definition)
+   lsp_nmap("implementationProvider", "gi", vim.lsp.buf.implementation)
+   lsp_nmap("referencesProvider", "gr", vim.lsp.buf.references)
 
    -- Rename symbol
-   lsp_nmap('renameProvider', '<leader>r', vim.lsp.buf.rename)
+   lsp_nmap("renameProvider", "<leader>r", vim.lsp.buf.rename)
 
    -- Format
-   lsp_nmap('documentFormattingProvider', '<leader>f', vim.lsp.buf.format or vim.lsp.buf.formatting)
+   lsp_nmap("documentFormattingProvider", "<leader>f", vim.lsp.buf.format or vim.lsp.buf.formatting)
 
    -- Code actions
-   lsp_nmap('codeActionProvider', '<leader>a', vim.lsp.buf.code_action)
+   lsp_nmap("codeActionProvider", "<leader>a", vim.lsp.buf.code_action)
    if caps.codeActionProvider then
-      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
          group = augroup,
          buffer = bufnr,
          callback = util.thunkify(lightbulb.update_lightbulb),
@@ -285,9 +289,9 @@ local function lsp_on_attach(client, bufnr)
    end
 
    -- Code lens
-   lsp_nmap('codeLensProvider', '<leader>l', vim.lsp.codelens.run)
+   lsp_nmap("codeLensProvider", "<leader>l", vim.lsp.codelens.run)
    if caps.codeLensProvider then
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave' }, {
+      vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
          group = augroup,
          buffer = bufnr,
          callback = util.thunkify(vim.lsp.codelens.refresh),
@@ -299,7 +303,7 @@ end
 -- See: https://github.com/neovim/neovim/issues/30985
 local rust_analyzer_handlers = (function()
    local handlers = {}
-   for _, name in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
+   for _, name in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
       local handler = vim.lsp.handlers[name]
       if handler ~= nil then
          handlers[name] = function(err, result, context, config)
@@ -320,11 +324,11 @@ mason_lspconfig.setup_handlers({
          on_attach = lsp_on_attach,
       })
    end,
-   ['jsonls'] = function()
+   ["jsonls"] = function()
       lspconfig.jsonls.setup({
          settings = {
             json = {
-               schemas = require('schemastore').json.schemas(),
+               schemas = require("schemastore").json.schemas(),
                validate = {
                   enable = true,
                },
@@ -332,41 +336,41 @@ mason_lspconfig.setup_handlers({
          },
       })
    end,
-   ['yamlls'] = function()
-      lspconfig.yamlls.setup(
-         require('yaml-companion').setup({
-            lspconfig = {
-               settings = {
-                  yaml = {
-                     schemaStore = {
-                        enable = false,
-                        url = '',
-                     },
-                     schemas = require('schemastore').yaml.schemas(),
-                     trace = {
-                        server = "info",
-                     },
+   ["yamlls"] = function()
+      lspconfig.yamlls.setup(require("yaml-companion").setup({
+         lspconfig = {
+            settings = {
+               yaml = {
+                  schemaStore = {
+                     enable = false,
+                     url = "",
+                  },
+                  schemas = require("schemastore").yaml.schemas(),
+                  trace = {
+                     server = "info",
                   },
                },
             },
-         })
-      )
+         },
+      }))
    end,
-   ['rust_analyzer'] = function()
-      require('rust-tools').setup({
+   ["rust_analyzer"] = function()
+      require("rust-tools").setup({
          tools = {
             runnables = {
-               use_telescope = true
+               use_telescope = true,
             },
          },
          server = {
             capabilities = lsp_caps,
             on_attach = function(client, bufnr)
-               for k, v in pairs(rust_analyzer_handlers) do vim.lsp.handlers[k] = v end
+               for k, v in pairs(rust_analyzer_handlers) do
+                  vim.lsp.handlers[k] = v
+               end
                return lsp_on_attach(client, bufnr)
             end,
             settings = {
-               ['rust-analyzer'] = {
+               ["rust-analyzer"] = {
                   cargo = {
                      buildScripts = {
                         enable = true,
@@ -396,7 +400,7 @@ mason_lspconfig.setup_handlers({
          },
       })
    end,
-   ['omnisharp'] = function()
+   ["omnisharp"] = function()
       lspconfig.omnisharp.setup({
          capabilities = lsp_caps,
          on_attach = function(client, bufnr)
@@ -428,24 +432,24 @@ mason_lspconfig.setup_handlers({
          },
       })
    end,
-   ['pest_ls'] = function()
-      require('pest-vim').setup({
+   ["pest_ls"] = function()
+      require("pest-vim").setup({
          capabilities = lsp_caps,
          on_attach = lsp_on_attach,
       })
    end,
 })
 
-local metals = require('metals')
-local metals_lsp_status = require('metals_lsp_status')
+local metals = require("metals")
+local metals_lsp_status = require("metals_lsp_status")
 
-vim.api.nvim_create_autocmd('FileType', {
-   group = vim.api.nvim_create_augroup('nvim-metals', {
+vim.api.nvim_create_autocmd("FileType", {
+   group = vim.api.nvim_create_augroup("nvim-metals", {
       clear = true,
    }),
    pattern = {
-      'sbt',
-      'scala',
+      "sbt",
+      "scala",
    },
    callback = function()
       metals.initialize_or_attach({
@@ -453,7 +457,7 @@ vim.api.nvim_create_autocmd('FileType', {
          handlers = metals_lsp_status.setup(),
          init_options = {
             compilerOptions = vim.empty_dict(),
-            statusBarProvider = 'on',
+            statusBarProvider = "on",
          },
          on_attach = lsp_on_attach,
          settings = {

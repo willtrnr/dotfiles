@@ -4,9 +4,13 @@ local M <const> = {}
 
 ---@class EMPTY
 local EMPTY <const> = setmetatable({}, {
-   __index = function(self, _k) return self end,
+   __index = function(self, _k)
+      return self
+   end,
    __newindex = function(_self, _k, _v) end,
-   __tostring = function(_self) return "<empty>" end,
+   __tostring = function(_self)
+      return "<empty>"
+   end,
    __eq = rawequal,
 })
 
@@ -23,17 +27,14 @@ function M.memoized(fn)
    end
 end
 
--- For Windows shenanigans
 M.running_on_windows = M.memoized(function()
    return not not wezterm.target_triple:find("-windows-")
 end)
 
 M.running_in_vm = M.memoized(function()
    if not M.running_on_windows() then
-      local ok <const>, ret <const> = pcall(wezterm.run_child_process, {
-         "systemd-detect-virt", "--vm", "--quiet"
-      })
-      return ok and ret
+      local ok <const>, _exit <const>, code <const> = os.execute("systemd-detect-virt -q --vm")
+      return ok and code == 0
    else
       -- Probably won't matter here
       return false
