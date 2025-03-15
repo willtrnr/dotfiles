@@ -4,15 +4,17 @@ k9s:
   maxConnRetry: 5
   readOnly: false
   noExitOnCtrlC: false
+  portForwardAddress: localhost
   ui:
     enableMouse: true
     headless: false
     logoless: true
     crumbsless: false
-    reactive: false
+    reactive: true
     noIcons: false
     defaultsToFullScreen: false
-  skipLatestRevCheck: false
+    skin: nord
+  skipLatestRevCheck: true
   disablePodCounting: false
   shellPod:
     image: busybox:1.35.0
@@ -26,11 +28,12 @@ k9s:
       namespaces: []
       labels: {}
   logger:
-    tail: 200
+    tail: 1000
     buffer: 10000
     sinceSeconds: -1
     textWrap: true
-    showTime: true
+    disableAutoscroll: false
+    showTime: false
   thresholds:
     cpu:
       critical: 90
