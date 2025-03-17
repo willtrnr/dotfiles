@@ -38,8 +38,10 @@ config.cursor_blink_ease_out = "Constant"
 
 -- Window config
 config.window_frame = { font = config.font, font_size = config.font_size }
-config.window_padding = { left = 1, right = 1, top = 1, bottom = 1 }
 config.adjust_window_size_when_changing_font_size = false
+
+local padding <const> = helpers.ternary(helpers.running_on_windows(), 3, 1)
+config.window_padding = { left = padding, right = padding, top = padding, bottom = padding }
 
 -- Disable update checks, we have a package manager for that
 config.check_for_updates = false
