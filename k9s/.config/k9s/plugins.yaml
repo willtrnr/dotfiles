@@ -10,30 +10,6 @@ plugins:
     args:
       - $COL-IMAGE
 
-  get-all-namespace:
-    shortCut: g
-    confirm: false
-    description: get-all
-    scopes:
-      - namespaces
-    command: sh
-    background: false
-    args:
-      - -c
-      - "kubectl get-all --context $CONTEXT --namespace $NAME | less"
-
-  get-all-other:
-    shortCut: g
-    confirm: false
-    description: get-all
-    scopes:
-      - all
-    command: sh
-    background: false
-    args:
-      - -c
-      - "kubectl get-all --context $CONTEXT --namespace $NAMESPACE | less"
-
   secret-openssl-ca:
     shortCut: Ctrl-O
     confirm: false
