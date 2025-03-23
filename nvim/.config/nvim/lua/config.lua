@@ -388,6 +388,7 @@ mason_lspconfig.setup_handlers({
                      group = {
                         enable = false,
                      },
+                     prefix = "crate",
                   },
                   lens = {
                      enable = false,
