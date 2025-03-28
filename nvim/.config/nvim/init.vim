@@ -11,5 +11,5 @@ source ~/.vimrc
 " Set terminal scrollback much lower to avoid lag
 set scrollback=4000
 
-" Then include the nvim specific config
-lua require('config')
+" Chainload the nvim specific Lua config
+lua require('init')

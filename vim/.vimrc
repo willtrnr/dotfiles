@@ -159,11 +159,6 @@ if has('nvim')
 
   " QOL
   Plug 'akinsho/toggleterm.nvim'
-
-  " Fix CursorHold, for some reason it's not fixed for me on 800
-  if v:version < 801
-    Plug 'antoinemadec/FixCursorHold.nvim'
-  endif
 else
   let g:polyglot_disabled = [
   \  'python-compiler',
@@ -273,11 +268,6 @@ if !has('nvim')
   nmap <silent> <leader>A <plug>(coc-codeaction)
   nmap <silent> <leader>a <plug>(coc-codeaction-cursor)
   vmap <silent> <leader>a <plug>(coc-codeaction-selected)
-
-  if has('nvim')
-    " Show actions for codelens
-    nmap <silent> <leader>l <plug>(coc-codelens-action)
-  endif
 
   " Rename symbol
   nmap <silent> <leader>r <plug>(coc-rename)
