@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/candrewlee14/webman/main/schema/config_schema.json
+
+refresh_interval: 6h0m0s
+
+pkg_repos:
+  - name: webman
+    type: github
+    user: candrewlee14
+    repo: webman-pkgs
+    branch: main
+
+  - name: archwill
+    type: github
+    user: willtrnr
+    repo: webman-pkgs
+    branch: master
