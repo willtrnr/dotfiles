@@ -50,16 +50,33 @@ members = [
 ]
 resolver = "2"
 
+[workspace.package]
+version = "0.1.0"
+authors = [
+  "github.com/willtrnr",
+]
+edition = "2021"
+rust-version = "1.84"
+repository = "https://github.com/willtrnr/${PKGNAME}"
+license = "MIT"
+publish = false
+
 [workspace.dependencies]
 mimalloc = "0.1"
 
 [profile.release]
 codegen-units = 1
 lto = true
-opt-level = "s"
-panic = "unwind"
+opt-level = 3
+panic = "abort"
 split-debuginfo = "packed"
 strip = "debuginfo"
+
+[profile.dev.build-override]
+opt-level = 3
+debug = false
+incremental = false
+codegen-units = 1
 EOF
 
 cat > rust-toolchain.toml <<EOF
@@ -100,7 +117,7 @@ all-features = true
 
 [advisories]
 version = 2
-git-fetch-with-cli = true
+unmaintained = "workspace"
 
 [licenses]
 version = 2
@@ -115,30 +132,39 @@ ignore = true
 deny = [
   { crate = "cc:=1.0.91", reason = "breaks xwin" },
   { crate = "log", deny-multiple-versions = true },
+  { crate = "opentelemetry", deny-multiple-versions = true },
+  { crate = "rustls", reason = "use native-tls instead" },
   { crate = "serde_derive:>=1.0.172,<1.0.184", reason = "bundled binaries" },
   { crate = "tracing", deny-multiple-versions = true },
+  { crate = "webpki-roots", reason = "native TLS is required for internal CAs" },
 ]
 
 [sources]
 unknown-git = "allow"
 EOF
 
+cat > .taplo.toml <<EOF
+[formatting]
+inline_table_expand = false
+EOF
+
 cat > "${PKGNAME}/Cargo.toml" <<EOF
 [package]
 name = "${PKGNAME}"
-version = "0.1.0"
-authors = [
-  "github.com/willtrnr",
-]
-edition = "2021"
-rust-version = "1.75"
 description = ""
-repository = "https://github.com/willtrnr/${PKGNAME}"
-license = "MIT"
-publish = false
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+publish.workspace = true
 
 [dependencies]
 mimalloc = { workspace = true }
+
+[features]
+default = []
 EOF
 
 echo > "${PKGNAME}/src/lib.rs"
@@ -147,5 +173,7 @@ cat > "${PKGNAME}/src/main.rs" <<EOF
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
-pub fn main() {}
+pub fn main() -> Result<(), Box<dyn std::error::Error>> {
+    Ok(())
+}
 EOF
