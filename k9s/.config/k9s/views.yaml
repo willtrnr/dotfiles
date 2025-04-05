@@ -4,7 +4,6 @@ views:
       - NAME
       - STATUS
       - POLICY:.metadata.labels.pod-security\.kubernetes\.io/enforce
-      - LINKERD A:.metadata.annotations.linkerd\.io/inject
-      - LINKERD L:.metadata.labels.linkerd\.io/inject
+      - LINKERD:.metadata.annotations.linkerd\.io/inject
       - AGE
     sortColumn: NAME
