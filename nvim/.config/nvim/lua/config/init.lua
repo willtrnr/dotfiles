@@ -16,7 +16,7 @@ local augroup = vim.api.nvim_create_augroup("aftermarket", {
 -- Rice our ride first
 --
 
-local ricing = require("ricing")
+local ricing = require("config.ricing")
 lsp_caps = util.update_capabilities(lsp_caps, ricing.lsp_status.capabilities)
 
 --
@@ -442,7 +442,7 @@ mason_lspconfig.setup_handlers({
 })
 
 local metals = require("metals")
-local metals_lsp_status = require("metals_lsp_status")
+local metals_lsp_status = require("config.metals_lsp_status")
 
 vim.api.nvim_create_autocmd("FileType", {
    group = vim.api.nvim_create_augroup("nvim-metals", {

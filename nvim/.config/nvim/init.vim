@@ -12,4 +12,4 @@ source ~/.vimrc
 set scrollback=4000
 
 " Chainload the nvim specific Lua config
-lua require('init')
+lua require('config.init')

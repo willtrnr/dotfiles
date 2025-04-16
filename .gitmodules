@@ -1,9 +1,12 @@
 [submodule "xcompose"]
 	path = xcompose
 	url = https://github.com/kragen/xcompose.git
-[submodule "tmux/.tmux/plugins/tpm"]
-	path = tmux/.tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm
 [submodule "omz/.oh-my-zsh"]
 	path = omz/.oh-my-zsh
 	url = https://github.com/ohmyzsh/ohmyzsh
+[submodule "nvim/.config/nvim/lazy.nvim"]
+	path = nvim/.config/nvim/lazy.nvim
+	url = https://github.com/folke/lazy.nvim.git
+[submodule "tmux/.tmux/plugins/tpm"]
+	path = tmux/.tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
