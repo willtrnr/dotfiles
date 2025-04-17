@@ -110,7 +110,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'wakatime/vim-wakatime'
 Plug 'NoahTheDuke/vim-just'
-Plug 'Yggdroot/indentLine'
 
 if has('nvim')
   " Libraries
@@ -118,13 +117,11 @@ if has('nvim')
 
   " Ricing
   Plug 'akinsho/bufferline.nvim', { 'tag': 'v4.*' }
+  Plug 'folke/snacks.nvim'
   Plug 'mhinz/vim-signify'
   Plug 'norcalli/nvim-colorizer.lua'
   Plug 'nvim-lualine/lualine.nvim'
   Plug 'nvim-tree/nvim-web-devicons'
-  Plug 'nvimdev/dashboard-nvim'
-  Plug 'rcarriga/nvim-notify'
-  Plug 'stevearc/dressing.nvim'
 
   " Navigation
   Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
@@ -174,6 +171,7 @@ else
   Plug 'sheerun/vim-polyglot'
   Plug 'vim-airline/vim-airline'
   Plug 'w0rp/ale'
+  Plug 'Yggdroot/indentLine'
 endif
 
 call plug#end()
@@ -184,16 +182,16 @@ call plug#end()
 set background=dark
 colorscheme nord
 
-"
-" IndentLine
-"
-let g:indentLine_enabled = 1
-let g:indentLine_char_list = ['|', '┊', '┆', '¦']
-let g:indentLine_concealcursor = 'nc'
-let g:indentLine_conceallevel = '1'
-let g:indentLine_bufTypeExclude = ['help', 'terminal']
-
 if !has('nvim')
+  "
+  " IndentLine
+  "
+  let g:indentLine_enabled = 1
+  let g:indentLine_char_list = ['|', '┊', '┆', '¦']
+  let g:indentLine_concealcursor = 'nc'
+  let g:indentLine_conceallevel = '1'
+  let g:indentLine_bufTypeExclude = ['help', 'terminal']
+
   "
   " Airline
   "

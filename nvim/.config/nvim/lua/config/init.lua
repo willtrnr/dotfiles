@@ -96,7 +96,6 @@ telescope.setup({
 })
 telescope.load_extension("fzf")
 telescope.load_extension("lsp_handlers")
-telescope.load_extension("notify")
 telescope.load_extension("yaml_schema")
 
 local telescope_builtin = require("telescope.builtin")

@@ -9,18 +9,63 @@ local M = {}
 -- Enable colored file type icons
 require("nvim-web-devicons").setup()
 
--- Nice dashboard
-require("dashboard").setup({
-   config = {
-      packages = {
-         enable = false,
+-- Enable a bunc of "Snacks" to make tings nice
+require("snacks").setup({
+   dashboard = {
+      enabled = true,
+      sections = {
+         { section = "header" },
+         {
+            icon = " ",
+            title = "Recent Files",
+            section = "recent_files",
+            cwd = true,
+            indent = 2,
+            padding = 1,
+         },
       },
-      project = {
-         enable = false,
+   },
+   explorer = {
+      enabled = true,
+   },
+   git = {
+      enabled = true,
+   },
+   image = {
+      enabled = true,
+   },
+   indent = {
+      enabled = true,
+      indent = {
+         enabled = true,
+         char = "┆",
       },
-      mru = {
-         cwd_only = true,
+      scope = {
+         enabled = true,
+         char = "┆",
+         hl = "SnacksIndent2",
       },
+   },
+   input = {
+      enabled = true,
+   },
+   notifier = {
+      enabled = true,
+   },
+   notify = {
+      enabled = true,
+   },
+   picker = {
+      enabled = true,
+   },
+   rename = {
+      enabled = true,
+   },
+   scope = {
+      enabled = true,
+   },
+   scroll = {
+      enabled = true,
    },
 })
 
@@ -121,38 +166,6 @@ M.bufferline.setup({
       always_show_bufferline = true,
    },
 })
-
--- Use vim-notify as the default notification handler
-M.notify = require("notify")
-M.notify.setup({
-   top_down = false,
-})
-
-vim.notify = M.notify.notify
-
--- Get nice UI elements for input and select
-local ok, dressing = pcall(require, "dressing")
-if ok and dressing then
-   dressing.setup({
-      input = {
-         win_options = {
-            winblend = 0,
-         },
-      },
-      select = {
-         nui = {
-            win_options = {
-               winblend = 0,
-            },
-         },
-         builtin = {
-            win_options = {
-               winblend = 0,
-            },
-         },
-      },
-   })
-end
 
 -- Nicer symbol highlighting
 require("illuminate").configure({
