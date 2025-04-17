@@ -25,15 +25,9 @@ require("snacks").setup({
          },
       },
    },
-   explorer = {
-      enabled = true,
-   },
-   git = {
-      enabled = true,
-   },
-   image = {
-      enabled = true,
-   },
+   explorer = { enabled = true },
+   git = { enabled = true },
+   image = { enabled = true },
    indent = {
       enabled = true,
       indent = {
@@ -46,27 +40,21 @@ require("snacks").setup({
          hl = "SnacksIndent2",
       },
    },
-   input = {
-      enabled = true,
-   },
+   input = { enabled = true },
    notifier = {
       enabled = true,
+      width = { min = 40, max = 0.35 },
+      heigt = { min = 1, max = 0.4 },
+      margin = { top = 0, right = 1, bottom = 1 },
+      level = vim.log.levels.INFO,
+      style = "fancy",
+      top_down = false,
    },
-   notify = {
-      enabled = true,
-   },
-   picker = {
-      enabled = true,
-   },
-   rename = {
-      enabled = true,
-   },
-   scope = {
-      enabled = true,
-   },
-   scroll = {
-      enabled = true,
-   },
+   notify = { enabled = true },
+   picker = { enabled = true },
+   rename = { enabled = true },
+   scope = { enabled = true },
+   scroll = { enabled = false },
 })
 
 -- Color values highlight
@@ -75,6 +63,15 @@ require("colorizer").setup()
 -- LSP status
 M.lsp_status = require("lsp-status")
 M.lsp_status.register_progress()
+
+local lsp_status_callback = vim.lsp.handlers["$/progress"]
+vim.lsp.handlers["$/progress"] = function(err, result, context, config)
+   lsp_status_callback(err, result, context, config)
+   vim.notify(M.lsp_status.status_progress(), "info", {
+      id = "lsp_progress",
+      title = "LSP Progress",
+   })
+end
 
 -- Setup lualine
 local function lualine_fmt_mode(v)
@@ -87,7 +84,6 @@ end
 
 local function lualine_lsp_status()
    local success, status = pcall(M.lsp_status.status)
-
    if success and status then
       return status
    else
