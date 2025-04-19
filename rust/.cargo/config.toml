@@ -1,10 +1,10 @@
 [alias]
+u = "update"
 x = "xwin"
-xc = "x check --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
 xb = "x build --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
-xbr = "xb --release"
+xc = "x check --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
 xr = "x run --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
-xrr = "xr --release"
+xt = "x test --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
 
 [net]
 git-fetch-with-cli = true
