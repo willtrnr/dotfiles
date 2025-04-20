@@ -31,6 +31,16 @@ function M.thunkify(fn)
    end
 end
 
+---Apply a side-effecting function to a value, then return the value
+---@generic T
+---@param value T
+---@param fn fun(T)
+---@return T
+function M.doto(value, fn)
+   fn(value)
+   return value
+end
+
 ---Concatenate two list-like tables into a new table
 ---@generic T
 ---@param a T[]

@@ -126,7 +126,6 @@ if has('nvim')
   " Navigation
   Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
   Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
-  Plug 'nvim-tree/nvim-tree.lua'
 
   " Completion
   Plug 'hrsh7th/cmp-buffer'
@@ -153,9 +152,6 @@ if has('nvim')
   Plug 'tamago324/nlsp-settings.nvim'
   Plug 'williamboman/mason-lspconfig.nvim'
   Plug 'williamboman/mason.nvim'
-
-  " QOL
-  Plug 'akinsho/toggleterm.nvim'
 else
   let g:polyglot_disabled = [
   \  'python-compiler',

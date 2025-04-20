@@ -9,67 +9,6 @@ local M = {}
 -- Enable colored file type icons
 require("nvim-web-devicons").setup()
 
--- Enable a bunc of "Snacks" to make tings nice
-require("snacks").setup({
-   bigfile = {
-      enabled = true,
-      size = 2 * 1024 * 1024, -- 2MiB
-      line_length = 1000,
-      notify = true,
-   },
-   dashboard = {
-      enabled = true,
-      sections = {
-         { section = "header" },
-         {
-            icon = " ",
-            title = "Recent Files",
-            section = "recent_files",
-            cwd = true,
-            indent = 2,
-            padding = 1,
-         },
-      },
-   },
-   explorer = { enabled = true },
-   git = { enabled = true },
-   image = { enabled = true },
-   indent = {
-      enabled = true,
-      indent = {
-         enabled = true,
-         char = "┆",
-      },
-      scope = {
-         enabled = true,
-         char = "┆",
-         hl = "SnacksIndent2",
-      },
-   },
-   input = { enabled = true },
-   notifier = {
-      enabled = true,
-      width = { min = 40, max = 0.35 },
-      heigt = { min = 1, max = 0.4 },
-      margin = { top = 0, right = 0, bottom = 1 },
-      level = vim.log.levels.INFO,
-      style = "fancy",
-      top_down = false,
-   },
-   notify = { enabled = true },
-   picker = { enabled = true },
-   rename = { enabled = true },
-   scope = { enabled = true },
-   scroll = { enabled = false },
-   styles = {
-      input = {
-         relative = "cursor",
-         row = -3,
-         col = 0,
-      },
-   },
-})
-
 -- Color values highlight
 require("colorizer").setup()
 
@@ -90,6 +29,8 @@ end
 local function lualine_fmt_mode(v)
    if v == "COMMAND" then
       return "CMD"
+   elseif v == "TERMINAL" then
+      return "TERM"
    else
       return string.gsub(v, "[AEIOU]", "")
    end

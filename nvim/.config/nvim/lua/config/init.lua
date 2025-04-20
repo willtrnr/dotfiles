@@ -8,7 +8,7 @@ local util = require("util")
 local lsp_caps = vim.lsp.protocol.make_client_capabilities()
 
 -- Make a group for all our custom autocmd
-local augroup = vim.api.nvim_create_augroup("aftermarket", {
+local augroup = vim.api.nvim_create_augroup("usercmd", {
    clear = true,
 })
 
@@ -23,16 +23,93 @@ lsp_caps = util.update_capabilities(lsp_caps, ricing.lsp_status.capabilities)
 -- QOL stuff
 --
 
--- Setup toggleterm
-local ok, toggleterm = pcall(require, "toggleterm")
-if ok and toggleterm then
-   toggleterm.setup({
-      open_mapping = [[<c-\>]],
-   })
-end
+local snacks = require("snacks")
+snacks.setup({
+   bigfile = {
+      enabled = true,
+      size = 2 * 1024 * 1024, -- 2MiB
+      line_length = 1000,
+      notify = true,
+   },
+   dashboard = {
+      enabled = true,
+      sections = {
+         { section = "header" },
+         {
+            icon = " ",
+            title = "Recent Files",
+            section = "recent_files",
+            cwd = true,
+            indent = 2,
+            padding = 1,
+         },
+      },
+   },
+   explorer = { enabled = true },
+   git = { enabled = true },
+   image = { enabled = true },
+   indent = {
+      enabled = true,
+      indent = {
+         enabled = true,
+         char = "┆",
+      },
+      scope = {
+         enabled = true,
+         char = "┆",
+         hl = "SnacksIndent2",
+      },
+   },
+   input = {
+      enabled = true,
+      icon_pos = "title",
+   },
+   notifier = {
+      enabled = true,
+      width = {
+         min = 40,
+         max = 0.35,
+      },
+      height = {
+         min = 1,
+         max = 0.4,
+      },
+      margin = {
+         top = 0,
+         right = 0,
+         bottom = 1,
+      },
+      level = vim.log.levels.INFO,
+      style = "fancy",
+      top_down = false,
+   },
+   notify = { enabled = true },
+   picker = { enabled = true },
+   rename = { enabled = true },
+   scope = { enabled = true },
+   scroll = { enabled = false },
+   styles = {
+      input = {
+         title_pos = "left",
+         relative = "cursor",
+         width = 40,
+         row = -3,
+         col = -1,
+      },
+   },
+})
 
--- Exit terminal mode with simple <esc>
-util.noremap("t", "<esc>", [[<c-\><c-n>]])
+-- Toggle terminal on ctrl-\
+util.noremap({ "n", "t" }, [[<c-\>]], function()
+   snacks.terminal.toggle(nil, {
+      win = {
+         height = 0.25,
+         wo = {
+            winbar = "",
+         },
+      },
+   })
+end)
 
 -- Highlight yanked text
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -49,6 +126,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Navigation
 --
 
+util.noremap("n", "<leader>t", snacks.explorer.open)
+
 -- Telescope finders and menus
 local telescope = require("telescope")
 local telescope_config = require("telescope.config")
@@ -62,7 +141,7 @@ telescope.setup({
          },
       },
       vimgrep_arguments = util.list_concat(
-         -- Include dotfiles in search
+      -- Include dotfiles in search
          telescope_config.values.vimgrep_arguments,
          {
             "--hidden",
@@ -101,28 +180,6 @@ telescope.load_extension("yaml_schema")
 local telescope_builtin = require("telescope.builtin")
 util.noremap("n", "<leader><tab>", telescope_builtin.find_files)
 util.noremap("n", "<leader><s-tab>", telescope_builtin.live_grep)
-
-local tree = require("nvim-tree")
-tree.setup({
-   view = {
-      width = 35,
-   },
-   actions = {
-      open_file = {
-         window_picker = {
-            enable = false,
-         },
-      },
-   },
-   filters = {
-      custom = {
-         "^.git$",
-      },
-   },
-})
-
-local tree_api = require("nvim-tree.api").tree
-util.noremap("n", "<leader>t", tree_api.open)
 
 --
 -- Completion
@@ -241,7 +298,7 @@ lightbulb.setup({
 local function lsp_notify_unsupported(cap)
    local msg = "Unsuppported " .. util.capitalize(cap)
    return function()
-      vim.notify(msg, "info")
+      vim.notify(msg, vim.log.levels.INFO)
    end
 end
 
