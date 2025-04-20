@@ -11,6 +11,12 @@ require("nvim-web-devicons").setup()
 
 -- Enable a bunc of "Snacks" to make tings nice
 require("snacks").setup({
+   bigfile = {
+      enabled = true,
+      size = 2 * 1024 * 1024, -- 2MiB
+      line_length = 1000,
+      notify = true,
+   },
    dashboard = {
       enabled = true,
       sections = {
@@ -55,6 +61,13 @@ require("snacks").setup({
    rename = { enabled = true },
    scope = { enabled = true },
    scroll = { enabled = false },
+   styles = {
+      input = {
+         relative = "cursor",
+         row = -3,
+         col = 0,
+      },
+   },
 })
 
 -- Color values highlight
