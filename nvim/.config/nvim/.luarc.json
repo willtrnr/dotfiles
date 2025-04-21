@@ -15,8 +15,9 @@
   },
   "workspace": {
     "library": [
-      "/usr/share/nvim/runtime/lua",
-      "lazy.nvim/lua"
+      "lazy.nvim/lua",
+      "~/.local/share/nvim/plugged",
+      "/usr/share/nvim/runtime/lua"
     ]
   }
 }

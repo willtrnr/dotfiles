@@ -101,6 +101,7 @@ autocmd BufNewFile,BufRead *.slaspec,*.sinc set filetype=sleigh
 call plug#begin()
 
 Plug 'arcticicestudio/nord-vim'
+Plug 'cordx56/rustowl'
 Plug 'dcharbon/vim-flatbuffers'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'pest-parser/pest.vim'
@@ -109,7 +110,6 @@ Plug 'slint-ui/vim-slint'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'wakatime/vim-wakatime'
-Plug 'NoahTheDuke/vim-just'
 
 if has('nvim')
   " Libraries

@@ -141,7 +141,7 @@ telescope.setup({
          },
       },
       vimgrep_arguments = util.list_concat(
-      -- Include dotfiles in search
+         -- Include dotfiles in search
          telescope_config.values.vimgrep_arguments,
          {
             "--hidden",
@@ -186,7 +186,7 @@ util.noremap("n", "<leader><s-tab>", telescope_builtin.live_grep)
 --
 
 -- Setup crates.io version completion and annotations
-require("crates").setup()
+require("crates").setup({})
 
 -- Setup cmp for completion
 local cmp = require("cmp")
@@ -256,7 +256,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 })
 
 -- Use TS for semantic highlight
-require("nvim-treesitter.configs").setup({
+require("nvim-treesitter.configs").setup({ ---@diagnostic disable-line: missing-fields
    auto_install = true,
    highlight = {
       enable = true,
@@ -274,14 +274,14 @@ require("mason").setup()
 
 -- LSP server auto-configuration
 local mason_lspconfig = require("mason-lspconfig")
-mason_lspconfig.setup({
+mason_lspconfig.setup({ ---@diagnostic disable-line: missing-fields
    automatic_installation = true,
 })
 
 local lspconfig = require("lspconfig")
 
 -- Allow overriding LSP settings locally, use vim dir for .gitignore compat
-require("nlspsettings").setup({
+require("nlspsettings").setup({ ---@diagnostic disable-line: missing-fields
    local_settings_dir = ".vim",
    append_default_schemas = true,
    loader = "json",
@@ -289,18 +289,11 @@ require("nlspsettings").setup({
 
 -- Code actions indicator
 local lightbulb = require("nvim-lightbulb")
-lightbulb.setup({
+lightbulb.setup({ ---@diagnostic disable-line: missing-fields
    sign = {
       text = ricing.lightbulb_icon,
    },
 })
-
-local function lsp_notify_unsupported(cap)
-   local msg = "Unsuppported " .. util.capitalize(cap)
-   return function()
-      vim.notify(msg, vim.log.levels.INFO)
-   end
-end
 
 local function lsp_on_attach(client, bufnr)
    local caps = client.server_capabilities
@@ -308,8 +301,6 @@ local function lsp_on_attach(client, bufnr)
    local function lsp_nmap(cap, key, action)
       if caps[cap] then
          util.noremap("n", key, action, bufnr)
-      else
-         util.noremap("n", key, lsp_notify_unsupported(cap), bufnr, true)
       end
    end
 
@@ -357,7 +348,11 @@ end
 
 -- Workaround for ServerCancelled issue
 -- See: https://github.com/neovim/neovim/issues/30985
-local rust_analyzer_handlers = (function()
+local rust_analyzer_handlers = util.iife(function()
+   if vim.fn.has("nvim-0.10.3") == 1 or vim.fn.has("nvim-0.11") == 1 then
+      return vim.empty_dict()
+   end
+
    local handlers = {}
    for _, name in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
       local handler = vim.lsp.handlers[name]
@@ -371,7 +366,7 @@ local rust_analyzer_handlers = (function()
       end
    end
    return handlers
-end)()
+end)
 
 mason_lspconfig.setup_handlers({
    function(server_name)
@@ -495,6 +490,16 @@ mason_lspconfig.setup_handlers({
          on_attach = lsp_on_attach,
       })
    end,
+})
+
+local rustowl = require("rustowl")
+rustowl.setup({
+   client = { ---@diagnostic disable-line: missing-fields
+      on_attach = function(client, bufnr)
+         util.noremap("n", "<leader>o", util.partial(rustowl.toggle, bufnr), bufnr, true)
+         return lsp_on_attach(client, bufnr)
+      end,
+   },
 })
 
 local metals = require("metals")

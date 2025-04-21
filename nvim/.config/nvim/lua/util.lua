@@ -50,7 +50,7 @@ function M.list_concat(a, b)
    return vim.list_extend(vim.list_extend({}, a), b)
 end
 
---- Update LSP capabilities and return result
+---Update LSP capabilities and return result
 ---@param a lsp.ClientCapabilities
 ---@param b lsp.ClientCapabilities
 ---@return lsp.ClientCapabilities
@@ -89,6 +89,14 @@ function M.noremap(mode, key, cb, bufnr, no_thunk)
    end
 
    vim.keymap.set(mode, key, cb, opts)
+end
+
+---Nicer API for IIFE scope pattern
+---@generic T
+---@param fn fun(): T
+---@return T
+function M.iife(fn)
+   return fn()
 end
 
 return M
