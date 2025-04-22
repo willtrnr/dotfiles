@@ -142,6 +142,7 @@ if has('nvim')
   Plug 'b0o/SchemaStore.nvim'
   Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
   Plug 'kosayoda/nvim-lightbulb'
+  Plug 'mfussenegger/nvim-dap'
   Plug 'mfussenegger/nvim-jdtls'
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/lsp-status.nvim'
@@ -150,6 +151,7 @@ if has('nvim')
   Plug 'simrat39/rust-tools.nvim'
   Plug 'someone-stole-my-name/yaml-companion.nvim'
   Plug 'tamago324/nlsp-settings.nvim'
+  Plug 'theHamsta/nvim-dap-virtual-text'
   Plug 'williamboman/mason-lspconfig.nvim'
   Plug 'williamboman/mason.nvim'
 else

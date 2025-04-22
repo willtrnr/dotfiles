@@ -141,7 +141,7 @@ telescope.setup({
          },
       },
       vimgrep_arguments = util.list_concat(
-         -- Include dotfiles in search
+      -- Include dotfiles in search
          telescope_config.values.vimgrep_arguments,
          {
             "--hidden",
@@ -326,8 +326,8 @@ local function lsp_on_attach(client, bufnr)
    lsp_nmap("documentFormattingProvider", "<leader>f", vim.lsp.buf.format or vim.lsp.buf.formatting)
 
    -- Code actions
-   lsp_nmap("codeActionProvider", "<leader>a", vim.lsp.buf.code_action)
    if caps.codeActionProvider then
+      util.noremap("n", "<leader>a", vim.lsp.buf.code_action, bufnr)
       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
          group = augroup,
          buffer = bufnr,
@@ -336,8 +336,8 @@ local function lsp_on_attach(client, bufnr)
    end
 
    -- Code lens
-   lsp_nmap("codeLensProvider", "<leader>l", vim.lsp.codelens.run)
    if caps.codeLensProvider then
+      util.noremap("n", "<leader>l", vim.lsp.codelens.run, bufnr)
       vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
          group = augroup,
          buffer = bufnr,
@@ -418,6 +418,7 @@ mason_lspconfig.setup_handlers({
                for k, v in pairs(rust_analyzer_handlers) do
                   vim.lsp.handlers[k] = v
                end
+
                return lsp_on_attach(client, bufnr)
             end,
             settings = {
@@ -456,7 +457,7 @@ mason_lspconfig.setup_handlers({
       lspconfig.omnisharp.setup({
          capabilities = lsp_caps,
          on_attach = function(client, bufnr)
-            -- For some reason OmniSharp mis-represents its capabilities, so we patch it here
+            -- For some reason OmniSharp mis-represents its capabilities, so patch it here
             client.server_capabilities = util.update_capabilities(client.server_capabilities, {
                codeActionProvider = vim.empty_dict(),
                definitionProvider = true,
@@ -494,6 +495,8 @@ mason_lspconfig.setup_handlers({
 
 local rustowl = require("rustowl")
 rustowl.setup({
+   auto_attach = false,
+   auto_enable = false,
    client = { ---@diagnostic disable-line: missing-fields
       on_attach = function(client, bufnr)
          util.noremap("n", "<leader>o", util.partial(rustowl.toggle, bufnr), bufnr, true)
@@ -501,9 +504,6 @@ rustowl.setup({
       end,
    },
 })
-
-local metals = require("metals")
-local metals_lsp_status = require("config.metals_lsp_status")
 
 vim.api.nvim_create_autocmd("FileType", {
    group = vim.api.nvim_create_augroup("nvim-metals", {
@@ -514,9 +514,9 @@ vim.api.nvim_create_autocmd("FileType", {
       "scala",
    },
    callback = function()
-      metals.initialize_or_attach({
+      require("metals").initialize_or_attach({
          capabilities = lsp_caps,
-         handlers = metals_lsp_status.setup(),
+         handlers = require("config.metals_lsp_status").setup(),
          init_options = {
             compilerOptions = vim.empty_dict(),
             statusBarProvider = "on",
@@ -528,4 +528,8 @@ vim.api.nvim_create_autocmd("FileType", {
          tvp = vim.empty_dict(),
       })
    end,
+})
+
+require("nvim-dap-virtual-text").setup({ ---@diagnostic disable-line: missing-fields
+   enabled = true,
 })
