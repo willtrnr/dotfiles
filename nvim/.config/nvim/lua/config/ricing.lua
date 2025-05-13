@@ -12,6 +12,9 @@ require("nvim-web-devicons").setup()
 -- Color values highlight
 require("colorizer").setup()
 
+-- Render whitespaces
+require("visual-whitespace").setup({})
+
 -- LSP status
 M.lsp_status = require("lsp-status")
 M.lsp_status.register_progress()

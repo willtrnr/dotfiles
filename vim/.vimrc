@@ -118,6 +118,7 @@ if has('nvim')
   " Ricing
   Plug 'akinsho/bufferline.nvim', { 'tag': 'v4.*' }
   Plug 'folke/snacks.nvim'
+  Plug 'mcauley-penney/visual-whitespace.nvim'
   Plug 'mhinz/vim-signify'
   Plug 'norcalli/nvim-colorizer.lua'
   Plug 'nvim-lualine/lualine.nvim'
