@@ -1,0 +1,21 @@
+font-family = "TX-02"
+font-size = 10.5
+
+theme = nord
+
+minimum-contrast = 1.1
+
+cursor-style = block
+cursor-style-blink = false
+
+mouse-hide-while-typing = true
+
+scrollback-limit = 10000
+
+window-inherit-working-directory = false
+window-inherit-font-size = false
+window-decoration = server
+
+shell-integration-features = no-cursor
+
+auto-update = off
