@@ -104,6 +104,9 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec rofi -show p -modi p:~/.config/rofi/power-menu -config ~/.config/rofi/power-menu.rasi
 
+# Blackhole Meta+L
+bindsym Mod4+l nop
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
   # These bindings trigger as soon as you enter the resize mode
