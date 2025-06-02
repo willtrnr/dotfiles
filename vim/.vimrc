@@ -139,11 +139,13 @@ if has('nvim')
   Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 
   " LSP & Diagnostics
+  Plug 'RRethy/vim-illuminate'
   Plug 'b0o/SchemaStore.nvim'
   Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
   Plug 'kosayoda/nvim-lightbulb'
-  Plug 'mason-org/mason.nvim', { 'branch': 'v1.x' }
+  Plug 'lopi-py/luau-lsp.nvim'
   Plug 'mason-org/mason-lspconfig.nvim', { 'branch': 'v1.x' }
+  Plug 'mason-org/mason.nvim', { 'branch': 'v1.x' }
   Plug 'mfussenegger/nvim-dap'
   Plug 'mfussenegger/nvim-jdtls'
   Plug 'neovim/nvim-lspconfig'
@@ -154,7 +156,6 @@ if has('nvim')
   Plug 'someone-stole-my-name/yaml-companion.nvim'
   Plug 'tamago324/nlsp-settings.nvim'
   Plug 'theHamsta/nvim-dap-virtual-text'
-  Plug 'RRethy/vim-illuminate'
 else
   let g:polyglot_disabled = [
   \  'python-compiler',

@@ -283,6 +283,7 @@ local lspconfig = require("lspconfig")
 -- Allow overriding LSP settings locally, use vim dir for .gitignore compat
 require("nlspsettings").setup({ ---@diagnostic disable-line: missing-fields
    local_settings_dir = ".vim",
+   local_settings_root_markers_fallback = { ".git" },
    append_default_schemas = true,
    loader = "json",
 })
@@ -377,6 +378,8 @@ mason_lspconfig.setup_handlers({
    end,
    ["jsonls"] = function()
       lspconfig.jsonls.setup({
+         capabilities = lsp_caps,
+         on_attach = lsp_on_attach,
          settings = {
             json = {
                schemas = require("schemastore").json.schemas(),
@@ -390,6 +393,8 @@ mason_lspconfig.setup_handlers({
    ["yamlls"] = function()
       lspconfig.yamlls.setup(require("yaml-companion").setup({
          lspconfig = {
+            capabilities = lsp_caps,
+            on_attach = lsp_on_attach,
             settings = {
                yaml = {
                   schemaStore = {
@@ -491,6 +496,29 @@ mason_lspconfig.setup_handlers({
          on_attach = lsp_on_attach,
       })
    end,
+   ["luau_lsp"] = function()
+      require("luau-lsp").setup({ ---@diagnostic disable-line: missing-fields
+         platform = {
+            type = "standard",
+         },
+         sourcemap = {
+            enabled = false,
+         },
+         types = {
+            definition_files = {
+               "./crates/core/lua/globals.d.luau",
+            },
+            roblox_security_level = "None",
+         },
+         fflags = {
+            enable_new_solver = true,
+         },
+         server = {
+            capabilities = lsp_caps,
+            on_attach = lsp_on_attach,
+         },
+      })
+   end,
 })
 
 local rustowl = require("rustowl")
@@ -498,6 +526,7 @@ rustowl.setup({
    auto_attach = false,
    auto_enable = false,
    client = { ---@diagnostic disable-line: missing-fields
+      capabilities = lsp_caps,
       on_attach = function(client, bufnr)
          util.noremap("n", "<leader>o", util.partial(rustowl.toggle, bufnr), bufnr, true)
          return lsp_on_attach(client, bufnr)
@@ -516,12 +545,12 @@ vim.api.nvim_create_autocmd("FileType", {
    callback = function()
       require("metals").initialize_or_attach({
          capabilities = lsp_caps,
+         on_attach = lsp_on_attach,
          handlers = require("config.metals_lsp_status").setup(),
          init_options = {
             compilerOptions = vim.empty_dict(),
             statusBarProvider = "on",
          },
-         on_attach = lsp_on_attach,
          settings = {
             showImplicitArguments = true,
          },
