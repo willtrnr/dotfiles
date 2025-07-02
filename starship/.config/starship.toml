@@ -1,0 +1,114 @@
+"$schema" = "https://starship.rs/config-schema.json"
+
+#  \ue0b0
+
+format = """
+$status\
+$venv\
+$aws\
+$azure\
+$gcloud\
+$terraform\
+$username\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$bzr\
+$hg\
+$character\
+"""
+
+add_newline = false
+
+palette = "agnoster"
+
+follow_symlinks = false
+
+[palettes.agnoster]
+bg = "none"
+fg = "black"
+
+dir_bg = "blue"
+dir_fg = "black"
+
+vcs_clean_bg = "green"
+vcs_clean_fg = "black"
+vcs_dirty_bg = "yellow"
+vcs_dirty_fg = "black"
+vcs_new_bg = "red"
+vcs_new_fg = "white"
+
+venv_bg = "blue"
+venv_fg = "black"
+
+cloud_prod_bg = "red"
+cloud_prod_fg = "yellow"
+cloud_bg = "green"
+cloud_fg = "black"
+
+status_bg = "black"
+status_fg = "white"
+status_retval_fg = "red"
+status_root_fg = "yellow"
+status_job_fg = "cyan"
+
+[aws]
+disabled = true
+
+[azure]
+disabled = true
+
+[character]
+format = "[\ue0b0](fg:prev_bg) "
+
+[directory]
+format = "[\ue0b0]($style fg:prev_bg)[ $path ]($style)"
+style = "bg:dir_bg fg:dir_fg"
+truncate_to_repo = false
+truncation_symbol = "…/"
+
+[gcloud]
+disabled = true
+
+[git_branch]
+format = "([\ue0b0]($style fg:prev_bg)[ $symbol $branch(:$remote_branch) ]($style))"
+symbol = "\ue0a0"
+style = "bg:vcs_clean_bg fg:vcs_clean_fg"
+
+[git_state]
+rebase = ">R>"
+merge = "<M>"
+bisect = ">B<"
+
+[git_status]
+format = "([\ue0b0]($style fg:prev_bg)[ $all_status$ahead_behind ]($style))"
+ahead = "\u21b1"
+behind = "\u21b0"
+diverged = "\u21c5"
+up_to_date = ""
+untracked = ""
+stashed = ""
+modified = "±"
+staged = "+"
+renamed = ""
+deleted = ""
+typechanged = ""
+style = "bg:vcs_dirty_bg fg:vcs_dirty_fg"
+
+[scala]
+detect_folders = []
+
+[shell]
+disabled = true
+
+[status]
+disabled = false
+format = "([ $symbol $status ]($style))"
+symbol = "\u2717"
+style = "bg:status_bg fg:status_fg"
+failure_style = "bg:status_bg fg:status_retval_fg"
+
+[username]
+style_root = "fg:status_root_fg"
+format = "[ $user ]($style)"
