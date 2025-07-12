@@ -25,3 +25,4 @@ alias passgen="tr -dc 'A-Za-z0-9-_.' < /dev/urandom | head -c"
 
 # Additional git aliases missing in git plugin
 alias glr='git pull --rebase'
+alias gmnff='git merge --no-ff'
