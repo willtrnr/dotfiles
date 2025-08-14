@@ -48,20 +48,22 @@ cat > Cargo.toml <<EOF
 members = [
   "${PKGNAME}",
 ]
-resolver = "2"
+resolver = "3"
 
 [workspace.package]
 version = "0.1.0"
 authors = [
   "github.com/willtrnr",
 ]
-edition = "2021"
-rust-version = "1.84"
+edition = "2024"
+rust-version = "1.88"
 repository = "https://github.com/willtrnr/${PKGNAME}"
 license = "MIT"
 publish = false
 
 [workspace.dependencies]
+${PKGNAME} = { path = "${PKGNAME}" }
+
 mimalloc = "0.1"
 
 [profile.release]
@@ -88,26 +90,6 @@ targets = [
 ]
 EOF
 
-cat > .cargo/config.toml <<EOF
-[alias]
-br = "build --profile=release"
-
-[target.'cfg(target_arch = "x86_64")']
-rustflags = ["-C", "target-cpu=x86-64-v3"]
-
-[target.'cfg(target_arch = "aarch64")']
-rustflags = ["-C", "target-feature=+neon"]
-
-[target.'cfg(target_env = "musl")']
-rustflags = ["-C", "target-feature=+crt-static"]
-
-[target.'cfg(all(target_arch = "x86_64", target_os = "linux", target_env = "musl"))']
-linker = "x86_64-linux-musl-gcc"
-
-[target.'cfg(all(target_arch = "aarch64", target_os = "linux", target_env = "musl"))']
-linker = "aarch64-linux-musl-gcc"
-EOF
-
 cat > deny.toml <<EOF
 [graph]
 targets = [
@@ -130,11 +112,9 @@ ignore = true
 
 [bans]
 deny = [
-  { crate = "cc:=1.0.91", reason = "breaks xwin" },
   { crate = "log", deny-multiple-versions = true },
   { crate = "opentelemetry", deny-multiple-versions = true },
   { crate = "rustls", reason = "use native-tls instead" },
-  { crate = "serde_derive:>=1.0.172,<1.0.184", reason = "bundled binaries" },
   { crate = "tracing", deny-multiple-versions = true },
   { crate = "webpki-roots", reason = "native TLS is required for internal CAs" },
 ]

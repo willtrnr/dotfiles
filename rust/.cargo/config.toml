@@ -6,6 +6,9 @@ xc = "x check --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
 xr = "x run --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
 xt = "x test --xwin-arch=x86_64 --target=x86_64-pc-windows-msvc"
 
+[build]
+rustc-wrapper = "/usr/bin/sccache"
+
 [net]
 git-fetch-with-cli = true
 
