@@ -26,6 +26,8 @@ if TERMINAL="$(find_first wezterm-gui wezterm st kitty urxvt ghostty alacritty x
 fi
 
 # Select the best available browser
-if BROWSER="$(find_first google-chrome-beta google-chrome-stable chromium-snapshot-bin chromium firefox)"; then
+if BROWSER="$(find_first google-chrome-beta google-chrome-stable chromium-snapshot-bin chromium firefox \
+  "$([ -n "${WSL_DISTRO_NAME}" ] && echo '/mnt/c/PROGRA~1/Google/Chrome/Application/chrome.exe')" \
+)"; then
   export BROWSER
 fi
