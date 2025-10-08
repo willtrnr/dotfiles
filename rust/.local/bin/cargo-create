@@ -114,7 +114,7 @@ deny = [
   { crate = "opentelemetry", deny-multiple-versions = true },
   { crate = "rustls", reason = "use native-tls instead" },
   { crate = "tracing", deny-multiple-versions = true },
-  { crate = "webpki-roots", reason = "native TLS is required for internal CAs" },
+  { crate = "webpki-roots", reason = "use system roots instead" },
 ]
 
 [sources]
