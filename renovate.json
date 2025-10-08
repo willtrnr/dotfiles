@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":disableDependencyDashboard"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/.ya?ml$/"
+      ],
+      "matchStrings": [
+        "#\\s*renovate:[#\\s]*datasource=(?<datasource>[\\w._-]+)[#\\s]+depName=(?<depName>\\S+)(?:[#\\s]+versioning=(?<versioning>\\S*))?(?:[#\\s]+registryUrl=(?<registryUrl>\\S*))?\\s+[\\w._-]+\\s*:\\s*['\"]?(?<currentValue>[\\w+._-]+)['\"]?(?:$|\\s)"
+      ],
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/.ya?ml$/"
+      ],
+      "matchStrings": [
+        "https://github.com/(?<depName>[^\\s/]+/[^\\s/]+)/raw/refs/tags/(?<currentValue>[\\w+._-]+)/",
+        "https://github.com/(?<depName>[^\\s/]+/[^\\s/]+)/[^\\s?]+\\?ref=(?<currentValue>[\\w+._-]+)",
+        "https://raw.githubusercontent.com/(?<depName>[^\\s/]+/[^\\s/]+)/(?:refs/tags/)?(?<currentValue>[\\w+._-]+)/"
+      ],
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/.ya?ml$/"
+      ],
+      "matchStrings": [
+        "https://github.com/(?<depName>[^\\s/]+/[^\\s/]+)/releases/download/(?<currentValue>[\\w+._-]+)/"
+      ],
+      "datasourceTemplate": "github-releases"
+    }
+  ]
+}
