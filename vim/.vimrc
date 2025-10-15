@@ -101,7 +101,6 @@ autocmd BufNewFile,BufRead *.slaspec,*.sinc set filetype=sleigh
 call plug#begin()
 
 Plug 'arcticicestudio/nord-vim'
-Plug 'cordx56/rustowl'
 Plug 'dcharbon/vim-flatbuffers'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'pest-parser/pest.vim'
@@ -125,8 +124,8 @@ if has('nvim')
   Plug 'nvim-tree/nvim-web-devicons'
 
   " Navigation
-  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
   Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
   " Completion
   Plug 'hrsh7th/cmp-buffer'
@@ -144,17 +143,22 @@ if has('nvim')
   Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
   Plug 'kosayoda/nvim-lightbulb'
   Plug 'lopi-py/luau-lsp.nvim'
-  Plug 'mason-org/mason-lspconfig.nvim', { 'branch': 'v1.x' }
-  Plug 'mason-org/mason.nvim', { 'branch': 'v1.x' }
+  if has('nvim-0.11')
+    Plug 'mason-org/mason.nvim', { 'tag': 'v2.*' }
+    Plug 'mason-org/mason-lspconfig.nvim', { 'tag': 'v2.*' }
+    Plug 'mrcjkb/rustaceanvim', { 'tag': 'v6.*' }
+  else
+    Plug 'mason-org/mason.nvim', { 'tag': 'v1.*' }
+    Plug 'mason-org/mason-lspconfig.nvim', { 'tag': 'v1.*' }
+    Plug 'mrcjkb/rustaceanvim', { 'tag': 'v5.*' }
+  endif
   Plug 'mfussenegger/nvim-dap'
   Plug 'mfussenegger/nvim-jdtls'
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/lsp-status.nvim'
   Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
   Plug 'scalameta/nvim-metals'
-  Plug 'simrat39/rust-tools.nvim'
   Plug 'someone-stole-my-name/yaml-companion.nvim'
-  Plug 'tamago324/nlsp-settings.nvim'
   Plug 'theHamsta/nvim-dap-virtual-text'
 else
   let g:polyglot_disabled = [

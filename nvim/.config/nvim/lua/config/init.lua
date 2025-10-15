@@ -8,9 +8,7 @@ local util = require("util")
 local lsp_caps = vim.lsp.protocol.make_client_capabilities()
 
 -- Make a group for all our custom autocmd
-local augroup = vim.api.nvim_create_augroup("usercmd", {
-   clear = true,
-})
+local augroup = vim.api.nvim_create_augroup("usercmd", { clear = true })
 
 --
 -- Rice our ride first
@@ -122,6 +120,20 @@ vim.api.nvim_create_autocmd("TextYankPost", {
    end,
 })
 
+-- Use TreeSitter for better highlight
+require("nvim-treesitter.configs").setup({ ---@diagnostic disable-line: missing-fields
+   auto_install = true,
+   highlight = {
+      enable = true,
+   },
+   incremental_selection = {
+      enable = true,
+   },
+   textobjects = {
+      enable = true,
+   },
+})
+
 --
 -- Navigation
 --
@@ -208,10 +220,11 @@ cmp.setup({
    sources = cmp.config.sources({
       { name = "nvim_lsp" },
       { name = "calc" },
-      { name = "buffer" },
-      { name = "path" },
       { name = "cmp_tabnine" },
       { name = "crates" },
+      { name = "path" },
+   }, {
+      { name = "buffer" },
    }),
    window = ricing.cmp_window,
 })
@@ -221,7 +234,7 @@ local cmp_lsp = require("cmp_nvim_lsp")
 lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
 
 --
--- LSP & Diagnostics
+-- Diagnostics
 --
 
 -- Only show virtual text for warnings and above
@@ -235,8 +248,8 @@ vim.diagnostic.config({
 })
 
 -- Diagnostics navigation
-util.noremap("n", "g[", vim.diagnostic.goto_prev)
-util.noremap("n", "g]", vim.diagnostic.goto_next)
+util.noremap("n", "g[", function() vim.diagnostic.jump({ count = -1 }) end)
+util.noremap("n", "g]", function() vim.diagnostic.jump({ count = 1 }) end)
 
 -- Show diagnostic at cursor position in a floating window
 vim.api.nvim_create_autocmd("CursorHold", {
@@ -255,38 +268,9 @@ vim.api.nvim_create_autocmd("CursorHold", {
    end,
 })
 
--- Use TS for semantic highlight
-require("nvim-treesitter.configs").setup({ ---@diagnostic disable-line: missing-fields
-   auto_install = true,
-   highlight = {
-      enable = true,
-   },
-   incremental_selection = {
-      enable = true,
-   },
-   textobjects = {
-      enable = true,
-   },
-})
-
--- Mason package manager for LSP servers and linters
-require("mason").setup()
-
--- LSP server auto-configuration
-local mason_lspconfig = require("mason-lspconfig")
-mason_lspconfig.setup({ ---@diagnostic disable-line: missing-fields
-   automatic_installation = true,
-})
-
-local lspconfig = require("lspconfig")
-
--- Allow overriding LSP settings locally, use vim dir for .gitignore compat
-require("nlspsettings").setup({ ---@diagnostic disable-line: missing-fields
-   local_settings_dir = ".vim",
-   local_settings_root_markers_fallback = { ".git" },
-   append_default_schemas = true,
-   loader = "json",
-})
+--
+-- LSP
+--
 
 -- Code actions indicator
 local lightbulb = require("nvim-lightbulb")
@@ -347,192 +331,180 @@ local function lsp_on_attach(client, bufnr)
    end
 end
 
--- Workaround for ServerCancelled issue
--- See: https://github.com/neovim/neovim/issues/30985
-local rust_analyzer_handlers = util.iife(function()
-   if vim.fn.has("nvim-0.10.3") == 1 or vim.fn.has("nvim-0.11") == 1 then
-      return vim.empty_dict()
-   end
+-- Mason package manager for LSP servers and linters
+require("mason").setup()
 
-   local handlers = {}
-   for _, name in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
-      local handler = vim.lsp.handlers[name]
-      if handler ~= nil then
-         handlers[name] = function(err, result, context, config)
-            if err ~= nil and err.code == -32802 then
-               return
-            end
-            return handler(err, result, context, config)
-         end
-      end
-   end
-   return handlers
-end)
+local mason_lspconfig = require("mason-lspconfig")
+mason_lspconfig.setup({
+   -- This key does not exist on mason-lspconfig < 2.x so will be ignored
+   automatic_enable = {
+      exclude = {
+         -- Handled by Rustaceanvim
+         "rust-analyzer",
+      },
+   },
+})
 
-mason_lspconfig.setup_handlers({
-   function(server_name)
-      lspconfig[server_name].setup({
-         capabilities = lsp_caps,
-         on_attach = lsp_on_attach,
-      })
-   end,
-   ["jsonls"] = function()
-      lspconfig.jsonls.setup({
-         capabilities = lsp_caps,
-         on_attach = lsp_on_attach,
-         settings = {
-            json = {
-               schemas = require("schemastore").json.schemas(),
-               validate = {
-                  enable = true,
-               },
+if vim.fn.has("nvim-0.11") == 1 then
+   vim.api.nvim_create_autocmd("LspAttach", {
+      group = augroup,
+      callback = function(args)
+         return lsp_on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf)
+      end,
+   })
+
+   vim.lsp.config("*", {
+      capabilities = lsp_caps,
+   })
+
+   vim.lsp.config("jsonls", {
+      settings = {
+         json = {
+            validate = true,
+         },
+      },
+      before_init = function(_params, config)
+         config.settings.json.schemas = require("schemastore").json.schemas()
+      end,
+   })
+
+   vim.lsp.config("yamlls", {
+      settings = {
+         yaml = {
+            format = {
+               enable = true,
+            },
+            validate = true,
+            completion = true,
+            schemaStore = {
+               enable = false
             },
          },
-      })
-   end,
-   ["yamlls"] = function()
-      lspconfig.yamlls.setup(require("yaml-companion").setup({
-         lspconfig = {
+      },
+      before_init = function(_params, config)
+         config.settings.yaml.schemas = require("schemastore").yaml.schemas()
+      end,
+   })
+else
+   local lspconfig = require("lspconfig")
+
+   mason_lspconfig.setup_handlers({
+      function(server_name)
+         lspconfig[server_name].setup({
+            capabilities = lsp_caps,
+            on_attach = lsp_on_attach,
+         })
+      end,
+      ["jsonls"] = function()
+         lspconfig.jsonls.setup({
             capabilities = lsp_caps,
             on_attach = lsp_on_attach,
             settings = {
-               yaml = {
-                  schemaStore = {
-                     enable = false,
-                     url = "",
-                  },
-                  schemas = require("schemastore").yaml.schemas(),
-                  trace = {
-                     server = "info",
-                  },
-               },
-            },
-         },
-      }))
-   end,
-   ["rust_analyzer"] = function()
-      require("rust-tools").setup({
-         tools = {
-            runnables = {
-               use_telescope = true,
-            },
-         },
-         server = {
-            capabilities = lsp_caps,
-            on_attach = function(client, bufnr)
-               for k, v in pairs(rust_analyzer_handlers) do
-                  vim.lsp.handlers[k] = v
-               end
-
-               return lsp_on_attach(client, bufnr)
-            end,
-            settings = {
-               ["rust-analyzer"] = {
-                  cargo = {
-                     buildScripts = {
-                        enable = true,
-                     },
-                  },
-                  check = {
-                     command = "clippy",
-                  },
-                  completion = {
-                     fullFunctionSignatures = {
-                        enable = true,
-                     },
-                  },
-                  imports = {
-                     group = {
-                        enable = false,
-                     },
-                     prefix = "crate",
-                  },
-                  lens = {
-                     enable = false,
-                  },
-                  procMacro = {
+               json = {
+                  schemas = require("schemastore").json.schemas(),
+                  validate = {
                      enable = true,
                   },
                },
             },
-         },
-      })
-   end,
-   ["omnisharp"] = function()
-      lspconfig.omnisharp.setup({
-         capabilities = lsp_caps,
-         on_attach = function(client, bufnr)
-            -- For some reason OmniSharp mis-represents its capabilities, so patch it here
-            client.server_capabilities = util.update_capabilities(client.server_capabilities, {
-               codeActionProvider = vim.empty_dict(),
-               definitionProvider = true,
-               documentFormattingProvider = true,
-               documentRangeFormattingProvider = true,
-               hoverProvider = true,
-               renameProvider = vim.empty_dict(),
-            })
+         })
+      end,
+      ["yamlls"] = function()
+         lspconfig.yamlls.setup(require("yaml-companion").setup({
+            lspconfig = {
+               capabilities = lsp_caps,
+               on_attach = lsp_on_attach,
+               settings = {
+                  yaml = {
+                     schemaStore = {
+                        enable = false,
+                        url = "",
+                     },
+                     schemas = require("schemastore").yaml.schemas(),
+                     trace = {
+                        server = "info",
+                     },
+                  },
+               },
+            },
+         }))
+      end,
+      ["omnisharp"] = function()
+         lspconfig.omnisharp.setup({
+            capabilities = lsp_caps,
+            on_attach = function(client, bufnr)
+               -- For some reason OmniSharp mis-represents its capabilities, so patch it here
+               client.server_capabilities = util.update_capabilities(client.server_capabilities, {
+                  codeActionProvider = vim.empty_dict(),
+                  definitionProvider = true,
+                  documentFormattingProvider = true,
+                  documentRangeFormattingProvider = true,
+                  hoverProvider = true,
+                  renameProvider = vim.empty_dict(),
+               })
 
-            return lsp_on_attach(client, bufnr)
-         end,
-         settings = {
-            formattingOptions = {
-               enableEditorConfigSupport = true,
-               organizeImports = true,
+               return lsp_on_attach(client, bufnr)
+            end,
+            settings = {
+               formattingOptions = {
+                  enableEditorConfigSupport = true,
+                  organizeImports = true,
+               },
+               msbuild = {
+                  loadProjectsOnDemand = false,
+               },
+               roslynExtensionsOptions = {
+                  enableAnalyzerSupport = true,
+                  enableDecompilationSupport = true,
+                  enableImportCompletion = true,
+               },
             },
-            msbuild = {
-               loadProjectsOnDemand = false,
-            },
-            roslynExtensionsOptions = {
-               enableAnalyzerSupport = true,
-               enableDecompilationSupport = true,
-               enableImportCompletion = true,
-            },
-         },
-      })
-   end,
-   ["pest_ls"] = function()
-      require("pest-vim").setup({
-         capabilities = lsp_caps,
-         on_attach = lsp_on_attach,
-      })
-   end,
-   ["luau_lsp"] = function()
-      require("luau-lsp").setup({ ---@diagnostic disable-line: missing-fields
-         platform = {
-            type = "standard",
-         },
-         sourcemap = {
-            enabled = false,
-         },
-         types = {
-            definition_files = {
-               "./crates/core/lua/globals.d.luau",
-            },
-            roblox_security_level = "None",
-         },
-         fflags = {
-            enable_new_solver = true,
-         },
-         server = {
+         })
+      end,
+      ["pest_ls"] = function()
+         require("pest-vim").setup({
             capabilities = lsp_caps,
             on_attach = lsp_on_attach,
-         },
-      })
-   end,
-})
-
-local rustowl = require("rustowl")
-rustowl.setup({
-   auto_attach = false,
-   auto_enable = false,
-   client = { ---@diagnostic disable-line: missing-fields
-      capabilities = lsp_caps,
-      on_attach = function(client, bufnr)
-         util.noremap("n", "<leader>o", util.partial(rustowl.toggle, bufnr), bufnr, true)
-         return lsp_on_attach(client, bufnr)
+         })
       end,
+      ["luau_lsp"] = function()
+         require("luau-lsp").setup({ ---@diagnostic disable-line: missing-fields
+            platform = {
+               type = "standard",
+            },
+            sourcemap = {
+               enabled = false,
+            },
+            types = {
+               roblox_security_level = "None",
+            },
+            fflags = {
+               enable_new_solver = true,
+            },
+            server = {
+               capabilities = lsp_caps,
+               on_attach = lsp_on_attach,
+            },
+         })
+      end,
+   })
+end
+
+-- Rustaceanvim uses this weird thing
+vim.g.rustaceanvim = { ---@type rustaceanvim.Config
+   tools = {
+      rustc = {
+         default_edition = "2024",
+      },
    },
-})
+   server = {
+      capabilities = lsp_caps,
+      standalone = false,
+   },
+   dap = {
+      autoload_configurations = false,
+   },
+}
 
 vim.api.nvim_create_autocmd("FileType", {
    group = vim.api.nvim_create_augroup("nvim-metals", {
