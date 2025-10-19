@@ -4,6 +4,9 @@
 
 local M = {}
 
+---No-op function
+function M.noop() end
+
 ---Capitalize the first character in a string
 ---@param s string
 ---@return string

@@ -98,7 +98,7 @@ snacks.setup({
 })
 
 -- Toggle terminal on ctrl-\
-util.noremap({ "n", "t" }, [[<c-\>]], function()
+util.noremap({ "n", "t" }, [[<C-\>]], function()
    snacks.terminal.toggle(nil, {
       win = {
          height = 0.25,
@@ -187,11 +187,10 @@ telescope.setup({
 })
 telescope.load_extension("fzf")
 telescope.load_extension("lsp_handlers")
-telescope.load_extension("yaml_schema")
 
 local telescope_builtin = require("telescope.builtin")
-util.noremap("n", "<leader><tab>", telescope_builtin.find_files)
-util.noremap("n", "<leader><s-tab>", telescope_builtin.live_grep)
+util.noremap("n", "<leader><Tab>", telescope_builtin.find_files)
+util.noremap("n", "<leader><S-Tab>", telescope_builtin.live_grep)
 
 --
 -- Completion
@@ -206,11 +205,11 @@ cmp.setup({
    formatting = ricing.cmp_formatting,
    mapping = cmp.mapping.preset.insert({
       -- Call up the autocomplete on <ctrl-space>
-      ["<c-space>"] = cmp.mapping.complete(),
+      ["<C-Space>"] = cmp.mapping.complete(),
       -- Accept the explicitly selected option
-      ["<cr>"] = cmp.mapping.confirm({ select = false }),
+      ["<CR>"] = cmp.mapping.confirm({ select = false }),
       -- Accept the first or selected option
-      ["<tab>"] = cmp.mapping.confirm({ select = true }),
+      ["<Tab>"] = cmp.mapping.confirm({ select = true }),
    }),
    snippet = {
       expand = function(args)
@@ -220,7 +219,7 @@ cmp.setup({
    sources = cmp.config.sources({
       { name = "nvim_lsp" },
       { name = "calc" },
-      { name = "cmp_tabnine" },
+      -- { name = "t9cmp" },
       { name = "crates" },
       { name = "path" },
    }, {
@@ -232,6 +231,12 @@ cmp.setup({
 -- Extend the LSP caps with the cmp caps
 local cmp_lsp = require("cmp_nvim_lsp")
 lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
+
+-- Setup Tabnine autocomplete
+require("tabnine.chat.setup").setup = util.noop -- HACK: Noop the chat agent setup function to disable it
+require("tabnine").setup({
+   accept_keymap = "<NL>",
+})
 
 --
 -- Diagnostics
@@ -296,7 +301,7 @@ local function lsp_on_attach(client, bufnr)
    lsp_nmap("hoverProvider", "<leader>d", vim.lsp.buf.hover)
 
    -- Show signature help
-   lsp_nmap("signatureHelpProvider", "<c-s>", vim.lsp.buf.signature_help)
+   lsp_nmap("signatureHelpProvider", "<C-s>", vim.lsp.buf.signature_help)
 
    -- Code navigation
    lsp_nmap("definitionProvider", "gd", vim.lsp.buf.definition)
@@ -461,12 +466,6 @@ else
             },
          })
       end,
-      ["pest_ls"] = function()
-         require("pest-vim").setup({
-            capabilities = lsp_caps,
-            on_attach = lsp_on_attach,
-         })
-      end,
       ["luau_lsp"] = function()
          require("luau-lsp").setup({ ---@diagnostic disable-line: missing-fields
             platform = {
@@ -490,7 +489,7 @@ else
    })
 end
 
--- Rustaceanvim uses this weird thing
+-- Rustaceanvim uses this weird global config thing
 vim.g.rustaceanvim = { ---@type rustaceanvim.Config
    tools = {
       rustc = {

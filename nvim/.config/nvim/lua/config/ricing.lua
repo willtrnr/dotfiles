@@ -2,8 +2,6 @@
 -- Ricing
 --
 
-local util = require("util")
-
 local M = {}
 
 -- Enable colored file type icons
@@ -21,7 +19,9 @@ M.lsp_status.register_progress()
 
 local lsp_status_callback = vim.lsp.handlers["$/progress"]
 vim.lsp.handlers["$/progress"] = function(err, result, context, config)
-   lsp_status_callback(err, result, context, config)
+   if lsp_status_callback ~= nil then
+      lsp_status_callback(err, result, context, config)
+   end
    vim.notify(M.lsp_status.status_progress(), vim.log.levels.INFO, {
       id = "lsp_progress",
       title = "LSP Progress",
@@ -50,7 +50,7 @@ end
 
 local yaml_companion = require("yaml-companion")
 
-local function yaml_schema()
+local function lualine_yaml_schema()
    local success, name = pcall(function()
       return yaml_companion.get_buf_schema(0).result[1].name
    end)
@@ -60,6 +60,13 @@ local function yaml_schema()
    else
       return ""
    end
+end
+
+local tabnine_status = require("tabnine.status")
+
+local function lualine_tabnine_status()
+   local status = tabnine_status.status()
+   return string.gsub(status, " tabnine", "")
 end
 
 M.lualine = require("lualine")
@@ -99,14 +106,14 @@ M.lualine.setup({
          "encoding",
          "fileformat",
          "filetype",
-         yaml_schema,
+         lualine_yaml_schema,
+         lualine_tabnine_status,
       },
    },
    extensions = {
       "fugitive",
       "fzf",
       "mason",
-      "toggleterm",
    },
 })
 
@@ -162,41 +169,7 @@ end
 -- Extra lightbulb diagnostic
 M.lightbulb_icon = "󱠃"
 
--- Setup LSP kind symbols
-M.kind_icons = {
-   Class = "", -- box
-   Color = "", -- paint palette
-   Constant = "π", -- greek letter 'p' pi
-   Constructor = "", -- magic wand
-   Enum = "", -- bullet list
-   EnumMember = "", -- tag
-   Event = "", -- lightning bolt
-   Field = "", -- wrench
-   File = "󰈤", -- blank file
-   Folder = "", -- closed folder
-   Function = "λ", -- greek letter 'l' lambda
-   Interface = "", -- power plug
-   Keyword = "", -- pound sign
-   Method = "󰊕", -- stylized 'f'
-   Module = "", -- code file
-   Operator = "Σ", -- greek letter 'S' sigma
-   Property = "", -- wrench
-   Reference = "", -- share arrow icon
-   Snippet = "", -- self-closing curly braces
-   Struct = "", -- tree structure
-   Text = "", -- paragraph
-   TypeParameter = "β", -- greek letter 'b' beta
-   Unit = "", -- triangle ruler
-   Value = "󰎠", -- number format icon
-   Variable = "α", -- greek letter 'a' alpha
-}
-
-local comp_kind = vim.lsp.protocol.CompletionItemKind
-for i, kind in ipairs(comp_kind) do
-   comp_kind[i] = M.kind_icons[kind] or kind
-end
-
---- Setup cmp menu styling
+-- Setup cmp menu styling
 M.cmp_highlight_groups = {
    Pmenu = { fg = "#C5CDD9", bg = "#22252A" },
    PmenuSel = { fg = "NONE", bg = "#282C34" },
@@ -238,21 +211,11 @@ for group, info in pairs(M.cmp_highlight_groups) do
    vim.api.nvim_set_hl(0, group, info)
 end
 
-local cmp_source_renames = {
-   nvim_lsp = "LSP",
-   cmp_tabnine = "T9",
-}
-
-local function cmp_format(entry, vim_item)
-   -- Add some padding to the symbol
-   vim_item.kind = " " .. (M.kind_icons[vim_item.kind] or "") .. " "
-
-   -- Source hint with some renames
-   local source = cmp_source_renames[entry.source.name] or util.capitalize(entry.source.name)
-   vim_item.menu = "     [" .. source .. "]"
-
-   return vim_item
-end
+-- Setup cmp menu formatting
+local lspkind_cmp_format = require("lspkind").cmp_format({
+   mode = "symbol",
+   preset = "default",
+})
 
 M.cmp_formatting = {
    fields = {
@@ -260,7 +223,12 @@ M.cmp_formatting = {
       "abbr",
       "menu",
    },
-   format = cmp_format,
+   format = function(entry, vim_item)
+      local item = lspkind_cmp_format(entry, vim_item)
+      -- Add some extra padding to the symbol
+      item.kind = " " .. item.kind .. " "
+      return item
+   end,
 }
 
 M.cmp_window = {

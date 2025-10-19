@@ -61,27 +61,27 @@ syntax enable
 :command Qa qa
 
 " Close buffer and move to previous with Ctrl-w
-nnoremap <silent> <c-w> :bp<cr>:bd#<cr>
+nnoremap <silent> <C-w> :bp<CR>:bd#<CR>
 
 " Quick buffer switching with Tab and Shift-Tab
-nnoremap <silent> <tab> :bn<cr>
-nnoremap <silent> <s-tab> :bp<cr>
+nnoremap <silent> <Tab> :bn<CR>
+nnoremap <silent> <S-Tab> :bp<CR>
 
 " Use Ctrl-kjhl to navigate windows
-nnoremap <silent> <c-k> :wincmd k<cr>
-nnoremap <silent> <c-j> :wincmd j<cr>
-nnoremap <silent> <c-h> :wincmd h<cr>
-nnoremap <silent> <c-l> :wincmd l<cr>
+nnoremap <silent> <C-k> :wincmd k<CR>
+nnoremap <silent> <C-j> :wincmd j<CR>
+nnoremap <silent> <C-h> :wincmd h<CR>
+nnoremap <silent> <C-l> :wincmd l<CR>
 
 " Alias Alt-arrows to window navigation
-nmap <silent> <a-up> <c-k>
-nmap <silent> <a-down> <c-j>
-nmap <silent> <a-left> <c-h>
-nmap <silent> <a-right> <c-l>
+nmap <silent> <A-Up> <C-k>
+nmap <silent> <A-Down> <C-j>
+nmap <silent> <A-Left> <C-h>
+nmap <silent> <A-Right> <C-l>
 
 " Use F9 to sort selected lines in visual or paragraph in normal
-nnoremap <silent> <f9> vip:'<,'>sort<cr>
-vnoremap <silent> <f9> :'<,'>sort<cr>
+nnoremap <silent> <F9> vip:'<,'>sort<CR>
+vnoremap <silent> <F9> :'<,'>sort<CR>
 
 " Yank to system clipboard
 nnoremap <leader>y "+y
@@ -103,9 +103,7 @@ call plug#begin()
 Plug 'arcticicestudio/nord-vim'
 Plug 'dcharbon/vim-flatbuffers'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'pest-parser/pest.vim'
 Plug 'rescript-lang/vim-rescript'
-Plug 'slint-ui/vim-slint'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'wakatime/vim-wakatime'
@@ -128,14 +126,16 @@ if has('nvim')
   Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
   " Completion
+  Plug 'codota/tabnine-nvim', { 'do': './dl_binaries.sh' }
   Plug 'hrsh7th/cmp-buffer'
   Plug 'hrsh7th/cmp-calc'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/vim-vsnip'
+  Plug 'hrsh7th/vim-vsnip-integ'
+  Plug 'onsails/lspkind.nvim'
   Plug 'saecki/crates.nvim'
-  Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 
   " LSP & Diagnostics
   Plug 'RRethy/vim-illuminate'
@@ -160,22 +160,6 @@ if has('nvim')
   Plug 'scalameta/nvim-metals'
   Plug 'someone-stole-my-name/yaml-companion.nvim'
   Plug 'theHamsta/nvim-dap-virtual-text'
-else
-  let g:polyglot_disabled = [
-  \  'python-compiler',
-  \  'autoindent',
-  \]
-
-  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-  Plug 'junegunn/fzf.vim'
-  Plug 'lilydjwg/colorizer'
-  Plug 'mhinz/vim-signify', { 'tag': 'legacy' }
-  Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-  Plug 'ryanoasis/vim-devicons'
-  Plug 'sheerun/vim-polyglot'
-  Plug 'vim-airline/vim-airline'
-  Plug 'w0rp/ale'
-  Plug 'Yggdroot/indentLine'
 endif
 
 call plug#end()
@@ -185,118 +169,3 @@ call plug#end()
 "
 set background=dark
 colorscheme nord
-
-if !has('nvim')
-  "
-  " IndentLine
-  "
-  let g:indentLine_enabled = 1
-  let g:indentLine_char_list = ['|', '┊', '┆', '¦']
-  let g:indentLine_concealcursor = 'nc'
-  let g:indentLine_conceallevel = '1'
-  let g:indentLine_bufTypeExclude = ['help', 'terminal']
-
-  "
-  " Airline
-  "
-  let g:airline_theme = 'nord'
-  let g:airline_powerline_fonts = 1
-  let g:airline#extensions#tabline#enabled = 1
-
-  "
-  " ALE
-  "
-  let g:ale_linters = {
-  \  'asm': [],
-  \  'python': ['black', 'isort', 'pylint'],
-  \  'rust': ['rustfmt'],
-  \  'scala': [],
-  \}
-
-  let g:ale_disable_lsp = 1
-
-  let g:ale_sign_error = ''
-  let g:ale_sign_warning = ''
-  let g:ale_sign_info = ''
-  let g:ale_sign_hint = '~'
-
-  let g:ale_sign_highlight_linenrs = 1
-
-  let g:ale_python_auto_pipenv = 1
-  let g:ale_python_auto_poetry = 1
-  let g:ale_python_black_auto_pipenv = 1
-  let g:ale_python_black_auto_poetry = 1
-  let g:ale_python_isort_auto_pipenv = 1
-  let g:ale_python_isort_auto_poetry = 1
-  let g:ale_python_pylint_auto_pipenv = 1
-  let g:ale_python_pylint_auto_poetry = 1
-
-  "
-  " FZF
-  "
-  let g:fzf_command_prefix = 'Fzf'
-
-  let g:fzf_action = {
-  \  'return': 'edit',
-  \  'ctrl-t': 'tab split',
-  \  'ctrl-x': 'split',
-  \  'ctrl-v': 'vsplit',
-  \}
-
-  nnoremap <silent> <leader><tab> :FzfGFiles --cached --others --exclude-standard<cr>
-  nnoremap <silent> <leader><s-tab> :FzfRg<cr>
-
-  "
-  " CoC
-  "
-
-  " Use <c-space> to trigger completion.
-  inoremap <silent><expr> <c-@> coc#refresh()
-
-  " Accept auto-complete with <cr>
-  inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "<cr>"
-
-  " Diagnostics navigation
-  nmap <silent> [g <plug>(coc-diagnostic-prev)
-  nmap <silent> ]g <plug>(coc-diagnostic-next)
-
-  " GoTo navigation
-  nmap <silent> gd <plug>(coc-definition)
-  nmap <silent> gy <plug>(coc-type-definition)
-  nmap <silent> gi <plug>(coc-implementation)
-  nmap <silent> gr <plug>(coc-references)
-
-  " Show code actions
-  nmap <silent> <leader>A <plug>(coc-codeaction)
-  nmap <silent> <leader>a <plug>(coc-codeaction-cursor)
-  vmap <silent> <leader>a <plug>(coc-codeaction-selected)
-
-  " Rename symbol
-  nmap <silent> <leader>r <plug>(coc-rename)
-
-  " Format selection
-  nmap <silent> <leader>f <plug>(coc-format-selected)
-  vmap <silent> <leader>f <plug>(coc-format-selected)
-
-  " Search workspace symbols
-  nnoremap <silent> <leader>s :<c-u>CocList -I symbols<cr>
-
-  " Show documentation float
-  function! s:show_documentation()
-    if index(['vim', 'help'], &filetype) >= 0
-      execute 'h '.expand('<cword>')
-    elseif coc#rpc#ready()
-      call CocActionAsync('doHover')
-    else
-      execute '!' . &keywordprg . " " . expand('<cword>')
-    endif
-  endfunction
-
-  nnoremap <silent> <leader>d :call <sid>show_documentation()<cr>
-
-  " Handle highlight actions on cursor hold
-  autocmd CursorHold * silent call CocActionAsync('highlight')
-
-  " Show signature help when jumping to param placeholders
-  autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
-endif
