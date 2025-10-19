@@ -37,7 +37,11 @@ snacks.setup({
             icon = " ",
             title = "Recent Files",
             section = "recent_files",
+            limit = 10,
             cwd = true,
+            filter = function(file)
+               return string.match(file, "/%.git/") == nil
+            end,
             indent = 2,
             padding = 1,
          },
