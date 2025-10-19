@@ -235,7 +235,7 @@ lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
 -- Setup Tabnine autocomplete
 require("tabnine.chat.setup").setup = util.noop -- HACK: Noop the chat agent setup function to disable it
 require("tabnine").setup({
-   accept_keymap = "<NL>",
+   accept_keymap = "<C-Right>",
 })
 
 --
