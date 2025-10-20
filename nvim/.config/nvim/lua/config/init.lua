@@ -48,7 +48,6 @@ snacks.setup({
       },
    },
    explorer = { enabled = true },
-   git = { enabled = true },
    image = { enabled = true },
    indent = {
       enabled = true,
@@ -66,30 +65,9 @@ snacks.setup({
       enabled = true,
       icon_pos = "title",
    },
-   notifier = {
-      enabled = true,
-      width = {
-         min = 40,
-         max = 0.35,
-      },
-      height = {
-         min = 1,
-         max = 0.4,
-      },
-      margin = {
-         top = 0,
-         right = 0,
-         bottom = 1,
-      },
-      level = vim.log.levels.INFO,
-      style = "fancy",
-      top_down = false,
-   },
-   notify = { enabled = true },
    picker = { enabled = true },
    rename = { enabled = true },
    scope = { enabled = true },
-   scroll = { enabled = false },
    styles = {
       input = {
          title_pos = "left",
@@ -189,6 +167,7 @@ telescope.setup({
       },
    },
 })
+telescope.load_extension("fidget")
 telescope.load_extension("fzf")
 telescope.load_extension("lsp_handlers")
 

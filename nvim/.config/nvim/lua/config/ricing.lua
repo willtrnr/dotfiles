@@ -15,18 +15,13 @@ require("visual-whitespace").setup({})
 
 -- LSP status
 M.lsp_status = require("lsp-status")
-M.lsp_status.register_progress()
 
-local lsp_status_callback = vim.lsp.handlers["$/progress"]
-vim.lsp.handlers["$/progress"] = function(err, result, context, config)
-   if lsp_status_callback ~= nil then
-      lsp_status_callback(err, result, context, config)
-   end
-   vim.notify(M.lsp_status.status_progress(), vim.log.levels.INFO, {
-      id = "lsp_progress",
-      title = "LSP Progress",
-   })
-end
+M.fidget = require("fidget")
+M.fidget.setup({
+   notification = {
+      override_vim_notify = true,
+   },
+})
 
 -- Setup lualine
 local function lualine_fmt_mode(v)
