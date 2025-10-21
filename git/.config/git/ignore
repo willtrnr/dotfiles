@@ -2,6 +2,7 @@
 *.iml
 /.idea
 /.metals
+/.tabnine_root
 /.vim
 /.vscode
 /.wakatime*
