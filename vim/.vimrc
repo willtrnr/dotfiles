@@ -60,9 +60,6 @@ syntax enable
 :command Q q
 :command Qa qa
 
-" Close buffer and move to previous with Ctrl-w
-nnoremap <silent> <C-w> :bp<CR>:bd#<CR>
-
 " Quick buffer switching with Tab and Shift-Tab
 nnoremap <silent> <Tab> :bn<CR>
 nnoremap <silent> <S-Tab> :bp<CR>

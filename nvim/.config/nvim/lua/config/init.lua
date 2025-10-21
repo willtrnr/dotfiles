@@ -15,7 +15,7 @@ local augroup = vim.api.nvim_create_augroup("usercmd", { clear = true })
 --
 
 local ricing = require("config.ricing")
-lsp_caps = util.update_capabilities(lsp_caps, ricing.lsp_status.capabilities)
+lsp_caps = util.update_caps(lsp_caps, ricing.lsp_status.capabilities)
 
 --
 -- QOL stuff
@@ -79,6 +79,9 @@ snacks.setup({
    },
 })
 
+-- Use ctrl-w to close tabs
+util.noremap("n", "<C-w>", util.thunk(snacks.bufdelete.delete))
+
 -- Toggle terminal on ctrl-\
 util.noremap({ "n", "t" }, [[<C-\>]], function()
    snacks.terminal.toggle(nil, {
@@ -120,7 +123,7 @@ require("nvim-treesitter.configs").setup({ ---@diagnostic disable-line: missing-
 -- Navigation
 --
 
-util.noremap("n", "<leader>t", snacks.explorer.open)
+util.noremap("n", "<leader>t", util.thunk(snacks.explorer.open))
 
 -- Telescope finders and menus
 local telescope = require("telescope")
@@ -135,7 +138,7 @@ telescope.setup({
          },
       },
       vimgrep_arguments = util.list_concat(
-      -- Include dotfiles in search
+         -- Include dotfiles in search
          telescope_config.values.vimgrep_arguments,
          {
             "--hidden",
@@ -172,8 +175,8 @@ telescope.load_extension("fzf")
 telescope.load_extension("lsp_handlers")
 
 local telescope_builtin = require("telescope.builtin")
-util.noremap("n", "<leader><Tab>", telescope_builtin.find_files)
-util.noremap("n", "<leader><S-Tab>", telescope_builtin.live_grep)
+util.noremap("n", "<leader><Tab>", util.thunk(telescope_builtin.find_files))
+util.noremap("n", "<leader><S-Tab>", util.thunk(telescope_builtin.live_grep))
 
 --
 -- Completion
@@ -213,7 +216,7 @@ cmp.setup({
 
 -- Extend the LSP caps with the cmp caps
 local cmp_lsp = require("cmp_nvim_lsp")
-lsp_caps = util.update_capabilities(lsp_caps, cmp_lsp.default_capabilities())
+lsp_caps = util.update_caps(lsp_caps, cmp_lsp.default_capabilities())
 
 -- Setup Tabnine autocomplete
 require("tabnine.chat.setup").setup = util.noop -- HACK: Noop the chat agent setup function to disable it
@@ -271,7 +274,7 @@ lightbulb.setup({ ---@diagnostic disable-line: missing-fields
 local function lsp_on_attach(client, bufnr)
    local caps = client.server_capabilities
 
-   local function lsp_nmap(cap, key, action)
+   local function lsp_noremap(cap, key, action)
       if caps[cap] then
          util.noremap("n", key, action, bufnr)
       end
@@ -281,40 +284,40 @@ local function lsp_on_attach(client, bufnr)
    ricing.lsp_status.on_attach(client)
 
    -- Show symbol documentation
-   lsp_nmap("hoverProvider", "<leader>d", vim.lsp.buf.hover)
+   lsp_noremap("hoverProvider", "<leader>d", util.thunk(vim.lsp.buf.hover))
 
    -- Show signature help
-   lsp_nmap("signatureHelpProvider", "<C-s>", vim.lsp.buf.signature_help)
+   lsp_noremap("signatureHelpProvider", "<C-s>", util.thunk(vim.lsp.buf.signature_help))
 
    -- Code navigation
-   lsp_nmap("definitionProvider", "gd", vim.lsp.buf.definition)
-   lsp_nmap("typeDefinitionProvider", "gy", vim.lsp.buf.type_definition)
-   lsp_nmap("implementationProvider", "gi", vim.lsp.buf.implementation)
-   lsp_nmap("referencesProvider", "gr", vim.lsp.buf.references)
+   lsp_noremap("definitionProvider", "gd", util.thunk(vim.lsp.buf.definition))
+   lsp_noremap("typeDefinitionProvider", "gy", util.thunk(vim.lsp.buf.type_definition))
+   lsp_noremap("implementationProvider", "gi", util.thunk(vim.lsp.buf.implementation))
+   lsp_noremap("referencesProvider", "gr", util.thunk(vim.lsp.buf.references))
 
    -- Rename symbol
-   lsp_nmap("renameProvider", "<leader>r", vim.lsp.buf.rename)
+   lsp_noremap("renameProvider", "<leader>r", util.thunk(vim.lsp.buf.rename))
 
    -- Format
-   lsp_nmap("documentFormattingProvider", "<leader>f", vim.lsp.buf.format or vim.lsp.buf.formatting)
+   lsp_noremap("documentFormattingProvider", "<leader>f", util.thunk(vim.lsp.buf.format))
 
    -- Code actions
    if caps.codeActionProvider then
-      util.noremap("n", "<leader>a", vim.lsp.buf.code_action, bufnr)
+      util.noremap("n", "<leader>a", util.thunk(vim.lsp.buf.code_action), bufnr)
       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
          group = augroup,
          buffer = bufnr,
-         callback = util.thunkify(lightbulb.update_lightbulb),
+         callback = util.thunk(lightbulb.update_lightbulb),
       })
    end
 
    -- Code lens
    if caps.codeLensProvider then
-      util.noremap("n", "<leader>l", vim.lsp.codelens.run, bufnr)
+      util.noremap("n", "<leader>l", util.thunk(vim.lsp.codelens.run), bufnr)
       vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
          group = augroup,
          buffer = bufnr,
-         callback = util.thunkify(vim.lsp.codelens.refresh),
+         callback = util.thunk(vim.lsp.codelens.refresh),
       })
    end
 end
@@ -422,7 +425,7 @@ else
             capabilities = lsp_caps,
             on_attach = function(client, bufnr)
                -- For some reason OmniSharp mis-represents its capabilities, so patch it here
-               client.server_capabilities = util.update_capabilities(client.server_capabilities, {
+               client.server_capabilities = util.update_caps(client.server_capabilities, {
                   codeActionProvider = vim.empty_dict(),
                   definitionProvider = true,
                   documentFormattingProvider = true,
@@ -480,8 +483,32 @@ vim.g.rustaceanvim = { ---@type rustaceanvim.Config
       },
    },
    server = {
-      capabilities = lsp_caps,
+      capabilities = util.update_caps(lsp_caps, require("rustaceanvim.config.server").create_client_capabilities()),
       standalone = false,
+      default_settings = {
+         ["rust-analyzer"] = {
+            assist = {
+               emitMustUse = true,
+               preferSelf = true,
+            },
+            cargo = {
+               allTargets = false,
+            },
+            completion = {
+               fullFunctionSignatures = { enable = true },
+            },
+            hover = {
+               actions = { enable = false },
+            },
+            inlayHints = {
+               implicitDrops = { enabled = true },
+            },
+            interpret = {
+               tests = true,
+            },
+            lens = { enable = false },
+         },
+      },
    },
    dap = {
       autoload_configurations = false,
