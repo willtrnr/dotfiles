@@ -210,6 +210,12 @@ end
 local lspkind_cmp_format = require("lspkind").cmp_format({
    mode = "symbol",
    preset = "default",
+   maxwidth = {
+      menu = function()
+         return math.max(50, math.floor(vim.o.columns * 0.35))
+      end,
+   },
+   ellipsis_char = "…",
 })
 
 M.cmp_formatting = {

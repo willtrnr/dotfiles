@@ -495,18 +495,10 @@ vim.g.rustaceanvim = { ---@type rustaceanvim.Config
                allTargets = false,
             },
             completion = {
-               fullFunctionSignatures = { enable = true },
+               fullFunctionSignatures = {
+                  enable = true
+               },
             },
-            hover = {
-               actions = { enable = false },
-            },
-            inlayHints = {
-               implicitDrops = { enabled = true },
-            },
-            interpret = {
-               tests = true,
-            },
-            lens = { enable = false },
          },
       },
    },
