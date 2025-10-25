@@ -225,7 +225,11 @@ M.cmp_formatting = {
       "menu",
    },
    format = function(entry, vim_item)
+      local orig_kind = vim_item.kind
       local item = lspkind_cmp_format(entry, vim_item)
+      if item.kind == "" then
+         item.kind = string.upper(string.sub(orig_kind, 1, 1))
+      end
       -- Add some extra padding to the symbol
       item.kind = " " .. item.kind .. " "
       return item
