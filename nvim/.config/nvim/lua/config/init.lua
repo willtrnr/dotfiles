@@ -108,6 +108,25 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Use TreeSitter for better highlight
 require("nvim-treesitter.configs").setup({ ---@diagnostic disable-line: missing-fields
    auto_install = true,
+   ensure_installed = {
+      "css",
+      "html",
+      "javascript",
+      "json",
+      "jsonc",
+      "latex",
+      "lua",
+      "markdown",
+      "markdown_inline",
+      "norg",
+      "regex",
+      "svelte",
+      "toml",
+      "tsx",
+      "typst",
+      "vue",
+      "yaml",
+   },
    highlight = {
       enable = true,
    },
