@@ -4,6 +4,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 if [ -d "$HOME/.profile.d" ] ; then
   for f in "$HOME/.profile.d/"?*.sh ; do
+    # shellcheck disable=SC1090
     [ -r "$f" ] && . "$f"
   done
   unset f

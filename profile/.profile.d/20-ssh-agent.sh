@@ -5,11 +5,13 @@ if [ -e "${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh" ]; then
   if [ -n "${SSH_AGENT_PID}" ]; then
     export SSH_AGENT_PID=''
   fi
-elif [ -z "${SSH_AUTH_SOCK}" ] && command -v ssh-agent > /dev/null; then
-  if ! (ps -u "${USER}" | grep /ssh-agent > /dev/null); then
+elif [ -z "${SSH_AUTH_SOCK}" ] && command -v ssh-agent >/dev/null; then
+  # shellcheck disable=SC2009
+  if ! (ps -u "$(id -u)" | grep /ssh-agent >/dev/null); then
     ssh-agent > "${XDG_RUNTIME_DIR}/ssh-agent.env"
   fi
   if [ -e "${XDG_RUNTIME_DIR}/ssh-agent.env" ]; then
-    . "${XDG_RUNTIME_DIR}/ssh-agent.env" > /dev/null
+    # shellcheck disable=SC1091
+    . "${XDG_RUNTIME_DIR}/ssh-agent.env" >/dev/null
   fi
 fi
