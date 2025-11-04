@@ -13,3 +13,7 @@ coc-settings.json
 *~
 .*_history
 ~*
+
+# Sync stuff
+/.stfolder*
+/.stignore*
