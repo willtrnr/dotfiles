@@ -44,14 +44,14 @@ if TERMINAL="$(find_first \
 fi
 
 # Select the best available browser
-if BROWSER="$(find_first \
+if { [ -z "${SSH_TTY}${SSH_CLIENT}" ] || [ -n "$DISPLAY" ]; } && BROWSER="$(find_first \
   google-chrome-beta \
   google-chrome-stable \
   chromium-snapshot-bin \
   chromium \
   firefox \
   termux-open-url \
-  "$([ -n "${WSL_DISTRO_NAME}" ] && echo '/mnt/c/PROGRA~1/Google/Chrome/Application/chrome.exe' || echo '-')" \
+  "$([ -n "${WSL_DISTRO_NAME}" ] && echo '/mnt/c/PROGRA~1/Google/Chrome/Application/chrome.exe' || printf ' ')" \
 )"; then
   export BROWSER
 fi
