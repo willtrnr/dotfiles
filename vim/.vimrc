@@ -154,7 +154,7 @@ if has('nvim')
   Plug 'mfussenegger/nvim-jdtls'
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/lsp-status.nvim'
-  Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+  Plug 'nvim-treesitter/nvim-treesitter', { 'branch': 'master', 'do': ':TSUpdate' }
   Plug 'scalameta/nvim-metals'
   Plug 'someone-stole-my-name/yaml-companion.nvim'
   Plug 'theHamsta/nvim-dap-virtual-text'
