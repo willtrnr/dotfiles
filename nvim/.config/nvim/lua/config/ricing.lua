@@ -13,6 +13,9 @@ require("colorizer").setup()
 -- Render whitespaces
 require("visual-whitespace").setup({})
 
+-- Animate cursor
+require("smear_cursor").setup({})
+
 -- LSP status
 M.lsp_status = require("lsp-status")
 

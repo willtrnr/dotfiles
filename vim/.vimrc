@@ -118,6 +118,7 @@ if has('nvim')
   Plug 'norcalli/nvim-colorizer.lua'
   Plug 'nvim-lualine/lualine.nvim'
   Plug 'nvim-tree/nvim-web-devicons'
+  Plug 'sphamba/smear-cursor.nvim'
 
   " Navigation
   Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
