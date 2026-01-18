@@ -7,7 +7,7 @@ if [ -z "$PKGNAME" ]; then
   exit 1
 fi
 
-mkdir -p "${PKGNAME}/${PKGNAME}/src" "${PKGNAME}/.cargo"
+mkdir -p "${PKGNAME}/.cargo" "${PKGNAME}/${PKGNAME}/src"
 
 pushd "${PKGNAME}" || exit 1
 trap 'popd' EXIT
@@ -36,8 +36,7 @@ EOF
 "${HOME}/.local/bin/mit" > LICENSE
 
 cat > README.md <<EOF
-${PKGNAME}
-==========
+# ${PKGNAME}
 EOF
 
 cat > Cargo.toml <<EOF
@@ -53,7 +52,7 @@ authors = [
   "github.com/willtrnr",
 ]
 edition = "2024"
-rust-version = "1.90"
+rust-version = "1.92"
 repository = "https://github.com/willtrnr/${PKGNAME}"
 license = "MIT"
 publish = false
@@ -61,20 +60,21 @@ publish = false
 [workspace.dependencies]
 ${PKGNAME} = { path = "${PKGNAME}" }
 
-mimalloc = "0.1"
-
 [profile.release]
-codegen-units = 1
-lto = true
-opt-level = 3
-panic = "abort"
 split-debuginfo = "packed"
 strip = "debuginfo"
+lto = true
+panic = "abort"
+codegen-units = 1
 
 [profile.dev.build-override]
-opt-level = 3
+opt-level = 2
 debug = false
 incremental = false
+codegen-units = 1
+
+[profile.release.build-override]
+opt-level = 2
 codegen-units = 1
 EOF
 
@@ -83,6 +83,7 @@ cat > rust-toolchain.toml <<EOF
 channel = "stable"
 profile = "default"
 targets = [
+  "x86_64-pc-windows-msvc",
   "x86_64-unknown-linux-gnu",
 ]
 EOF
@@ -90,6 +91,7 @@ EOF
 cat > deny.toml <<EOF
 [graph]
 targets = [
+  "x86_64-pc-windows-msvc",
   "x86_64-unknown-linux-gnu",
 ]
 all-features = true
@@ -139,7 +141,6 @@ license.workspace = true
 publish.workspace = true
 
 [dependencies]
-mimalloc = { workspace = true }
 
 [features]
 default = []
@@ -148,9 +149,6 @@ EOF
 echo > "${PKGNAME}/src/lib.rs"
 
 cat > "${PKGNAME}/src/main.rs" <<EOF
-#[global_allocator]
-static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
-
 pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
