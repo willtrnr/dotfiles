@@ -134,31 +134,24 @@ require("illuminate").configure({
    },
 })
 
-vim.api.nvim_set_hl(0, "IlluminatedWordText", {
-   link = "LspReferenceText",
-   default = true,
-})
-vim.api.nvim_set_hl(0, "IlluminatedWordRead", {
-   link = "LspReferenceRead",
-   default = true,
-})
-vim.api.nvim_set_hl(0, "IlluminatedWordWrite", {
-   link = "LspReferenceWrite",
-   default = true,
-})
+for k, v in pairs({
+   IlluminatedWordText = { link = "LspReferenceText", default = true },
+   IlluminatedWordRead = { link = "LspReferenceRead", default = true },
+   IlluminatedWordWrite = { link = "LspReferenceWrite", default = true },
+}) do
+   vim.api.nvim_set_hl(0, k, v)
+end
 
 -- Setup diagnostic signs
-M.sign_icons = {
+for k, v in pairs({
    Error = "",
    Warn = "",
    Info = "",
    Hint = "󰟶",
-}
-
-for kind, sign in pairs(M.sign_icons) do
-   local hl = "DiagnosticSign" .. kind
+}) do
+   local hl = "DiagnosticSign" .. k
    vim.fn.sign_define(hl, {
-      text = sign,
+      text = v,
       texthl = hl,
       numhl = hl,
    })
@@ -168,7 +161,7 @@ end
 M.lightbulb_icon = "󱠃"
 
 -- Setup cmp menu styling
-M.cmp_highlight_groups = {
+for k, v in pairs({
    Pmenu = { fg = "#C5CDD9", bg = "#22252A" },
    PmenuSel = { fg = "NONE", bg = "#282C34" },
 
@@ -177,66 +170,63 @@ M.cmp_highlight_groups = {
    CmpItemAbbrDeprecated = { fg = "#7E8294", bg = "NONE", strikethrough = true },
    CmpItemAbbrMatch = { fg = "#82AAFF", bg = "NONE", bold = true },
    CmpItemAbbrMatchFuzzy = { fg = "#82AAFF", bg = "NONE", bold = true },
-
-   CmpItemKindClass = { fg = "#EADFF0", bg = "#A377BF" },
-   CmpItemKindColor = { fg = "#D8EEEB", bg = "#58B5A8" },
-   CmpItemKindConstant = { fg = "#FFE082", bg = "#D4BB6C" },
-   CmpItemKindConstructor = { fg = "#FFE082", bg = "#D4BB6C" },
-   CmpItemKindEnum = { fg = "#C3E88D", bg = "#9FBD73" },
-   CmpItemKindEnumMember = { fg = "#DDE5F5", bg = "#6C8ED4" },
-   CmpItemKindEvent = { fg = "#EED8DA", bg = "#B5585F" },
-   CmpItemKindField = { fg = "#EED8DA", bg = "#B5585F" },
-   CmpItemKindFile = { fg = "#C5CDD9", bg = "#7E8294" },
-   CmpItemKindFolder = { fg = "#F5EBD9", bg = "#D4A959" },
-   CmpItemKindFunction = { fg = "#EADFF0", bg = "#A377BF" },
-   CmpItemKindInterface = { fg = "#D8EEEB", bg = "#58B5A8" },
-   CmpItemKindKeyword = { fg = "#C3E88D", bg = "#9FBD73" },
-   CmpItemKindMethod = { fg = "#DDE5F5", bg = "#6C8ED4" },
-   CmpItemKindModule = { fg = "#EADFF0", bg = "#A377BF" },
-   CmpItemKindOperator = { fg = "#EADFF0", bg = "#A377BF" },
-   CmpItemKindProperty = { fg = "#EED8DA", bg = "#B5585F" },
-   CmpItemKindReference = { fg = "#FFE082", bg = "#D4BB6C" },
-   CmpItemKindSnippet = { fg = "#F5EBD9", bg = "#D4A959" },
-   CmpItemKindStruct = { fg = "#EADFF0", bg = "#A377BF" },
-   CmpItemKindText = { fg = "#C3E88D", bg = "#9FBD73" },
-   CmpItemKindTypeParameter = { fg = "#D8EEEB", bg = "#58B5A8" },
-   CmpItemKindUnit = { fg = "#F5EBD9", bg = "#D4A959" },
-   CmpItemKindValue = { fg = "#DDE5F5", bg = "#6C8ED4" },
-   CmpItemKindVariable = { fg = "#C5CDD9", bg = "#7E8294" },
-}
-
-for group, info in pairs(M.cmp_highlight_groups) do
-   vim.api.nvim_set_hl(0, group, info)
+}) do
+   vim.api.nvim_set_hl(0, k, v)
 end
 
--- Setup cmp menu formatting
-local lspkind_cmp_format = require("lspkind").cmp_format({
-   mode = "symbol",
-   preset = "default",
-   maxwidth = {
-      menu = function()
-         return math.max(50, math.floor(vim.o.columns * 0.35))
-      end,
-   },
-   ellipsis_char = "…",
-})
+for k, v in pairs({
+   Text = { fg = "#C3E88D", bg = "#9FBD73" },
+   Method = { fg = "#DDE5F5", bg = "#6C8ED4" },
+   Function = { fg = "#EADFF0", bg = "#A377BF" },
+   Constructor = { fg = "#FFE082", bg = "#D4BB6C" },
+   Field = { fg = "#EED8DA", bg = "#B5585F" },
+   Variable = { fg = "#C5CDD9", bg = "#7E8294" },
+   Class = { fg = "#EADFF0", bg = "#A377BF" },
+   Interface = { fg = "#D8EEEB", bg = "#58B5A8" },
+   Module = { fg = "#EADFF0", bg = "#A377BF" },
+   Property = { fg = "#EED8DA", bg = "#B5585F" },
+   Unit = { fg = "#F5EBD9", bg = "#D4A959" },
+   Value = { fg = "#DDE5F5", bg = "#6C8ED4" },
+   Enum = { fg = "#C3E88D", bg = "#9FBD73" },
+   Keyword = { fg = "#C3E88D", bg = "#9FBD73" },
+   Snippet = { fg = "#F5EBD9", bg = "#D4A959" },
+   Color = { fg = "#D8EEEB", bg = "#58B5A8" },
+   File = { fg = "#C5CDD9", bg = "#7E8294" },
+   Reference = { fg = "#FFE082", bg = "#D4BB6C" },
+   Folder = { fg = "#F5EBD9", bg = "#D4A959" },
+   EnumMember = { fg = "#DDE5F5", bg = "#6C8ED4" },
+   Constant = { fg = "#FFE082", bg = "#D4BB6C" },
+   Struct = { fg = "#EADFF0", bg = "#A377BF" },
+   Event = { fg = "#EED8DA", bg = "#B5585F" },
+   Operator = { fg = "#EADFF0", bg = "#A377BF" },
+   TypeParameter = { fg = "#D8EEEB", bg = "#58B5A8" },
+}) do
+   vim.api.nvim_set_hl(0, "CmpItemKind" .. k .. "Icon", v)
+end
+
+local lspkind = require("lspkind")
+
+local lspkind_symbol_map = {}
+for k, v in pairs(lspkind.symbol_map) do
+   lspkind_symbol_map[k] = " " .. v .. " "
+end
 
 M.cmp_formatting = {
    fields = {
-      "kind",
+      "icon",
       "abbr",
       "menu",
    },
-   format = function(entry, vim_item)
-      local orig_kind = vim_item.kind
-      local item = lspkind_cmp_format(entry, vim_item)
-      if item.kind == "" then
-         item.kind = string.upper(string.sub(orig_kind, 1, 1))
-      end
-      -- Add some extra padding to the symbol
-      item.kind = " " .. item.kind .. " "
-      return item
-   end,
+   format = lspkind.cmp_format({
+      maxwidth = {
+         menu = function()
+            return math.max(50, math.floor(vim.o.columns * 0.35))
+         end,
+      },
+      ellipsis_char = "…",
+      show_labelDetails = true,
+      symbol_map = lspkind_symbol_map,
+   }),
 }
 
 M.cmp_window = {
