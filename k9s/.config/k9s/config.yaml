@@ -1,30 +1,49 @@
 k9s:
   liveViewAutoRefresh: true
   refreshRate: 2
+  apiServerTimeout: 30s
   maxConnRetry: 5
   readOnly: false
   noExitOnCtrlC: false
+  portForwardAddress: localhost
   ui:
     enableMouse: true
     headless: false
     logoless: true
     crumbsless: false
+    splashless: true
+    reactive: false
     noIcons: false
-    reactive: true
-    skin: nord
+    invert: false
     defaultsToFullScreen: false
+    useFullGVRTitle: false
+    skin: nord
   skipLatestRevCheck: true
-  logger:
-    tail: 1000
-    buffer: 10000
-    sinceSeconds: -1
-    textWrap: true
-    disableAutoscroll: false
-    showTime: false
+  disablePodCounting: false
   shellPod:
-    image: busybox:latest
+    image: docker.io/library/busybox:latest
     namespace: default
     limits:
       cpu: 100m
       memory: 100Mi
-    tty: true
+  imageScans:
+    enable: false
+    exclusions:
+      namespaces: []
+      labels: {}
+  logger:
+    tail: 1000
+    buffer: 50000
+    sinceSeconds: -1
+    textWrap: false
+    disableAutoscroll: false
+    columnLock: false
+    showTime: false
+  thresholds:
+    cpu:
+      critical: 90
+      warn: 70
+    memory:
+      critical: 90
+      warn: 70
+  defaultView: ""

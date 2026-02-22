@@ -2,7 +2,7 @@ plugins:
   dive:
     shortCut: d
     confirm: false
-    description: "Dive image"
+    description: Dive image
     scopes:
       - containers
     command: dive
@@ -20,7 +20,11 @@ plugins:
     background: false
     args:
       - -c
-      - kubectl get secret --context $CONTEXT --namespace $NAMESPACE $NAME -o jsonpath='{.data.ca\.crt}' | base64 -d | openssl storeutl -noout -text -certs /dev/stdin |& less
+      - >-
+        kubectl get secret --context $CONTEXT --namespace $NAMESPACE $NAME -o jsonpath='{.data.ca\.crt}'
+          | base64 -d
+          | openssl storeutl -noout -text -certs /dev/stdin
+          |& less
 
   secret-openssl-tls:
     shortCut: Shift-O
@@ -32,7 +36,11 @@ plugins:
     background: false
     args:
       - -c
-      - kubectl get secret --context $CONTEXT --namespace $NAMESPACE $NAME -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl storeutl -noout -text -certs /dev/stdin |& less
+      - >-
+        kubectl get secret --context $CONTEXT --namespace $NAMESPACE $NAME -o jsonpath='{.data.tls\.crt}'
+          | base64 -d
+          | openssl storeutl -noout -text -certs /dev/stdin
+          |& less
 
   toggle-cronjob:
     shortCut: Ctrl-S
@@ -52,4 +60,4 @@ plugins:
       - --context
       - $CONTEXT
       - -p
-      - '{"spec" : {"suspend" : $!COL-SUSPEND }}'
+      - '{"spec": {"suspend": $!COL-SUSPEND }}'

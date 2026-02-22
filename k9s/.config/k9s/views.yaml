@@ -1,9 +1,9 @@
 views:
   v1/namespaces:
+    sortColumn: NAME:asc
     columns:
       - NAME
       - STATUS
       - POLICY:.metadata.labels.pod-security\.kubernetes\.io/enforce
       - LINKERD:.metadata.annotations.linkerd\.io/inject
       - AGE
-    sortColumn: NAME
