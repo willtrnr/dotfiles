@@ -97,12 +97,10 @@ targets = [
 all-features = true
 
 [advisories]
-version = 2
 unmaintained = "workspace"
 git-fetch-with-cli = true
 
 [licenses]
-version = 2
 allow = [
   "MIT",
 ]
@@ -118,9 +116,6 @@ deny = [
   { crate = "tracing", deny-multiple-versions = true },
   { crate = "webpki-roots", reason = "use system roots instead" },
 ]
-
-[sources]
-unused-allowed-source = "allow"
 EOF
 
 cat > .taplo.toml <<EOF
@@ -131,7 +126,7 @@ EOF
 cat > "${PKGNAME}/Cargo.toml" <<EOF
 [package]
 name = "${PKGNAME}"
-description = ""
+description = "${PKGNAME}"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
