@@ -1,21 +1,17 @@
 #!/usr/bin/env sh
 
-"$CARGO" metadata --format-version=1 | jq '
-  .packages
-    | map(. as $p | {
-      key: .name | ascii_downcase,
-      value: { package: .name, version }
-        | .package |= select(. != (. | ascii_downcase))
-        | (
-          if ($p.features.default? | length) >= 1 then
-            (.["default-features"] |= false)
-              | .features |= (
-                $p.features.default
-                  | map(select(. == "std" or . == "alloc"))
-                  | select(. != [])
-              )
-          end
+"$CARGO" metadata --format-version=1 | jq -r '
+  .packages[]
+    | . as $p
+    | { package: .name, version }
+    | .package |= select(. != (. | ascii_downcase))
+    | if ($p.features.default? | length) >= 1 then
+        (.["default-features"] |= false) | .features |= (
+          $p.features.default
+            | map(select(. == "std" or . == "alloc"))
+            | select(. != [])
         )
-    })
-    | from_entries
+      end
+    | (to_entries | map("\(.key) = \(.value | tojson)") | join(", "))
+    | "\($p.name | ascii_downcase) = { \(.) }"
 '
