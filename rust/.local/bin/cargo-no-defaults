@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+
+"$CARGO" metadata --format-version=1 | jq '
+  .packages | map(. as $p | {
+    key: .name | ascii_downcase,
+    value: { package: .name, version }
+      | .package |= select(. != (. | ascii_downcase))
+      | (
+        if ($p.features.default? | length) >= 1 then
+          . + {
+            "default-features": false,
+            features: [
+              if $p.features.std? then
+                "std"
+              elif $p.features.alloc? then
+                "alloc"
+              else
+                empty
+              end
+            ],
+          }
+        end
+      )
+      | .features |= (
+        (. // []) + (
+          $p.features | keys | map(select(
+            (. | startswith("parking"))
+          ))
+        )
+      )
+      | .features |= select(. != [])
+  })
+  | from_entries
+'
