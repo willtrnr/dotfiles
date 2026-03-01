@@ -3,7 +3,7 @@
 "$CARGO" metadata --format-version=1 | jq -r '
   .packages[]
     | . as $p
-    | { package: .name, version }
+    | { package: .name, version: (.version | split(".") | .[:2] | join(".")) }
     | .package |= select(. != (. | ascii_downcase))
     | if ($p.features.default? | length) >= 1 then
         (.["default-features"] |= false) | .features |= (
