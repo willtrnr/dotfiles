@@ -1,17 +1,21 @@
 #!/usr/bin/env sh
 
+shift
+
 "$CARGO" metadata --format-version=1 | jq -r '
   .packages[]
     | . as $p
+    | select($ARGS.positional == [] or ($ARGS.positional | index($p.name | ascii_downcase)))
     | { package: .name, version: (.version | split(".") | .[:2] | join(".")) }
     | .package |= select(. != (. | ascii_downcase))
-    | if ($p.features.default? | length) >= 1 then
-        (.["default-features"] |= false) | .features |= (
-          $p.features.default
-            | map(select(test("^(?:\\w+_)?(?:alloc|std)(?:_\\w+)?$")))
-            | select(. != [])
-        )
+    | . += if ($p.features.default? | length) >= 1 then
+        {
+          "default-features": false,
+          features: $p.features.default | map(select(test("^(?:\\w+_)?(?:alloc|std)(?:_\\w+)?$"))),
+        }
       end
+    | .features += ($p.features | keys | map(select(test("^parking[-_]lot$"))))
+    | .features |= select(. != [])
     | (to_entries | map("\(.key) = \(.value | tojson)") | join(", "))
     | "\($p.name | ascii_downcase) = { \(.) }"
-'
+' --args "$@"
