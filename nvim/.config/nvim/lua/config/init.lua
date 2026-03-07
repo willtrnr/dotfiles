@@ -237,8 +237,7 @@ cmp.setup({
 local cmp_lsp = require("cmp_nvim_lsp")
 lsp_caps = util.update_caps(lsp_caps, cmp_lsp.default_capabilities())
 
--- Setup Tabnine autocomplete
-require("tabnine.chat.setup").setup = util.noop -- HACK: Noop the chat agent setup function to disable it
+-- Setup Tabnine
 require("tabnine").setup({
    accept_keymap = "<C-Right>",
 })
