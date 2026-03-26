@@ -537,7 +537,6 @@ vim.api.nvim_create_autocmd("FileType", {
       require("metals").initialize_or_attach({
          capabilities = lsp_caps,
          on_attach = lsp_on_attach,
-         handlers = require("config.metals_lsp_status").setup(),
          init_options = {
             compilerOptions = vim.empty_dict(),
             statusBarProvider = "on",
