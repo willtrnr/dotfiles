@@ -110,7 +110,6 @@ M.lualine.setup({
    },
    extensions = {
       "fugitive",
-      "fzf",
       "mason",
    },
 })

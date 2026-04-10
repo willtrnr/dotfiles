@@ -121,8 +121,7 @@ if has('nvim')
   Plug 'sphamba/smear-cursor.nvim'
 
   " Navigation
-  Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
-  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+  Plug 'dmtrKovalenko/fff.nvim'
 
   " Completion
   Plug 'codota/tabnine-nvim', { 'commit': '6d209e52239e09e19c4913595cb253d2c364afa8', 'do': './dl_binaries.sh' }
@@ -139,7 +138,6 @@ if has('nvim')
   " LSP & Diagnostics
   Plug 'RRethy/vim-illuminate'
   Plug 'b0o/SchemaStore.nvim'
-  Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
   Plug 'kosayoda/nvim-lightbulb'
   Plug 'lopi-py/luau-lsp.nvim'
   if has('nvim-0.11')
