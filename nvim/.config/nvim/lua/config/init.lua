@@ -15,7 +15,6 @@ local augroup = vim.api.nvim_create_augroup("usercmd", { clear = true })
 --
 
 local ricing = require("config.ricing")
-lsp_caps = util.update_caps(lsp_caps, ricing.lsp_status.capabilities)
 
 --
 -- QOL stuff
@@ -105,7 +104,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
    end,
 })
 
-if vim.fn.has("nvim-0.12") ~= 1 then
+if vim.fn.has("nvim-0.12") == 0 then
    -- Use TreeSitter for better highlight
    require("nvim-treesitter.configs").setup({ ---@diagnostic disable-line: missing-fields
       auto_install = true,
@@ -152,7 +151,9 @@ fff.setup({})
 util.noremap("n", "<leader><Tab>", util.thunk(fff.find_files))
 util.noremap("n", "<leader><S-Tab>", util.thunk(fff.live_grep))
 
-util.noremap("n", "gc", function() fff.live_grep({ query = vim.fn.expand("<cword>") }) end)
+util.noremap("n", "gc", function()
+   fff.live_grep({ query = vim.fn.expand("<cword>") })
+end)
 
 --
 -- Completion
@@ -214,8 +215,12 @@ vim.diagnostic.config({
 })
 
 -- Diagnostics navigation
-util.noremap("n", "g[", function() vim.diagnostic.jump({ count = -1 }) end)
-util.noremap("n", "g]", function() vim.diagnostic.jump({ count = 1 }) end)
+util.noremap("n", "g[", function()
+   vim.diagnostic.jump({ count = -1 })
+end)
+util.noremap("n", "g]", function()
+   vim.diagnostic.jump({ count = 1 })
+end)
 
 -- Show diagnostic at cursor position in a floating window
 vim.api.nvim_create_autocmd("CursorHold", {
@@ -252,11 +257,10 @@ local function lsp_on_attach(client, bufnr)
    local function lsp_noremap(cap, key, action)
       if caps[cap] then
          util.noremap("n", key, action, bufnr)
+         return true
       end
+      return false
    end
-
-   -- Attach the client to lsp-status
-   ricing.lsp_status.on_attach(client)
 
    -- Show symbol documentation
    lsp_noremap("hoverProvider", "<leader>d", util.thunk(vim.lsp.buf.hover))
@@ -277,8 +281,7 @@ local function lsp_on_attach(client, bufnr)
    lsp_noremap("documentFormattingProvider", "<leader>f", util.thunk(vim.lsp.buf.format))
 
    -- Code actions
-   if caps.codeActionProvider then
-      util.noremap("n", "<leader>a", util.thunk(vim.lsp.buf.code_action), bufnr)
+   if lsp_noremap("codeActionProvider", "<leader>a", util.thunk(vim.lsp.buf.code_action)) then
       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
          group = augroup,
          buffer = bufnr,
@@ -287,13 +290,19 @@ local function lsp_on_attach(client, bufnr)
    end
 
    -- Code lens
-   if caps.codeLensProvider then
-      util.noremap("n", "<leader>l", util.thunk(vim.lsp.codelens.run), bufnr)
-      vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
-         group = augroup,
-         buffer = bufnr,
-         callback = util.thunk(vim.lsp.codelens.refresh),
-      })
+   if lsp_noremap("codeLensProvider", "<leader>l", util.thunk(vim.lsp.codelens.run)) then
+      if vim.fn.has("nvim-0.12") == 1 then
+         vim.lsp.codelens.enable(true, { bufnr = bufnr })
+      else
+         vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
+            group = augroup,
+            buffer = bufnr,
+            callback = function()
+               ---@diagnostic disable-next-line: deprecated
+               vim.lsp.codelens.refresh({ bufnr = bufnr })
+            end,
+         })
+      end
    end
 end
 
@@ -302,6 +311,27 @@ require("mason").setup()
 
 local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
+   ensure_installed = {
+      "basedpyright",
+      "bashls",
+      "biome",
+      "fsautocomplete",
+      "jdtls",
+      "jqls",
+      "jsonls",
+      "jsonnet_ls",
+      "lua_ls",
+      "luau_lsp",
+      "omnisharp",
+      "ruff",
+      "starpls",
+      "taplo",
+      "terraformls",
+      "tflint",
+      "ts_ls",
+      "yamlls",
+   },
+   automatic_install = true,
    -- This key does not exist on mason-lspconfig < 2.x so will be ignored
    automatic_enable = {
       exclude = {
@@ -458,7 +488,10 @@ vim.g.rustaceanvim = { ---@type rustaceanvim.Config
       },
    },
    server = {
-      capabilities = util.update_caps(lsp_caps, require("rustaceanvim.config.server").create_client_capabilities()),
+      capabilities = util.update_caps(
+         lsp_caps,
+         require("rustaceanvim.config.server").create_client_capabilities()
+      ),
       standalone = false,
       default_settings = {
          ["rust-analyzer"] = {
@@ -500,6 +533,8 @@ vim.api.nvim_create_autocmd("FileType", {
          },
          settings = {
             showImplicitArguments = true,
+            -- TODO Make this per-project somehow
+            javaHome = "/usr/lib/jvm/java-11-openjdk",
          },
          tvp = vim.empty_dict(),
       })

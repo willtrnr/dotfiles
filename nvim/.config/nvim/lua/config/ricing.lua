@@ -17,8 +17,6 @@ require("visual-whitespace").setup({})
 require("smear_cursor").setup({})
 
 -- LSP status
-M.lsp_status = require("lsp-status")
-
 M.fidget = require("fidget")
 M.fidget.setup({
    notification = {
@@ -34,15 +32,6 @@ local function lualine_fmt_mode(v)
       return "TERM"
    else
       return string.gsub(v, "[AEIOU]", "")
-   end
-end
-
-local function lualine_lsp_status()
-   local success, status = pcall(M.lsp_status.status)
-   if success and status then
-      return status
-   else
-      return ""
    end
 end
 
@@ -98,14 +87,14 @@ M.lualine.setup({
             },
          },
          "filename",
-         lualine_lsp_status,
       },
       lualine_x = {
+         "lsp_status",
+         lualine_tabnine_status,
          "encoding",
          "fileformat",
          "filetype",
          lualine_yaml_schema,
-         lualine_tabnine_status,
       },
    },
    extensions = {
