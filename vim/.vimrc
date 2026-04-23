@@ -100,6 +100,7 @@ call plug#begin()
 Plug 'arcticicestudio/nord-vim'
 Plug 'dcharbon/vim-flatbuffers'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'ionide/Ionide-vim'
 Plug 'rescript-lang/vim-rescript'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'

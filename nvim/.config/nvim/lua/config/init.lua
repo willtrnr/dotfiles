@@ -316,7 +316,6 @@ mason_lspconfig.setup({
       "basedpyright",
       "bashls",
       "biome",
-      "fsautocomplete",
       "jdtls",
       "jqls",
       "jsonls",
