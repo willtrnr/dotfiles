@@ -312,6 +312,7 @@ require("mason").setup()
 local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
    ensure_installed = {
+      "ansiblels",
       "basedpyright",
       "bashls",
       "biome",
@@ -325,6 +326,7 @@ mason_lspconfig.setup({
       "omnisharp",
       "ruff",
       "starpls",
+      "tailwindcss",
       "taplo",
       "terraformls",
       "tflint",
