@@ -109,22 +109,12 @@ if vim.fn.has("nvim-0.12") == 0 then
    require("nvim-treesitter.configs").setup({ ---@diagnostic disable-line: missing-fields
       auto_install = true,
       ensure_installed = {
-         "css",
-         "html",
-         "javascript",
          "json",
-         "jsonc",
-         "latex",
          "lua",
          "markdown",
          "markdown_inline",
-         "norg",
          "regex",
-         "svelte",
          "toml",
-         "tsx",
-         "typst",
-         "vue",
          "yaml",
       },
       highlight = {
@@ -251,9 +241,17 @@ lightbulb.setup({ ---@diagnostic disable-line: missing-fields
    },
 })
 
+---Setup LSP in buffer
+---@param client vim.lsp.Client
+---@param bufnr integer?
 local function lsp_on_attach(client, bufnr)
-   local caps = client.server_capabilities
+   local caps = client.server_capabilities or vim.empty_dict()
 
+   ---Set up keymap if the server supports the required capability
+   ---@param cap string
+   ---@param key string
+   ---@param action function
+   ---@return boolean
    local function lsp_noremap(cap, key, action)
       if caps[cap] then
          util.noremap("n", key, action, bufnr)
@@ -312,24 +310,11 @@ require("mason").setup()
 local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
    ensure_installed = {
-      "ansiblels",
-      "basedpyright",
       "bashls",
-      "biome",
-      "jdtls",
-      "jqls",
       "jsonls",
-      "jsonnet_ls",
       "lua_ls",
-      "luau_lsp",
-      "omnisharp",
-      "ruff",
       "starpls",
-      "tailwindcss",
       "taplo",
-      "terraformls",
-      "tflint",
-      "ts_ls",
       "yamlls",
    },
    automatic_install = true,
@@ -342,16 +327,27 @@ mason_lspconfig.setup({
    },
 })
 
-if vim.fn.has("nvim-0.11") == 1 then
+if vim.fn.has("nvim-0.11.3") == 1 then
    vim.api.nvim_create_autocmd("LspAttach", {
       group = augroup,
       callback = function(args)
-         return lsp_on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf)
+         local client = vim.lsp.get_client_by_id(args.data.client_id)
+         if client ~= nil then
+            return lsp_on_attach(client, args.buf)
+         end
       end,
    })
 
    vim.lsp.config("*", {
       capabilities = lsp_caps,
+   })
+
+   vim.lsp.config("ionide", {
+      cmd = {
+         "fsautocomplete",
+         "--adaptive-lsp-server-enabled",
+         "--use-fcs-transparent-compiler",
+      },
    })
 
    vim.lsp.config("jsonls", {
