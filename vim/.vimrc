@@ -100,6 +100,7 @@ call plug#begin()
 Plug 'arcticicestudio/nord-vim'
 Plug 'dcharbon/vim-flatbuffers'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'ionide/Ionide-vim'
 Plug 'rescript-lang/vim-rescript'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
@@ -141,7 +142,6 @@ if has('nvim')
   Plug 'kosayoda/nvim-lightbulb'
   Plug 'lopi-py/luau-lsp.nvim'
   if has('nvim-0.11.3')
-    Plug 'ionide/Ionide-vim'
     Plug 'mason-org/mason-lspconfig.nvim', { 'tag': 'v2.*' }
     Plug 'mason-org/mason.nvim', { 'tag': 'v2.*' }
     Plug 'mrcjkb/rustaceanvim', { 'tag': 'v6.*' }
@@ -164,6 +164,11 @@ if has('nvim')
 endif
 
 call plug#end()
+
+" We only use Ionide for syntax
+let g:fsharp#backend="disable"
+let g:fsharp#fsi_keymap = "none"
+let g:fsharp#lsp_auto_setup=0
 
 "
 " Nord theme

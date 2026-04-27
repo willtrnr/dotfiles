@@ -342,14 +342,6 @@ if vim.fn.has("nvim-0.11.3") == 1 then
       capabilities = lsp_caps,
    })
 
-   vim.lsp.config("ionide", {
-      cmd = {
-         "fsautocomplete",
-         "--adaptive-lsp-server-enabled",
-         "--use-fcs-transparent-compiler",
-      },
-   })
-
    vim.lsp.config("jsonls", {
       settings = {
          json = {
