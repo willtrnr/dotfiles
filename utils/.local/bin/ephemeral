@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+#
+# Link caches from Chromium/Electron instances to ephemeral caches at $XDG_RUNTIME_DIR
+#
+# @author: Daniel Souza <me at posix dot dev dot br>
+# @license: GPLv3
+# @usage: ephemeral
+# @deps: fd
+
+# shellcheck disable=SC2034
+
+# Utils
+# -----
+# exit when a command has a non-zero exit status
+# note: '||:' at the end of a pipe mask a non-zero exit
+set -e
+
+# exit if any command in a pipe fail
+set -o pipefail
+
+# Text Formatting 
+reset="\e[0;0m"
+red="\e[1;31m"
+green="\e[1;32m"
+yellow="\e[1;33m"
+blue="\e[1;34m"
+strong="\e[1;39m"
+
+# Dependencies
+# NOTE: fd is fdfind in Debian-based distros
+if [ "$(command -v "fdfind")" ]; then
+  _fd="fdfind"
+elif [ "$(command -v "fd")" ]; then 
+  _fd="fd"
+else
+  echo -e "${red}Required dependency sharkdp/fd not found${reset}\n"
+  exit 1
+fi
+
+# Config
+# -----
+# Read settings from exported variables
+
+if [ "$EPHEMERAL_SRC" ]; then
+  src_dir="$EPHEMERAL_SRC"
+else
+  src_dir="$HOME"
+fi
+
+if [ "$EPHEMERAL_DST" ]; then
+  dst_dir="$EPHEMERAL_DST"
+else
+  dst_dir="$XDG_CACHE_HOME"
+fi
+
+dst_dir="$dst_dir/ephemeral-cache"
+
+if ! [ "$EPHEMERAL_VERBOSITY" == "true" ]; then 
+  if [ -t 0 ]; then
+    EPHEMERAL_VERBOSITY=true
+  else
+    EPHEMERAL_VERBOSITY=false
+  fi
+fi
+
+# Main
+# ----
+# Init destination dir
+mkdir -p "$dst_dir"
+
+# Link source path to destination dir
+_link() {
+  local _src="$src_dir/$root/$cache"
+  local _dst="$dst_dir/$root/$cache"
+  local _dst_parent="${_dst%/*}"
+
+  if ! [ "$EPHEMERAL_DRY_RUN" == "true" ]; then 
+    if [ -h "$_src" ]; then
+      printf "%s is already a symlink, ignoring it\n" "$_src"
+    
+    else
+      # remove existing
+      rm -rf "$_dst" 
+
+      # create parent dir
+      mkdir -p "$_dst_parent"
+      
+      # move or remove source
+      if [ -a "$_src" ]; then
+        if [ "$EPHEMERAL_REMOVE_SRC" ]; then
+          rm -rf "$_src"
+        else
+          mv "$_src" "$_dst_parent"
+        fi
+      fi
+
+      if  [ "$EPHEMERAL_VERBOSITY" == "true" ]; then 
+        printf "${yellow}linking... ${strong}%s${reset}\n" "$cache"
+      fi
+
+      ln -s "$_dst" "$_src"
+    fi
+  else
+    printf "link %s to %s\n" "$_src" "$_dst"
+  fi
+}
+
+# TODO: Parallelize using semaphore
+# Find and link chromium instances cache dirs
+_link_chromium() {
+  # Find directories with chromium signature
+  _chromium_root_dirs="$($_fd --type d \
+    --base-directory "$src_dir" \
+    --unrestricted blob_storage \
+    --exclude "**/Trash/" \
+    --exclude "**/.Trash-*" \
+    --exclude ephemeral/testing | \
+    sed "s|/blob_storage/||")"
+
+  mapfile -t _chromium_root_dirs <<< "$_chromium_root_dirs"
+
+  _chromium_cache_dirs=("Cache" "CachedData" "CachedExtensions" "Code Cache" "DawnCache" "GPUCache")
+
+  for _root in "${_chromium_root_dirs[@]}"; do
+    local root="$_root"
+
+    if [ "$root" ]; then
+      if  [ "$EPHEMERAL_VERBOSITY" == "true" ]; then 
+        printf "${blue}\nLinking Chromium instance... ${strong}%s${reset}\n" "$root"
+      fi
+
+      for _cache in "${_chromium_cache_dirs[@]}"; do
+        local cache="$_cache"
+        _link
+      done
+    fi
+  done
+}
+
+# Main
+# ----
+if [ "$EPHEMERAL_DEBUG" == "true" ]; then
+  set -v
+  set -x
+fi
+
+_link_chromium
