@@ -302,6 +302,10 @@ local function lsp_on_attach(client, bufnr)
          })
       end
    end
+
+   if caps.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+   end
 end
 
 -- Mason package manager for LSP servers and linters
@@ -331,12 +335,6 @@ if vim.fn.has("nvim-0.11.3") == 1 then
       callback = function(args)
          local client = vim.lsp.get_client_by_id(args.data.client_id)
          if client ~= nil then
-            -- Fix some weird freeze issue with FSAC and other LSP servers
-            -- See: https://github.com/neovim/neovim/issues/36257
-            if client.server_capabilities.semanticTokensProvider then
-               client.server_capabilities.semanticTokensProvider = nil
-            end
-
             return lsp_on_attach(client, args.buf)
          end
       end,
@@ -394,6 +392,10 @@ if vim.fn.has("nvim-0.11.3") == 1 then
          }
       end,
       on_init = function(client, _init_result)
+         -- Workaround a weird freeze issue with FSAC
+         -- See: https://github.com/neovim/neovim/issues/36257
+         client.server_capabilities.semanticTokensProvider = nil
+
          vim.api.nvim_create_user_command(
             "FSharpLoadProject",
             function(opts)
@@ -533,8 +535,28 @@ vim.g.rustaceanvim = { ---@type rustaceanvim.Config
             },
             completion = {
                fullFunctionSignatures = {
-                  enable = true
+                  enable = true,
                },
+            },
+            inlayHints = {
+               closureCaptureHints = {
+                  enable = true,
+               },
+               implicitDrops = {
+                  enable = true,
+               },
+               lifetimeElisionHints = {
+                  enable = "skip_trivial",
+               },
+               parameterHints = {
+                  enable = false,
+               },
+               typeHints = {
+                  enable = false,
+               },
+            },
+            lens = {
+               enable = false,
             },
          },
       },
