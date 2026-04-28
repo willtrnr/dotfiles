@@ -88,10 +88,6 @@ vnoremap <leader>y "+y
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 
-" Set correct ft for Ghidra SLEIGH files
-autocmd BufNewFile,BufRead *.ldefs,*.cspec,*.pspec,*.sla set filetype=xml
-autocmd BufNewFile,BufRead *.slaspec,*.sinc set filetype=sleigh
-
 "
 " Load plugins
 "
@@ -165,13 +161,14 @@ endif
 
 call plug#end()
 
-" We only use Ionide for syntax
-let g:fsharp#backend="disable"
-let g:fsharp#fsi_keymap = "none"
-let g:fsharp#lsp_auto_setup=0
-
-"
 " Nord theme
-"
 set background=dark
 colorscheme nord
+
+" Only use Ionide for syntax highlighting
+let g:fsharp#backend="disable"
+let g:fsharp#lsp_auto_setup=0
+
+" Set correct ft for Ghidra SLEIGH files
+autocmd BufNewFile,BufRead *.ldefs,*.cspec,*.pspec,*.sla set filetype=xml
+autocmd BufNewFile,BufRead *.slaspec,*.sinc set filetype=sleigh

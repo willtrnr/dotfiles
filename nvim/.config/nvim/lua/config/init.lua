@@ -280,7 +280,7 @@ local function lsp_on_attach(client, bufnr)
 
    -- Code actions
    if lsp_noremap("codeActionProvider", "<leader>a", util.thunk(vim.lsp.buf.code_action)) then
-      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "CursorHold" }, {
          group = augroup,
          buffer = bufnr,
          callback = util.thunk(lightbulb.update_lightbulb),
@@ -310,10 +310,8 @@ require("mason").setup()
 local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
    ensure_installed = {
-      "bashls",
       "jsonls",
       "lua_ls",
-      "starpls",
       "taplo",
       "yamlls",
    },
@@ -333,6 +331,12 @@ if vim.fn.has("nvim-0.11.3") == 1 then
       callback = function(args)
          local client = vim.lsp.get_client_by_id(args.data.client_id)
          if client ~= nil then
+            -- Fix some weird freeze issue with FSAC and other LSP servers
+            -- See: https://github.com/neovim/neovim/issues/36257
+            if client.server_capabilities.semanticTokensProvider then
+               client.server_capabilities.semanticTokensProvider = nil
+            end
+
             return lsp_on_attach(client, args.buf)
          end
       end,
@@ -368,6 +372,42 @@ if vim.fn.has("nvim-0.11.3") == 1 then
       },
       before_init = function(_params, config)
          config.settings.yaml.schemas = require("schemastore").yaml.schemas()
+      end,
+   })
+
+   vim.lsp.config("fsautocomplete", {
+      cmd = {
+         "fsautocomplete",
+         "--adaptive-lsp-server-enabled",
+         "--project-graph-enabled",
+         "--use-fcs-transparent-compiler",
+      },
+      cmd_env = {
+         DOTNET_ROLL_FORWARD = "LatestMajor",
+      },
+      before_init = function(_params, config)
+         config.settings = {
+            FSharp = vim.tbl_deep_extend("force", {},
+               config.settings.FSharp,
+               vim.fn["fsharp#getServerConfig"]()
+            ),
+         }
+      end,
+      on_init = function(client, _init_result)
+         vim.api.nvim_create_user_command(
+            "FSharpLoadProject",
+            function(opts)
+               client:notify("fsharp/workspaceLoad", {
+                  TextDocuments = util.imap(
+                     opts.fargs,
+                     function(arg)
+                        return { Uri = vim.uri_from_fname(vim.fs.abspath(arg)) }
+                     end
+                  ),
+               })
+            end,
+            { nargs = "+", complete = "file" }
+         )
       end,
    })
 else

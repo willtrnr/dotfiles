@@ -80,6 +80,19 @@ function M.set_union(a, b)
    return vim.tbl_keys(set)
 end
 
+---Create a list-like table by mapping each item of an iterator
+---@generic T, U
+---@param it T[]
+---@param fn fun(T, integer):U
+---@return U[]
+function M.imap(it, fn)
+   local result = {}
+   for k, v in ipairs(it) do
+      table.insert(result, fn(v, k))
+   end
+   return result
+end
+
 ---Combine LSP capabilities and return result
 ---@param a lsp.ClientCapabilities
 ---@param b lsp.ClientCapabilities
@@ -98,7 +111,7 @@ function M.noremap(mode, key, cb, bufnr)
       return
    end
 
-   local opts = { --[[@type vim.keymap.set.Opts]]
+   local opts = { --[[@class vim.keymap.set.Opts]]
       noremap = true,
       silent = true,
    }
@@ -107,7 +120,6 @@ function M.noremap(mode, key, cb, bufnr)
       if type(bufnr) == "table" then
          opts = vim.tbl_extend("keep", bufnr, opts)
       else
-         ---@cast bufnr boolean|integer
          opts.buffer = bufnr
       end
    end

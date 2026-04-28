@@ -19,6 +19,11 @@ require("smear_cursor").setup({})
 -- LSP status
 M.fidget = require("fidget")
 M.fidget.setup({
+   progress = {
+      lsp = {
+         progress_ringbuf_size = 128,
+      },
+   },
    notification = {
       override_vim_notify = true,
    },
