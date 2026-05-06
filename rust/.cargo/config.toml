@@ -12,8 +12,12 @@ rustc-wrapper = "/usr/bin/sccache"
 [net]
 git-fetch-with-cli = true
 
+[target.'cfg(target_os = "linux")']
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=/usr/bin/mold"]
+
 [target.'cfg(target_arch = "x86_64")']
-rustflags = ["-C", "target-cpu=x86-64-v3"]
+rustflags = ["-C", "target-cpu=x86-64-v2"]
 
 [target.'cfg(target_arch = "aarch64")']
 rustflags = ["-C", "target-feature=+neon"]
