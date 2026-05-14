@@ -96,10 +96,10 @@ M.lualine.setup({
       lualine_x = {
          "lsp_status",
          lualine_tabnine_status,
-         "encoding",
-         "fileformat",
          "filetype",
          lualine_yaml_schema,
+         "encoding",
+         "fileformat",
       },
    },
    extensions = {
