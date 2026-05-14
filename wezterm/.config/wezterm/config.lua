@@ -22,7 +22,7 @@ config.unicode_version = 14
 config.enable_tab_bar = true
 config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = true
-config.hide_tab_bar_if_only_one_tab = true
+config.hide_tab_bar_if_only_one_tab = false
 
 -- Scroll config
 config.scrollback_lines = 25000
