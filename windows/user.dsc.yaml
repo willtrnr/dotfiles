@@ -1,0 +1,97 @@
+---
+$schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2023/08/config/document.json
+
+metadata:
+  winget:
+    processor:
+      identifier: dscv3
+
+resources:
+  - type: Microsoft.Windows.Settings/WindowsSettings
+    name: UserSettings
+    metadata:
+      description: User Personalization
+    properties:
+      # Color Settings
+      AppColorMode: Dark
+      SystemColorMode: Dark
+      EnableTransparency: true
+      ShowAccentColorOnStartAndTaskbar: true
+      ShowAccentColorOnTitleBarsAndWindowBorders: true
+      AutoColorization: true
+
+      # Start Menu Folders
+      StartFolders:
+        - Documents
+        - Downloads
+        - Settings
+        - Explorer
+
+      # Start Layout Settings
+      ShowRecentList: false
+      ShowRecommendedList: false
+
+      # Taskbar Settings
+      TaskbarAlignment: Left
+      TaskbarGroupingMode: Always
+      TaskbarBadges: true
+      DesktopTaskbarBadges: true
+      TaskbarMultiMon: true
+      DesktopTaskbarMultiMon: true
+      TaskbarMultiMonMode: PrimaryAndWindow
+      DesktopTaskbarMultiMonMode: PrimaryAndWindow
+
+  - type: Microsoft.Windows/Registry
+    name: DisableExplorerHome
+    metadata:
+      description: Disable Home in Explorer
+    properties:
+      _exist: true
+      keyPath: 'HKCU\Software\Classes\CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}'
+      valueName: System.IsPinnedToNameSpaceTree
+      valueData:
+        DWord: 0
+
+  - type: Microsoft.Windows/Registry
+    name: DisableExplorerGallery
+    metadata:
+      description: Disable Gallery in Explorer
+    properties:
+      _exist: true
+      keyPath: 'HKCU\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}'
+      valueName: System.IsPinnedToNameSpaceTree
+      valueData:
+        DWord: 0
+
+  - type: Microsoft.Windows/Registry
+    name: ExplorerDefaultThisPc
+    metadata:
+      description: Set This PC as Explorer Default
+    properties:
+      _exist: true
+      keyPath: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+      valueName: LaunchTo
+      valueData:
+        DWord: 1
+
+  - type: Microsoft.Windows/Registry
+    name: TaskbarEndTask
+    metadata:
+      description: Enable End Task from Taskbar
+    properties:
+      _exist: true
+      keyPath: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings'
+      valueName: TaskbarEndTask
+      valueData:
+        DWord: 1
+
+  - type: Microsoft.Windows/Registry
+    name: ClassicContextMenu
+    metadata:
+      description: Restore the Classic Context Menu
+    properties:
+      _exist: true
+      keyPath: 'HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32'
+      valueName: "(default)"
+      valueData:
+        String: ""

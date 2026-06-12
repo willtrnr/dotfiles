@@ -1,0 +1,96 @@
+---
+$schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2023/08/config/document.json
+
+metadata:
+  winget:
+    processor:
+      identifier: dscv3
+
+resources:
+  - type: Microsoft.Windows.Settings/WindowsSettings
+    name: DevMode
+    metadata:
+      description: Enable Developer Mode
+      winget:
+        securityContext: elevated
+    properties:
+      DeveloperMode: true
+
+  - type: Microsoft.Windows/Registry
+    name: RtcIsUtc
+    metadata:
+      description: Set Hardware Clock to UTC
+      winget:
+        securityContext: elevated
+    properties:
+      _exist: true
+      keyPath: 'HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation'
+      valueName: RealTimeIsUniversal
+      valueData:
+        QWord: 1
+
+  - type: PSDscResources/WindowsOptionalFeature
+    name: HyperVFeature
+    metadata:
+      description: Enable Hyper-V
+      winget:
+        securityContext: elevated
+    settings:
+      Name: Microsoft-Hyper-V-All
+
+  - type: PSDscResources/WindowsOptionalFeature
+    name: HypervisorPlatformFeature
+    dependsOn:
+      - HyperVFeature
+    metadata:
+      description: Enable Hypervisor Platform
+      winget:
+        securityContext: elevated
+    settings:
+      Name: HypervisorPlatform
+
+  - type: PSDscResources/WindowsOptionalFeature
+    name: VmPlatformFeature
+    metadata:
+      description: Enable Virtual Machine Platform
+      winget:
+        securityContext: elevated
+    settings:
+      Name: VirtualMachinePlatform
+
+  - type: PSDscResources/WindowsOptionalFeature
+    name: WslFeature
+    dependsOn:
+      - VmPlatformFeature
+      - DevMode
+    metadata:
+      description: Enable WSL
+      winget:
+        securityContext: elevated
+    properties:
+      Name: Microsoft-Windows-Subsystem-Linux
+
+  - type: PSDscResources/Environment
+    name: MsysSymlinks
+    dependsOn:
+      - DevMode
+    metadata:
+      description: Use Native Symlinks in MSYS
+      winget:
+        securityContext: elevated
+    properties:
+      Name: MSYS
+      Value: "winsymlinks:native"
+
+  - type: Microsoft.Windows/Registry
+    name: DisableTeredo
+    metadata:
+      description: Disable Teredo Tunnel
+      winget:
+        securityContext: elevated
+    properties:
+      _exist: true
+      keyPath: 'HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters'
+      valueName: DisabledComponents
+      valueData:
+        DWord: 1

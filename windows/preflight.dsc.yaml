@@ -1,0 +1,32 @@
+---
+$schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2023/08/config/document.json
+
+metadata:
+  winget:
+    processor:
+      identifier: dscv3
+
+resources:
+  - type: Microsoft.DSC.Transitional/PowerShellScript
+    name: PSDscResources.Module
+    metadata:
+      description: Ensure PSDscResources Module is Installed
+    properties:
+      GetScript: |
+        return @{ Result = if (Get-Module -ListAvailable -Name PSDscResources) { "Present" } else { "Absent" } }
+      TestScript: |
+        return (-not -not (Get-Module -ListAvailable -Name PSDscResources))
+      SetScript: |
+        Install-PSResource -Name PSDscResources -Prerelease -TrustRepository -AcceptLicense
+
+  - type: Microsoft.DSC.Transitional/PowerShellScript
+    name: Microsoft.Windows.Settings.Module
+    metadata:
+      description: Ensure Microsoft.Windows.Settings Module is Installed
+    properties:
+      GetScript: |
+        return @{ Result = if (Get-Module -ListAvailable -Name Microsoft.Windows.Settings) { "Present" } else { "Absent" } }
+      TestScript: |
+        return (-not -not (Get-Module -ListAvailable -Name Microsoft.Windows.Settings))
+      SetScript: |
+        Install-PSResource -Name Microsoft.Windows.Settings -Prerelease -TrustRepository -AcceptLicense
