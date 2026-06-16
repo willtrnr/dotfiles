@@ -138,6 +138,12 @@ util.noremap("n", "<leader>t", util.thunk(snacks.explorer.open))
 local fff = require("fff")
 fff.setup({})
 
+vim.api.nvim_create_user_command('FFFDownload', function()
+   require("fff.download").download_or_build_binary()
+end, {
+   desc = "Download or build the FFF binary",
+})
+
 util.noremap("n", "<leader><Tab>", util.thunk(fff.find_files))
 util.noremap("n", "<leader><S-Tab>", util.thunk(fff.live_grep))
 
