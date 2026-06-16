@@ -68,22 +68,23 @@ if wezterm.gui then
    config.disable_default_key_bindings = true
 
    if not helpers.running_in_vm() then
-      -- Select the dedicated if available, otherwise integrated, or else whatever GL
+      -- Select the integrated GPU if available, otherwise dedicated, or else whatever Dx or GL
       local gpu <const> = helpers.priority_find(
          helpers.filter(
             wezterm.gui.enumerate_gpus(),
             helpers.ternary(helpers.running_on_windows(), function(g)
-               -- Ignore Vulkan backend on Windows
+               -- Ignore CPU and Vulkan backends on Windows
                return g.device_type ~= "Cpu" and g.backend ~= "Vulkan"
             end, function(g)
+               -- Ignore the CPU backend on other platforms
                return g.device_type ~= "Cpu"
             end)
          ),
          function(g)
-            return g.device_type == "DiscreteGpu" and g.backend == "Vulkan"
+            return g.device_type == "IntegratedGpu" and g.backend == "Vulkan"
          end,
          function(g)
-            return g.device_type == "DiscreteGpu" and g.backend:find("^Dx")
+            return g.device_type == "IntegratedGpu" and g.backend:find("^Dx")
          end,
          function(g)
             return g.backend == "Vulkan"
