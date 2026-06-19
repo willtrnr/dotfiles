@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mostlygeek/llama-swap/refs/heads/main/config-schema.json
+
+startPort: 11435
+
+macros:
+  model: ${MODEL_ID}
+  quant: Q4_K_M
+
+  llama-server: /usr/bin/llama-server --port ${PORT} --no-ui
+  llama-server-hf: ${llama-server} -hf ${model}:${quant}
+
+  large-cache: --cache-ram 2048
+  small-cache: --cache-ram 512
+  no-cache: --cache-ram 0
+
+models:
+  Qwopus3.5-9B-Coder-MTP:
+    name: Qwopus3.5 9B Coder (MTP)
+    cmd: ${llama-server-hf} ${large-cache} --temperature 1.0
+    macros:
+      model: Jackrong/${MODEL_ID}-GGUF
+      quant: Q5_K_M
+
+  Qwopus3.5-9B-Coder:
+    name: Qwopus3.5 9B Coder
+    cmd: ${llama-server-hf} ${large-cache} --temperature 1.0
+    macros:
+      model: Jackrong/${MODEL_ID}-GGUF
+      quant: Q5_K_M
+
+  nomic-embed-text-v2-moe:
+    name: Nomic Embed Text v2 MoE
+    cmd: ${llama-server-hf} ${small-cache} --embeddings
+    macros:
+      model: nomic-ai/${MODEL_ID}-GGUF
+      quant: Q6_K
+
+  sweep-next-edit-0.5B:
+    name: Sweep Next-Edit 0.5B
+    cmd: ${llama-server-hf} ${small-cache}
+    macros:
+      model: sweepai/${MODEL_ID}
+      quant: Q8_0
+
+matrix:
+  vars:
+    qom: Qwopus3.5-9B-Coder-MTP
+    qo: Qwopus3.5-9B-Coder
+    n2: nomic-embed-text-v2-moe
+    s: sweep-next-edit-0.5B
+
+  evict_costs:
+    qom: 50
+    qo: 50
+    n2: 10
+    s: 10
+
+  sets:
+    standard: "(qom | qo) & n2 & s"

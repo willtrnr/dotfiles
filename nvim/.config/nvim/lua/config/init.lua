@@ -178,7 +178,6 @@ cmp.setup({
    sources = cmp.config.sources({
       { name = "nvim_lsp" },
       { name = "calc" },
-      -- { name = "t9cmp" },
       { name = "crates" },
       { name = "path" },
    }, {
@@ -194,6 +193,36 @@ lsp_caps = util.update_caps(lsp_caps, cmp_lsp.default_capabilities())
 -- Setup Tabnine
 require("tabnine").setup({
    accept_keymap = "<C-Right>",
+})
+
+require("cursortab").setup({
+   enabled = false,
+   contribute_data = false,
+   keymaps = {
+      accept = "<C-Right>",
+      partial_accept = false,
+      trigger = false,
+   },
+   ui = {
+      completions = {
+         addition_style = "highlight",
+      }
+   },
+   behavior = {
+      idle_completion_delay = 500,
+      text_change_debounce = -1,
+      max_visible_lines = 1,
+      enabled_modes = { "insert" },
+      cursor_prediction = {
+         enabled = false,
+      },
+   },
+   provider = {
+      type = "sweep",
+      url = "http://localhost:11434",
+      model = "sweep-next-edit-0.5B",
+      privacy_mode = true,
+   },
 })
 
 --

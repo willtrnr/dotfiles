@@ -1,0 +1,89 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "model": "local/Qwopus3.5-9B-Coder-MTP",
+  "provider": {
+    "local": {
+      "name": "Local",
+      "options": {
+        "baseURL": "http://localhost:11434/v1",
+        "apiKey": "none"
+      },
+      "models": {
+        "Qwopus3.5-9B-Coder-MTP": {
+          "name": "Qwopus3.5 9B Coder MTP",
+          "tool_call": true,
+          "reasoning": true
+        },
+        "Qwopus3.5-9B-Coder": {
+          "name": "Qwopus3.5 9B Coder",
+          "tool_call": true,
+          "reasoning": true
+        }
+      }
+    }
+  },
+  "enabled_providers": [
+    "local"
+  ],
+  "lsp": true,
+  "permission": {
+    "*": "ask",
+    "bash": {
+      "*": "ask",
+      "cat *": "allow",
+      "cp *": "ask",
+      "cut *": "allow",
+      "date": "allow",
+      "df *": "allow",
+      "du *": "allow",
+      "find *": "allow",
+      "free *": "allow",
+      "git log *": "allow",
+      "git status *": "allow",
+      "grep *": "allow",
+      "head *": "allow",
+      "jq *": "allow",
+      "ls *": "allow",
+      "mv *": "ask",
+      "rm *": "ask",
+      "sort *": "allow",
+      "tail *": "allow",
+      "tr *": "allow",
+      "uniq *": "allow",
+      "whoami": "allow"
+    },
+    "doom_loop": "deny",
+    "edit": "ask",
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "lsp": "allow",
+    "read": "allow",
+    "todowrite": "allow",
+    "webfetch": "allow",
+    "websearch": "allow"
+  },
+  "indexing": {
+    "enabled": true,
+    "provider": "openai-compatible",
+    "model": "nomic-embed-text-v2-moe",
+    "openai-compatible": {
+      "baseUrl": "http://localhost:11434/v1",
+      "apiKey": "none"
+    },
+    "vectorStore": "lancedb",
+    "dimension": 1024
+  },
+  "mcp": {
+    "kubernetes": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "kubernetes-mcp-server@latest"
+      ],
+      "enabled": false,
+      "timeout": 15000
+    }
+  }
+}

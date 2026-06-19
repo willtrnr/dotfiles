@@ -122,6 +122,7 @@ if has('nvim')
 
   " Completion
   Plug 'codota/tabnine-nvim', { 'commit': '6d209e52239e09e19c4913595cb253d2c364afa8', 'do': './dl_binaries.sh' }
+  Plug 'cursortab/cursortab.nvim'
   Plug 'hrsh7th/cmp-buffer'
   Plug 'hrsh7th/cmp-calc'
   Plug 'hrsh7th/cmp-nvim-lsp'
