@@ -155,77 +155,70 @@ end)
 -- Completion
 --
 
--- Setup crates.io version completion and annotations
-require("crates").setup({})
-
--- Setup cmp for completion
-local cmp = require("cmp")
-cmp.setup({
-   formatting = ricing.cmp_formatting,
-   mapping = cmp.mapping.preset.insert({
-      -- Call up the autocomplete on <ctrl-space>
-      ["<C-Space>"] = cmp.mapping.complete(),
-      -- Accept the explicitly selected option
-      ["<CR>"] = cmp.mapping.confirm({ select = false }),
-      -- Accept the first or selected option
-      ["<Tab>"] = cmp.mapping.confirm({ select = true }),
-   }),
-   snippet = {
-      expand = function(args)
-         vim.fn["vsnip#anonymous"](args.body)
-      end,
+-- Setup blink for completion
+local blink = require("blink.cmp")
+blink.setup({
+   keymap = {
+      preset = "enter",
    },
-   sources = cmp.config.sources({
-      { name = "nvim_lsp" },
-      { name = "calc" },
-      { name = "crates" },
-      { name = "path" },
-   }, {
-      { name = "buffer" },
-   }),
-   window = ricing.cmp_window,
+   completion = {
+      keyword = {
+         range = "prefix",
+      },
+      documentation = {
+         auto_show = true,
+      },
+   },
+   fuzzy = {
+      implementation = "prefer_rust_with_warning",
+   },
+   sources = {
+      default = {
+         "lsp",
+         "calc",
+         "path",
+         "buffer",
+      },
+      providers = {
+         calc = {
+            name = "calc",
+            module = "blink-calc",
+            opts = {
+               show_equation = true,
+               show_bases = true,
+               group_digits = "_",
+            },
+         },
+      },
+   },
+   signature = {},
+   snippets = {},
+   appearance = {
+      nerd_font_variant = "mono",
+   },
+   cmdline = {
+      enabled = false,
+   },
+   term = {
+      enabled = false,
+   },
 })
 
--- Extend the LSP caps with the cmp caps
-local cmp_lsp = require("cmp_nvim_lsp")
-lsp_caps = util.update_caps(lsp_caps, cmp_lsp.default_capabilities())
+lsp_caps = util.update_caps(lsp_caps, blink.get_lsp_capabilities())
 
 -- Setup Tabnine
 require("tabnine").setup({
    accept_keymap = "<C-Right>",
 })
 
---[[
-require("cursortab").setup({
-   enabled = false,
-   contribute_data = false,
-   keymaps = {
-      accept = "<C-Right>",
-      partial_accept = false,
-      trigger = false,
-   },
-   ui = {
-      completions = {
-         addition_style = "highlight",
-      }
-   },
-   behavior = {
-      idle_completion_delay = 500,
-      text_change_debounce = -1,
-      max_visible_lines = 1,
-      enabled_modes = { "insert" },
-      cursor_prediction = {
-         enabled = false,
-      },
-   },
-   provider = {
-      type = "sweep",
+require("blink-edit").setup({
+   llm = {
+      provider = "sweep",
+      backend = "openai",
       url = "http://localhost:11434",
-      model = "sweep-next-edit-0.5B",
-      privacy_mode = true,
-   },
+      model = "sweepai/sweep-next-edit-0.5B",
+   }
 })
-]]
 
 --
 -- Diagnostics
@@ -547,6 +540,15 @@ else
       end,
    })
 end
+
+require("crates").setup({
+   lsp = {
+      enabled = true,
+      actions = true,
+      completion = true,
+      hover = true,
+   },
+})
 
 -- Rustaceanvim uses this weird global config thing
 vim.g.rustaceanvim = { ---@type rustaceanvim.Config

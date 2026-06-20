@@ -121,20 +121,15 @@ if has('nvim')
   Plug 'dmtrKovalenko/fff.nvim'
 
   " Completion
+  Plug 'blinkresearchlabs/blink-edit.nvim'
   Plug 'codota/tabnine-nvim', { 'commit': '6d209e52239e09e19c4913595cb253d2c364afa8', 'do': './dl_binaries.sh' }
-  Plug 'cursortab/cursortab.nvim'
-  Plug 'hrsh7th/cmp-buffer'
-  Plug 'hrsh7th/cmp-calc'
-  Plug 'hrsh7th/cmp-nvim-lsp'
-  Plug 'hrsh7th/cmp-path'
-  Plug 'hrsh7th/nvim-cmp'
-  Plug 'hrsh7th/vim-vsnip'
-  Plug 'hrsh7th/vim-vsnip-integ'
+  Plug 'joelazar/blink-calc'
   Plug 'onsails/lspkind.nvim'
-  Plug 'saecki/crates.nvim'
+  Plug 'saecki/crates.nvim', { 'tag': 'v0.7.*' }
+  Plug 'saghen/blink.cmp', { 'tag': 'v1.*' }
 
   " LSP & Diagnostics
-  Plug 'RRethy/vim-illuminate'
+  Plug 'rrethy/vim-illuminate'
   Plug 'b0o/SchemaStore.nvim'
   Plug 'kosayoda/nvim-lightbulb'
   Plug 'lopi-py/luau-lsp.nvim'
@@ -157,7 +152,7 @@ if has('nvim')
   endif
   Plug 'scalameta/nvim-metals'
   Plug 'someone-stole-my-name/yaml-companion.nvim'
-  Plug 'theHamsta/nvim-dap-virtual-text'
+  Plug 'thehamsta/nvim-dap-virtual-text'
 endif
 
 call plug#end()

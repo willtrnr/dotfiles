@@ -5,6 +5,8 @@ captureBuffer: 0
 
 startPort: 11440
 
+globalTTL: 1800
+
 macros:
   model: ${MODEL_ID}
   quant: Q4_K_M
@@ -17,44 +19,39 @@ macros:
   no-cache: --cache-ram 0
 
 models:
-  Qwopus3.5-9B-Coder:
-    name: Qwopus3.5 9B Coder
-    cmd: ${llama-server-hf} ${large-cache} --temperature 1.0 --ctx-size 131072
-      --batch-size 8192 --ubatch-size 4096 --rope-scaling yarn --rope-scale 4
-      --yarn-orig-ctx 32768
+  Jackrong/Qwopus3.5-9B-Coder-GGUF:
+    cmd: ${llama-server-hf} ${large-cache} --ctx-size 131072 --batch-size 8192
+      --ubatch-size 4096 --rope-scaling yarn --rope-scale 4 --yarn-orig-ctx
+      32768
     macros:
-      model: Jackrong/${MODEL_ID}-GGUF
       quant: Q6_K
 
-  nomic-embed-text-v1.5:
-    name: Nomic Embed Text v1.5
+  nomic-ai/nomic-embed-text-v1.5-GGUF:
     cmd: ${llama-server-hf} ${small-cache} --ctx-size 8192 --batch-size 8192
       --ubatch-size 8192 --rope-scaling yarn --rope-freq-scale 0.75 --embeddings
     macros:
-      model: nomic-ai/${MODEL_ID}-GGUF
       quant: Q6_K
+    ttl: 300
 
-  nomic-embed-text-v2-moe:
-    name: Nomic Embed Text v2 MoE
+  nomic-ai/nomic-embed-text-v2-moe-GGUF:
     cmd: ${llama-server-hf} ${small-cache} --ctx-size 512 --batch-size 512
       --ubatch-size 512 --embeddings
     macros:
-      model: nomic-ai/${MODEL_ID}-GGUF
       quant: Q6_K
+    ttl: 300
 
-  sweep-next-edit-0.5B:
-    name: Sweep Next-Edit 0.5B
+  sweepai/sweep-next-edit-0.5B:
     cmd: ${llama-server-hf} ${small-cache}
     macros:
-      model: sweepai/${MODEL_ID}
       quant: Q8_0
+    ttl: 300
 
 matrix:
   vars:
-    qo: Qwopus3.5-9B-Coder
-    ne15: nomic-embed-text-v1.5
-    ne2m: nomic-embed-text-v2-moe
-    sn: sweep-next-edit-0.5B
+    qo: Jackrong/Qwopus3.5-9B-Coder-GGUF
+    ne15: nomic-ai/nomic-embed-text-v1.5-GGUF
+    ne2m: nomic-ai/nomic-embed-text-v2-moe-GGUF
+    sn: sweepai/sweep-next-edit-0.5B
 
   evict_costs:
     qo: 50
@@ -63,4 +60,4 @@ matrix:
     sn: 10
 
   sets:
-    standard: "(qom | qo) & (ne15 | ne2m) & sn"
+    standard: "qo & (ne15 | ne2m) & sn"
