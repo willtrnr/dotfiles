@@ -17,15 +17,6 @@ macros:
   no-cache: --cache-ram 0
 
 models:
-  Qwopus3.5-9B-Coder-MTP:
-    name: Qwopus3.5 9B Coder MTP
-    cmd: ${llama-server-hf} ${large-cache} --temperature 1.0 --ctx-size 131072
-      --batch-size 8192 --ubatch-size 4096 --rope-scaling yarn --rope-scale 4
-      --yarn-orig-ctx 32768
-    macros:
-      model: Jackrong/${MODEL_ID}-GGUF
-      quant: Q6_K
-
   Qwopus3.5-9B-Coder:
     name: Qwopus3.5 9B Coder
     cmd: ${llama-server-hf} ${large-cache} --temperature 1.0 --ctx-size 131072
@@ -60,14 +51,12 @@ models:
 
 matrix:
   vars:
-    qom: Qwopus3.5-9B-Coder-MTP
     qo: Qwopus3.5-9B-Coder
     ne15: nomic-embed-text-v1.5
     ne2m: nomic-embed-text-v2-moe
     sn: sweep-next-edit-0.5B
 
   evict_costs:
-    qom: 50
     qo: 50
     ne15: 10
     ne2m: 20
