@@ -195,6 +195,7 @@ require("tabnine").setup({
    accept_keymap = "<C-Right>",
 })
 
+--[[
 require("cursortab").setup({
    enabled = false,
    contribute_data = false,
@@ -224,6 +225,7 @@ require("cursortab").setup({
       privacy_mode = true,
    },
 })
+]]
 
 --
 -- Diagnostics

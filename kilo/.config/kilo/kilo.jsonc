@@ -12,12 +12,20 @@
         "Qwopus3.5-9B-Coder-MTP": {
           "name": "Qwopus3.5 9B Coder MTP",
           "tool_call": true,
-          "reasoning": true
+          "reasoning": true,
+          "limit": {
+            "context": 131072,
+            "output": 0
+          }
         },
         "Qwopus3.5-9B-Coder": {
           "name": "Qwopus3.5 9B Coder",
           "tool_call": true,
-          "reasoning": true
+          "reasoning": true,
+          "limit": {
+            "context": 131072,
+            "output": 0
+          }
         }
       }
     }
@@ -66,13 +74,13 @@
   "indexing": {
     "enabled": true,
     "provider": "openai-compatible",
-    "model": "nomic-embed-text-v2-moe",
+    "model": "nomic-embed-text-v1.5",
     "openai-compatible": {
       "baseUrl": "http://localhost:11434/v1",
       "apiKey": "none"
     },
     "vectorStore": "lancedb",
-    "dimension": 1024
+    "dimension": 768
   },
   "mcp": {
     "kubernetes": {

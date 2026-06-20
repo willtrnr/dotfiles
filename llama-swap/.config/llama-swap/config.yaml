@@ -1,7 +1,9 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mostlygeek/llama-swap/refs/heads/main/config-schema.json
 
-startPort: 11435
+captureBuffer: 0
+
+startPort: 11440
 
 macros:
   model: ${MODEL_ID}
@@ -16,22 +18,33 @@ macros:
 
 models:
   Qwopus3.5-9B-Coder-MTP:
-    name: Qwopus3.5 9B Coder (MTP)
-    cmd: ${llama-server-hf} ${large-cache} --temperature 1.0
+    name: Qwopus3.5 9B Coder MTP
+    cmd: ${llama-server-hf} ${large-cache} --temperature 1.0 --ctx-size 131072
+      --rope-scaling yarn --rope-scale 4 --yarn-orig-ctx 32768
     macros:
       model: Jackrong/${MODEL_ID}-GGUF
       quant: Q5_K_M
 
   Qwopus3.5-9B-Coder:
     name: Qwopus3.5 9B Coder
-    cmd: ${llama-server-hf} ${large-cache} --temperature 1.0
+    cmd: ${llama-server-hf} ${large-cache} --temperature 1.0 --ctx-size 131072
+      --rope-scaling yarn --rope-scale 4 --yarn-orig-ctx 32768
     macros:
       model: Jackrong/${MODEL_ID}-GGUF
       quant: Q5_K_M
 
+  nomic-embed-text-v1.5:
+    name: Nomic Embed Text v1.5
+    cmd: ${llama-server-hf} ${small-cache} --ctx-size 8192 --batch-size 8192
+      --rope-scaling yarn --rope-freq-scale 0.75 --embeddings
+    macros:
+      model: nomic-ai/${MODEL_ID}-GGUF
+      quant: Q6_K
+
   nomic-embed-text-v2-moe:
     name: Nomic Embed Text v2 MoE
-    cmd: ${llama-server-hf} ${small-cache} --embeddings
+    cmd: ${llama-server-hf} ${small-cache} --ctx-size 512 --batch-size 512
+      --embeddings
     macros:
       model: nomic-ai/${MODEL_ID}-GGUF
       quant: Q6_K
@@ -47,14 +60,16 @@ matrix:
   vars:
     qom: Qwopus3.5-9B-Coder-MTP
     qo: Qwopus3.5-9B-Coder
-    n2: nomic-embed-text-v2-moe
-    s: sweep-next-edit-0.5B
+    ne15: nomic-embed-text-v1.5
+    ne2m: nomic-embed-text-v2-moe
+    sn: sweep-next-edit-0.5B
 
   evict_costs:
     qom: 50
     qo: 50
-    n2: 10
-    s: 10
+    ne15: 10
+    ne2m: 20
+    sn: 10
 
   sets:
-    standard: "(qom | qo) & n2 & s"
+    standard: "(qom | qo) & (ne15 | ne2m) & sn"
