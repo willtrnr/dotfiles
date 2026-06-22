@@ -216,7 +216,7 @@ require("blink-edit").setup({
       provider = "sweep",
       backend = "openai",
       url = "http://localhost:11434",
-      model = "sweepai/sweep-next-edit-0.5B",
+      model = "sweepai/sweep-next-edit-1.5B",
    }
 })
 

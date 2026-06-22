@@ -11,53 +11,141 @@ macros:
   model: ${MODEL_ID}
   quant: Q4_K_M
 
-  llama-server: /usr/bin/llama-server --port ${PORT} --no-ui --cpu-moe
-  llama-server-hf: ${llama-server} -hf ${model}:${quant}
+  llama-server-bin: /usr/bin/llama-server
 
-  large-cache: --cache-ram 2048
-  small-cache: --cache-ram 512
-  no-cache: --cache-ram 0
+  llama-server: |-
+    ${llama-server-bin}
+    --threads 4
+    --flash-attn on
+    --cache-type-k q4_0
+    --cache-type-v q8_0
+    --no-mmap
+    --cpu-moe
+    --cont-batching
+    --host 127.0.0.1
+    --port ${PORT}
+    --reuse-port
+    --no-ui
+    --jinja
+
+  llama-server-hf: |-
+    ${llama-server}
+    --hf-repo ${model}:${quant}
+
+  llama-server-hf-gguf: |-
+    ${llama-server}
+    --hf-repo ${model}-GGUF:${quant}
+
+  cache-large: --cache-ram 4096
+  cache-small: --cache-ram 1024
+  cache-none: --cache-ram 0
+
+  cpu-only: --n-gpu-layers 0
+  gpu-only: --n-gpu-layers all
+
+  qwen-common: |-
+    ${gpu-only}
+    --temperature 1.0
+    --top-k 40
+    --top-p 0.95
+    --ctx-size 131072
+
+  qwopus-common: |-
+    ${qwen-common}
+    --rope-scaling yarn
+    --rope-scale 4
+    --yarn-orig-ctx 32768
+
+  gemma-common: |-
+    ${gpu-only}
+    --temperature 1.0
+    --top-k 64
+    --top-p 0.95
+    --ctx-size 262144
 
 models:
-  Jackrong/Qwopus3.5-9B-Coder-GGUF:
-    cmd: ${llama-server-hf} ${large-cache} --ctx-size 131072 --batch-size 8192
-      --ubatch-size 4096 --rope-scaling yarn --rope-scale 4 --yarn-orig-ctx
-      32768
-    macros:
-      quant: Q6_K
+  Jackrong/Qwopus3.5-9B-Coder-MTP:
+    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common}
+    aliases:
+      - Qwopus3.5-9B-Coder-MTP
 
-  nomic-ai/nomic-embed-text-v1.5-GGUF:
-    cmd: ${llama-server-hf} ${small-cache} --ctx-size 8192 --batch-size 8192
-      --ubatch-size 8192 --rope-scaling yarn --rope-freq-scale 0.75 --embeddings
+  Jackrong/Qwopus3.5-9B-Coder:
+    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common}
+    aliases:
+      - Qwopus3.5-9B-Coder
+      - Qwen/Qwen3.5-9B-Coder
+      - Qwen/Qwen3.5-9B
+      - Qwen3.5-9B-Coder
+      - Qwen3.5-9B
+
+  nomic-ai/nomic-embed-text-v1.5:
+    cmd: |-
+      ${llama-server-hf-gguf} ${cache-small}
+      --ctx-size 8192
+      --batch-size 8192
+      --ubatch-size 8192
+      --rope-scaling yarn
+      --rope-freq-scale 0.75
+      --embeddings
     macros:
       quant: Q6_K
+    aliases:
+      - nomic-embed-text-v1.5
     ttl: 300
 
-  nomic-ai/nomic-embed-text-v2-moe-GGUF:
-    cmd: ${llama-server-hf} ${small-cache} --ctx-size 512 --batch-size 512
-      --ubatch-size 512 --embeddings
+  nomic-ai/nomic-embed-text-v2-moe:
+    cmd: |-
+      ${llama-server-hf-gguf} ${cache-small}
+      --ctx-size 512
+      --batch-size 512
+      --ubatch-size 512
+      --embeddings
     macros:
       quant: Q6_K
+    aliases:
+      - nomic-embed-text-v2-moe
     ttl: 300
 
   sweepai/sweep-next-edit-0.5B:
-    cmd: ${llama-server-hf} ${small-cache}
+    cmd: ${llama-server-hf} ${cache-small} --ctx-size 32768
     macros:
       quant: Q8_0
+    aliases:
+      - sweep-next-edit-0.5B
+    ttl: 300
+
+  sweepai/sweep-next-edit-1.5B:
+    cmd: ${llama-server-hf} ${cache-small} --ctx-size 32768
+    macros:
+      quant: Q8_0
+    aliases:
+      - sweep-next-edit-1.5B
     ttl: 300
 
 matrix:
   vars:
-    qo: Jackrong/Qwopus3.5-9B-Coder-GGUF
-    ne15: nomic-ai/nomic-embed-text-v1.5-GGUF
-    ne2m: nomic-ai/nomic-embed-text-v2-moe-GGUF
-    sn: sweepai/sweep-next-edit-0.5B
+    qo35m: Jackrong/Qwopus3.5-9B-Coder-MTP
+    qo35: Jackrong/Qwopus3.5-9B-Coder
+
+    ne15: nomic-ai/nomic-embed-text-v1.5
+    ne2e: nomic-ai/nomic-embed-text-v2-moe
+
+    sne05: sweepai/sweep-next-edit-0.5B
+    sne15: sweepai/sweep-next-edit-1.5B
 
   evict_costs:
-    qo: 50
+    qo35m: 50
+    qo35: 50
+
     ne15: 10
-    ne2m: 20
-    sn: 10
+    ne2e: 20
+
+    sne05: 10
+    sne15: 20
 
   sets:
-    standard: "qo & (ne15 | ne2m) & sn"
+    standard: (+agent) & (+embed) & (+nextedit)
+
+    agent: qo35m | qo35
+    embed: ne15 | ne2e
+    nextedit: sne05 | sne15

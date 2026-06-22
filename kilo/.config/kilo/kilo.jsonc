@@ -1,6 +1,6 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  "model": "local/Jackrong/Qwopus3.5-9B-Coder-GGUF",
+  "model": "local/Jackrong/Qwopus3.5-9B-Coder",
   "provider": {
     "local": {
       "name": "Local",
@@ -9,8 +9,17 @@
         "apiKey": "none"
       },
       "models": {
-        "Jackrong/Qwopus3.5-9B-Coder-GGUF": {
+        "Jackrong/Qwopus3.5-9B-Coder": {
           "name": "Qwopus3.5 9B Coder",
+          "tool_call": true,
+          "reasoning": true,
+          "limit": {
+            "context": 131072,
+            "output": 0
+          }
+        },
+        "Jackrong/Qwopus3.5-9B-Coder-MTP": {
+          "name": "Qwopus3.5 9B Coder MTP",
           "tool_call": true,
           "reasoning": true,
           "limit": {
@@ -65,9 +74,9 @@
     "websearch": "allow"
   },
   "indexing": {
-    "enabled": true,
+    "enabled": false,
     "provider": "openai-compatible",
-    "model": "nomic-ai/nomic-embed-text-v1.5-GGUF",
+    "model": "nomic-ai/nomic-embed-text-v1.5",
     "openai-compatible": {
       "baseUrl": "http://localhost:11434/v1",
       "apiKey": "none"
