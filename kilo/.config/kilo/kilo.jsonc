@@ -15,7 +15,7 @@
           "reasoning": true,
           "limit": {
             "context": 131072,
-            "output": 0
+            "output": 20480
           }
         },
         "Jackrong/Qwopus3.5-9B-Coder-MTP": {
@@ -24,7 +24,7 @@
           "reasoning": true,
           "limit": {
             "context": 131072,
-            "output": 0
+            "output": 20480
           }
         }
       }
