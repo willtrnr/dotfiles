@@ -211,15 +211,6 @@ require("tabnine").setup({
    accept_keymap = "<C-Right>",
 })
 
-require("blink-edit").setup({
-   llm = {
-      provider = "sweep",
-      backend = "openai",
-      url = "http://localhost:11434",
-      model = "sweepai/sweep-next-edit-1.5B",
-   }
-})
-
 --
 -- Diagnostics
 --

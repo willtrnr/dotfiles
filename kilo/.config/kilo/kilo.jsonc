@@ -1,6 +1,6 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  "model": "local/Jackrong/Qwopus3.5-9B-Coder",
+  "model": "local/Jackrong/Qwopus3.5-9B-Coder-MTP",
   "provider": {
     "local": {
       "name": "Local",
@@ -9,8 +9,8 @@
         "apiKey": "none"
       },
       "models": {
-        "Jackrong/Qwopus3.5-9B-Coder": {
-          "name": "Qwopus3.5 9B Coder",
+        "Jackrong/Qwopus3.5-9B-Coder-MTP": {
+          "name": "Qwopus3.5 9B Coder MTP",
           "tool_call": true,
           "reasoning": true,
           "limit": {
@@ -18,8 +18,8 @@
             "output": 20480
           }
         },
-        "Jackrong/Qwopus3.5-9B-Coder-MTP": {
-          "name": "Qwopus3.5 9B Coder MTP",
+        "Jackrong/Qwopus3.5-9B-Coder": {
+          "name": "Qwopus3.5 9B Coder",
           "tool_call": true,
           "reasoning": true,
           "limit": {
@@ -38,6 +38,7 @@
     "*": "ask",
     "bash": {
       "*": "ask",
+      "cargo search *": "allow",
       "cat *": "allow",
       "cp *": "ask",
       "cut *": "allow",
@@ -54,6 +55,7 @@
       "jq *": "allow",
       "ls *": "allow",
       "mv *": "ask",
+      "npm search *": "allow",
       "rm *": "ask",
       "sort *": "allow",
       "tail *": "allow",
