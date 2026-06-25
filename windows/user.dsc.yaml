@@ -1,16 +1,16 @@
----
+# yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.3
 $schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2023/08/config/document.json
-
 metadata:
   winget:
     processor:
       identifier: dscv3
 
 resources:
-  - type: Microsoft.Windows.Settings/WindowsSettings
-    name: UserSettings
+  - name: UserSettings
+    type: Microsoft.Windows.Settings/WindowsSettings
     metadata:
       description: User Personalization
+      allowPrerelease: true
     properties:
       # Color Settings
       AppColorMode: Dark
@@ -41,10 +41,20 @@ resources:
       TaskbarMultiMonMode: PrimaryAndWindow
       DesktopTaskbarMultiMonMode: PrimaryAndWindow
 
-  - type: Microsoft.Windows/Registry
-    name: DisableExplorerHome
+  - name: ExplorerSettings
+    type: Microsoft.Windows.Developer/WindowsExplorer
+    metadata:
+      description: Show Extensions and Hidden Files
+      allowPrerelease: true
+    properties:
+      FileExtensions: 'Show'
+      HiddenFiles: 'Show'
+
+  - name: DisableExplorerHome
+    type: Microsoft.Windows/Registry
     metadata:
       description: Disable Home in Explorer
+      allowPrerelease: true
     properties:
       _exist: true
       keyPath: 'HKCU\Software\Classes\CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}'
@@ -52,10 +62,11 @@ resources:
       valueData:
         DWord: 0
 
-  - type: Microsoft.Windows/Registry
-    name: DisableExplorerGallery
+  - name: DisableExplorerGallery
+    type: Microsoft.Windows/Registry
     metadata:
       description: Disable Gallery in Explorer
+      allowPrerelease: true
     properties:
       _exist: true
       keyPath: 'HKCU\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}'
@@ -63,10 +74,11 @@ resources:
       valueData:
         DWord: 0
 
-  - type: Microsoft.Windows/Registry
-    name: ExplorerDefaultThisPc
+  - name: ExplorerDefaultThisPc
+    type: Microsoft.Windows/Registry
     metadata:
       description: Set This PC as Explorer Default
+      allowPrerelease: true
     properties:
       _exist: true
       keyPath: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
@@ -74,10 +86,11 @@ resources:
       valueData:
         DWord: 1
 
-  - type: Microsoft.Windows/Registry
-    name: TaskbarEndTask
+  - name: TaskbarEndTask
+    type: Microsoft.Windows/Registry
     metadata:
       description: Enable End Task from Taskbar
+      allowPrerelease: true
     properties:
       _exist: true
       keyPath: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings'
@@ -85,13 +98,14 @@ resources:
       valueData:
         DWord: 1
 
-  - type: Microsoft.Windows/Registry
-    name: ClassicContextMenu
+  - name: ClassicContextMenu
+    type: Microsoft.Windows/Registry
     metadata:
       description: Restore the Classic Context Menu
+      allowPrerelease: true
     properties:
       _exist: true
       keyPath: 'HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32'
-      valueName: "(default)"
+      valueName: ""
       valueData:
         String: ""

@@ -1,25 +1,36 @@
----
+# yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.3
 $schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2023/08/config/document.json
-
 metadata:
   winget:
     processor:
       identifier: dscv3
 
 resources:
-  - type: Microsoft.Windows.Settings/WindowsSettings
-    name: DevMode
+  - name: DevMode
+    type: Microsoft.Windows.Settings/WindowsSettings
     metadata:
       description: Enable Developer Mode
+      allowPrerelease: true
       winget:
         securityContext: elevated
     properties:
       DeveloperMode: true
 
-  - type: Microsoft.Windows/Registry
-    name: RtcIsUtc
+  - name: LongPaths
+    type: Microsoft.Windows.Developer/EnableLongPathSupport
+    metadata:
+      description: Enable Long Path Support
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
+    properties:
+      Ensure: Present
+
+  - name: RtcIsUtc
+    type: Microsoft.Windows/Registry
     metadata:
       description: Set Hardware Clock to UTC
+      allowPrerelease: true
       winget:
         securityContext: elevated
     properties:
@@ -29,63 +40,11 @@ resources:
       valueData:
         QWord: 1
 
-  - type: PSDscResources/WindowsOptionalFeature
-    name: HyperVFeature
-    metadata:
-      description: Enable Hyper-V
-      winget:
-        securityContext: elevated
-    settings:
-      Name: Microsoft-Hyper-V-All
-
-  - type: PSDscResources/WindowsOptionalFeature
-    name: HypervisorPlatformFeature
-    dependsOn:
-      - HyperVFeature
-    metadata:
-      description: Enable Hypervisor Platform
-      winget:
-        securityContext: elevated
-    settings:
-      Name: HypervisorPlatform
-
-  - type: PSDscResources/WindowsOptionalFeature
-    name: VmPlatformFeature
-    metadata:
-      description: Enable Virtual Machine Platform
-      winget:
-        securityContext: elevated
-    settings:
-      Name: VirtualMachinePlatform
-
-  - type: PSDscResources/WindowsOptionalFeature
-    name: WslFeature
-    dependsOn:
-      - VmPlatformFeature
-      - DevMode
-    metadata:
-      description: Enable WSL
-      winget:
-        securityContext: elevated
-    properties:
-      Name: Microsoft-Windows-Subsystem-Linux
-
-  - type: PSDscResources/Environment
-    name: MsysSymlinks
-    dependsOn:
-      - DevMode
-    metadata:
-      description: Use Native Symlinks in MSYS
-      winget:
-        securityContext: elevated
-    properties:
-      Name: MSYS
-      Value: "winsymlinks:native"
-
-  - type: Microsoft.Windows/Registry
-    name: DisableTeredo
+  - name: DisableTeredo
+    type: Microsoft.Windows/Registry
     metadata:
       description: Disable Teredo Tunnel
+      allowPrerelease: true
       winget:
         securityContext: elevated
     properties:
@@ -94,3 +53,61 @@ resources:
       valueName: DisabledComponents
       valueData:
         DWord: 1
+
+  - name: HyperVFeature
+    type: PSDscResources/WindowsOptionalFeature
+    metadata:
+      description: Enable Hyper-V
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
+    properties:
+      Name: Microsoft-Hyper-V-All
+
+  - name: HypervisorPlatformFeature
+    type: PSDscResources/WindowsOptionalFeature
+    dependsOn:
+      - HyperVFeature
+    metadata:
+      description: Enable Hypervisor Platform
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
+    properties:
+      Name: HypervisorPlatform
+
+  - name: VmPlatformFeature
+    type: PSDscResources/WindowsOptionalFeature
+    metadata:
+      description: Enable Virtual Machine Platform
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
+    properties:
+      Name: VirtualMachinePlatform
+
+  - name: WslFeature
+    type: PSDscResources/WindowsOptionalFeature
+    dependsOn:
+      - DevMode
+      - VmPlatformFeature
+    metadata:
+      description: Enable WSL
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
+    properties:
+      Name: Microsoft-Windows-Subsystem-Linux
+
+  - name: MsysSymlinks
+    type: PSDscResources/Environment
+    dependsOn:
+      - DevMode
+    metadata:
+      description: Use Native Symlinks in MSYS Shell
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
+    properties:
+      Name: MSYS
+      Value: "winsymlinks:native"

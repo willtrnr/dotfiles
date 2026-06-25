@@ -1,16 +1,52 @@
----
+# yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.3
 $schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2023/08/config/document.json
-
 metadata:
   winget:
     processor:
       identifier: dscv3
 
 resources:
-  - type: Microsoft.DSC.Transitional/PowerShellScript
-    name: PSDscResources.Module
+  - name: PSGalleryRepoTrusted
+    type: Microsoft.DSC.Transitional/WindowsPowerShellScript
     metadata:
-      description: Ensure PSDscResources Module is Installed
+      description: Ensure the PSGallery is Trusted
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
+    properties:
+      GetScript: |
+        return @{ Result = (Get-PSRepository -Name PSGallery).InstallationPolicy }
+      TestScript: |
+        return ((Get-PSRepository -Name PSGallery).InstallationPolicy -eq "Trusted")
+      SetScript: |
+        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+
+  - name: PSResourceGetModule
+    type: Microsoft.DSC.Transitional/WindowsPowerShellScript
+    dependsOn:
+      - PSGalleryRepoTrusted
+    metadata:
+      description: Ensure the PSResourceGet Module is Installed
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
+    properties:
+      GetScript: |
+        return @{ Result = if (Get-Module -ListAvailable -Name Microsoft.PowerShell.PSResourceGet) { "Present" } else { "Absent" } }
+      TestScript: |
+        return (-not -not (Get-Module -ListAvailable -Name Microsoft.PowerShell.PSResourceGet))
+      SetScript: |
+        Install-Module -Name Microsoft.PowerShell.PSResourceGet -Scope AllUsers
+
+  - name: PSDscResourcesModule
+    type: Microsoft.DSC.Transitional/WindowsPowerShellScript
+    dependsOn:
+      - PSResourceGetModule
+    metadata:
+      description: Ensure the PSDscResources DSC Module is Installed
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
     properties:
       GetScript: |
         return @{ Result = if (Get-Module -ListAvailable -Name PSDscResources) { "Present" } else { "Absent" } }
@@ -19,10 +55,15 @@ resources:
       SetScript: |
         Install-PSResource -Name PSDscResources -Prerelease -TrustRepository -AcceptLicense
 
-  - type: Microsoft.DSC.Transitional/PowerShellScript
-    name: Microsoft.Windows.Settings.Module
+  - name: MicrosoftWindowsSettingsModule
+    type: Microsoft.DSC.Transitional/WindowsPowerShellScript
+    dependsOn:
+      - PSResourceGetModule
     metadata:
-      description: Ensure Microsoft.Windows.Settings Module is Installed
+      description: Ensure the Microsoft.Windows.Settings DSC Module is Installed
+      allowPrerelease: true
+      winget:
+        securityContext: elevated
     properties:
       GetScript: |
         return @{ Result = if (Get-Module -ListAvailable -Name Microsoft.Windows.Settings) { "Present" } else { "Absent" } }
