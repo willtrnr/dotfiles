@@ -61,6 +61,7 @@
       "tail *": "allow",
       "tr *": "allow",
       "uniq *": "allow",
+      "which *": "allow",
       "whoami": "allow"
     },
     "doom_loop": "deny",
