@@ -77,7 +77,7 @@
     "websearch": "allow"
   },
   "indexing": {
-    "enabled": false,
+    "enabled": true,
     "provider": "openai-compatible",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "openai-compatible": {
