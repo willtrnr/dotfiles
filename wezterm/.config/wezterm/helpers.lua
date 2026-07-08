@@ -47,7 +47,9 @@ end)
 
 ---@return boolean
 M.running_in_vm = M.memoized(function()
-   if not M.running_on_windows() then
+   if wezterm.running_under_wsl() then
+      return true
+   elseif not M.running_on_windows() then
       local ok <const>, _exit <const>, code <const> = os.execute("systemd-detect-virt -q --vm")
       return ok and code == 0
    else
@@ -58,16 +60,19 @@ end)
 M.pathsep = M.ternary(M.running_on_windows(), "\\", "/")
 
 ---@param head string
----@param ... string
+---@param ... string?
 ---@return string
 function M.path_join(head, ...)
    local res = head
    for _, v in ipairs({ ... }) do
-      res = res .. M.pathsep .. v
+      if v ~= nil then
+         res = res .. M.pathsep .. v
+      end
    end
    return res
 end
 
+---@return string
 M.get_temp_dir = M.memoized(function()
    local d <const> = os.getenv("TMPDIR") or os.getenv("TEMP") or os.getenv("TMP")
    if d then
@@ -81,6 +86,7 @@ M.get_temp_dir = M.memoized(function()
    end
 end)
 
+---@return string
 M.get_runtime_dir = M.memoized(function()
    if M.running_on_windows() then
       return M.path_join(os.getenv("USERPROFILE") or ".", ".local", "share", "wezterm")
@@ -92,6 +98,16 @@ M.get_runtime_dir = M.memoized(function()
    end
 end)
 
+---@generic T
+---@param modname string
+---@param fn fun(mod: any): T?
+---@return T?
+function M.try_require(modname, fn)
+   local ok <const>, mod <const> = pcall(require, modname)
+   if ok and mod then
+      return fn(mod)
+   end
+end
 
 ---@generic T, U
 ---@param it T[]

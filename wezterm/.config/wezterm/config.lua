@@ -25,7 +25,7 @@ config.tab_bar_at_bottom = true
 config.hide_tab_bar_if_only_one_tab = false
 
 -- Scroll config
-config.scrollback_lines = 25000
+config.scrollback_lines = 20000
 config.enable_scroll_bar = false
 
 -- Bell feedback config
@@ -53,16 +53,14 @@ if helpers.running_on_windows() then
       config.default_domain = config.wsl_domains[1].name
 
       config.unix_domains = helpers.map(config.wsl_domains, function(d)
-         local sock <const> = helpers.path_join(helpers.get_runtime_dir(), string.format("%s.sock", d.distribution))
+         local sock <const> = helpers.path_join(helpers.get_runtime_dir(), ("wsl-%s.sock"):format(d.distribution))
          return {
-            name = string.format("UNIX:%s", d.distribution),
+            name = ("UNIX:%s"):format(d.distribution),
             socket_path = sock,
             serve_command = {
-               "start",
-               "/b",
                "winsocat.exe",
-               string.format("UNIX-LISTEN:%s,fork", sock),
-               string.format("WSL:nc -U /run/user/1000/wezterm/sock,distribution=%s", d.distribution),
+               ("UNIX-LISTEN:%s,fork"):format(sock),
+               ("WSL:socat STDIO UNIX-CONNECT:/run/user/1000/wezterm/sock,distribution=%s"):format(d.distribution),
             },
          }
       end)
@@ -124,5 +122,8 @@ if wezterm.gui then
       end
    end
 end
+
+-- Apply local config if available
+helpers.try_require("local", function(mod) mod(config) end)
 
 return config
