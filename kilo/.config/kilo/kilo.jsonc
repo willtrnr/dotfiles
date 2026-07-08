@@ -26,6 +26,15 @@
             "context": 131072,
             "output": 20480
           }
+        },
+        "empero-ai/Qwythos-9B-Claude-Mythos-5-1M": {
+          "name": "Qwythos-9B-Claude-Mythos-5-1M",
+          "tool_call": true,
+          "reasoning": true,
+          "limit": {
+            "context": 131072,
+            "output": 20480
+          }
         }
       }
     }

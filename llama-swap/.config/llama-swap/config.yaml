@@ -45,16 +45,24 @@ macros:
 
   qwen-common: |-
     ${gpu-only}
-    --temperature 1.0
-    --top-k 40
-    --top-p 0.95
     --ctx-size 131072
+    --n-predict 8192
+    --temperature 0.6
+    --repeat-penalty 1.05
+    --top-k 20
+    --top-p 0.95
+    --image-min-tokens 1024
 
   qwopus-common: |-
     ${qwen-common}
+    --reasoning-preserve
     --rope-scaling yarn
     --rope-scale 4
     --yarn-orig-ctx 32768
+
+  qwythos-common: |-
+    ${qwen-common}
+    --spec-type draft-mtp
 
   gemma-common: |-
     ${gpu-only}
@@ -65,7 +73,7 @@ macros:
 
 models:
   Jackrong/Qwopus3.5-9B-Coder-MTP:
-    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common}
+    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common} --spec-type draft-mtp
     aliases:
       - Qwopus3.5-9B-Coder-MTP
 
@@ -73,10 +81,11 @@ models:
     cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common}
     aliases:
       - Qwopus3.5-9B-Coder
-      - Qwen/Qwen3.5-9B-Coder
-      - Qwen/Qwen3.5-9B
-      - Qwen3.5-9B-Coder
-      - Qwen3.5-9B
+
+  empero-ai/Qwythos-9B-Claude-Mythos-5-1M:
+    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwythos-common}
+    aliases:
+      - Qwythos-9B-Claude-Mythos-5-1M
 
   nomic-ai/nomic-embed-text-v1.5:
     cmd: |-
@@ -126,6 +135,7 @@ matrix:
   vars:
     qo35m: Jackrong/Qwopus3.5-9B-Coder-MTP
     qo35: Jackrong/Qwopus3.5-9B-Coder
+    qy: empero-ai/Qwythos-9B-Claude-Mythos-5-1M
 
     ne15: nomic-ai/nomic-embed-text-v1.5
     ne2e: nomic-ai/nomic-embed-text-v2-moe
@@ -136,6 +146,7 @@ matrix:
   evict_costs:
     qo35m: 50
     qo35: 50
+    qy: 50
 
     ne15: 10
     ne2e: 20
@@ -146,6 +157,6 @@ matrix:
   sets:
     standard: (+agent) & (+embed) & (+nextedit)
 
-    agent: qo35m | qo35
+    agent: qo35m | qo35 | qy
     embed: ne15 | ne2e
     nextedit: sne05 | sne15
