@@ -51,6 +51,14 @@ if helpers.running_on_windows() then
    config.wsl_domains = wezterm.default_wsl_domains()
    if config.wsl_domains[1] ~= nil then
       config.default_domain = config.wsl_domains[1].name
+
+      config.unix_domains = {
+         {
+            name = "UNIX:" .. config.wsl_domains[1].name,
+            serve_command = { "wsl.exe", "--", "systemctl", "--user", "wsl-wezterm-mux-vsock@1939.service" },
+            proxy_command = { "winsocat.exe", "STDIO", "HVSOCK:8F86B7D1-CAA4-45FE-8FF8-873EFBCBA127:VSOCk-1939" },
+         }
+      }
    end
 end
 
