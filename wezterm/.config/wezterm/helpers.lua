@@ -27,20 +27,6 @@ function M.memoized(fn)
    end
 end
 
-M.running_on_windows = M.memoized(function()
-   return not not wezterm.target_triple:find("-windows-")
-end)
-
-M.running_in_vm = M.memoized(function()
-   if not M.running_on_windows() then
-      local ok <const>, _exit <const>, code <const> = os.execute("systemd-detect-virt -q --vm")
-      return ok and code == 0
-   else
-      -- Probably won't matter here
-      return false
-   end
-end)
-
 ---@generic T
 ---@param cond any
 ---@param if_true T
@@ -53,6 +39,59 @@ function M.ternary(cond, if_true, if_false)
       return if_false
    end
 end
+
+---@return boolean
+M.running_on_windows = M.memoized(function()
+   return not not wezterm.target_triple:find("-windows-")
+end)
+
+---@return boolean
+M.running_in_vm = M.memoized(function()
+   if not M.running_on_windows() then
+      local ok <const>, _exit <const>, code <const> = os.execute("systemd-detect-virt -q --vm")
+      return ok and code == 0
+   else
+      return false
+   end
+end)
+
+M.pathsep = M.ternary(M.running_on_windows(), "\\", "/")
+
+---@param head string
+---@param ... string
+---@return string
+function M.path_join(head, ...)
+   local res = head
+   for _, v in ipairs({ ... }) do
+      res = res .. M.pathsep .. v
+   end
+   return res
+end
+
+M.get_temp_dir = M.memoized(function()
+   local d <const> = os.getenv("TMPDIR") or os.getenv("TEMP") or os.getenv("TMP")
+   if d then
+      return d
+   end
+
+   if M.running_on_windows() then
+      return M.path_join(os.getenv("LOCALAPPDATA") or "C:", "Temp")
+   else
+      return "/tmp"
+   end
+end)
+
+M.get_runtime_dir = M.memoized(function()
+   if M.running_on_windows() then
+      return M.path_join(os.getenv("USERPROFILE") or ".", ".local", "share", "wezterm")
+   else
+      return M.path_join(
+         os.getenv("XDG_RUNTIME_DIR") or M.path_join(os.getenv("HOME") or "~", ".local", "share"),
+         "wezterm"
+      )
+   end
+end)
+
 
 ---@generic T, U
 ---@param it T[]

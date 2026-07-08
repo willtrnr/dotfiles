@@ -52,22 +52,27 @@ if helpers.running_on_windows() then
    if config.wsl_domains[1] ~= nil then
       config.default_domain = config.wsl_domains[1].name
 
-      config.unix_domains = {
-         {
-            name = "UNIX:" .. config.wsl_domains[1].name,
+      config.unix_domains = helpers.map(config.wsl_domains, function(d)
+         local sock <const> = helpers.path_join(helpers.get_runtime_dir(), string.format("%s.sock", d.distribution))
+         return {
+            name = string.format("UNIX:%s", d.distribution),
+            socket_path = sock,
             serve_command = {
-               "wsl.exe",
-               "-d", config.wsl_domains[1].distribution,
-               "-e", "/usr/bin/systemctl", "--user", "start", "wezterm-mux-server",
-            },
-            proxy_command = {
-               "wsl.exe",
-               "-d", config.wsl_domains[1].distribution,
-               "-e", "/usr/bin/socat", "-b65535", "STDIO", "UNIX-CONNECT:/run/user/1000/wezterm/sock",
+               "start",
+               "/b",
+               "winsocat.exe",
+               string.format("UNIX-LISTEN:%s,fork", sock),
+               string.format("WSL:nc -U /run/user/1000/wezterm/sock,distribution=%s", d.distribution),
             },
          }
-      }
+      end)
    end
+elseif wezterm.running_under_wsl() then
+   config.unix_domains = {
+      {
+         name = "UNIX:wsl",
+      },
+   }
 end
 
 -- GUI mode config
