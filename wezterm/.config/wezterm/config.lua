@@ -55,8 +55,16 @@ if helpers.running_on_windows() then
       config.unix_domains = {
          {
             name = "UNIX:" .. config.wsl_domains[1].name,
-            serve_command = { "wsl.exe", "--", "systemctl", "--user", "wsl-wezterm-mux-vsock@1939.service" },
-            proxy_command = { "winsocat.exe", "STDIO", "HVSOCK:8F86B7D1-CAA4-45FE-8FF8-873EFBCBA127:VSOCk-1939" },
+            serve_command = {
+               "wsl.exe",
+               "-d", config.wsl_domains[1].distribution,
+               "-e", "/usr/bin/systemctl", "--user", "start", "wezterm-mux-server",
+            },
+            proxy_command = {
+               "wsl.exe",
+               "-d", config.wsl_domains[1].distribution,
+               "-e", "/usr/bin/socat", "-b65535", "STDIO", "UNIX-CONNECT:/run/user/1000/wezterm/sock",
+            },
          }
       }
    end
