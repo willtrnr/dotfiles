@@ -43,6 +43,8 @@ macros:
   cpu-only: --n-gpu-layers 0
   gpu-only: --n-gpu-layers all
 
+  mtp: --spec-type draft-mtp
+
   qwen-common: |-
     ${gpu-only}
     --ctx-size 131072
@@ -52,17 +54,17 @@ macros:
     --top-k 20
     --top-p 0.95
     --image-min-tokens 1024
+    --reasoning-preserve
 
   qwopus-common: |-
     ${qwen-common}
-    --reasoning-preserve
     --rope-scaling yarn
     --rope-scale 4
     --yarn-orig-ctx 32768
 
   qwythos-common: |-
     ${qwen-common}
-    --spec-type draft-mtp
+    ${mtp}
 
   gemma-common: |-
     ${gpu-only}
@@ -73,7 +75,7 @@ macros:
 
 models:
   Jackrong/Qwopus3.5-9B-Coder-MTP:
-    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common} --spec-type draft-mtp
+    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common} ${mtp}
     aliases:
       - Qwopus3.5-9B-Coder-MTP
 
