@@ -5,7 +5,7 @@
     "local": {
       "name": "Local",
       "options": {
-        "baseURL": "http://localhost:11434/v1",
+        "baseURL": "http://localhost:12434/v1",
         "apiKey": "none"
       },
       "models": {
@@ -81,7 +81,7 @@
     "provider": "openai-compatible",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "openai-compatible": {
-      "baseUrl": "http://localhost:11434/v1",
+      "baseUrl": "http://localhost:12434/v1",
       "apiKey": "none"
     },
     "vectorStore": "lancedb",
