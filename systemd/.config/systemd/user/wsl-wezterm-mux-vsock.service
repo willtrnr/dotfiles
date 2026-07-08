@@ -1,0 +1,11 @@
+[Unit]
+Description=WSL VSOCK WezTerm Mux Forwarding
+ConditionVirtualization=wsl
+Requires=wezterm-mux-server.service
+After=wezterm-mux-server.service
+
+[Service]
+ExecStart=/usr/bin/socat -b65536 VSOCK-LISTEN:1939,fork UNIX-CONNECT:%t/wezterm/sock
+
+[Install]
+WantedBy=default.target

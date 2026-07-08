@@ -1,0 +1,11 @@
+[Unit]
+Description=WezTerm Mux Server
+
+[Service]
+Type=exec
+WorkingDirectory=~
+ExecStart=wezterm-mux-server
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
