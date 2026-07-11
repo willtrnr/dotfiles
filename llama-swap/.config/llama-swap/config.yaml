@@ -36,7 +36,7 @@ macros:
     ${llama-server}
     --hf-repo ${model}-GGUF:${quant}
 
-  cache-large: --cache-ram 4096
+  cache-large: --cache-ram 2048
   cache-small: --cache-ram 1024
   cache-none: --cache-ram 0
 
@@ -80,11 +80,23 @@ models:
     cmd: ${llama-server-hf-gguf} ${cache-large} ${qwythos-common}
     aliases:
       - Qwythos-9B-Claude-Mythos-5-1M
+    capabilities:
+      in: [text, image]
+      out: [text]
+      tools: true
+      reranker: false
+      context: 262144
 
   Jackrong/Qwopus3.5-9B-Coder:
     cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common}
     aliases:
       - Qwopus3.5-9B-Coder
+    capabilities:
+      in: [text, image]
+      out: [text]
+      tools: true
+      reranker: false
+      context: 262144
 
   nomic-ai/nomic-embed-text-v1.5:
     cmd: |-
@@ -97,9 +109,11 @@ models:
       --embeddings
     macros:
       quant: Q6_K
+    ttl: 300
     aliases:
       - nomic-embed-text-v1.5
-    ttl: 300
+    capabilities:
+      context: 8192
 
   nomic-ai/nomic-embed-text-v2-moe:
     cmd: |-
@@ -110,50 +124,74 @@ models:
       --embeddings
     macros:
       quant: Q6_K
+    ttl: 300
     aliases:
       - nomic-embed-text-v2-moe
-    ttl: 300
+    capabilities:
+      context: 512
 
   sweepai/sweep-next-edit-0.5B:
     cmd: ${llama-server-hf} ${cache-small} --ctx-size 32768
     macros:
       quant: Q8_0
+    ttl: 300
     aliases:
       - sweep-next-edit-0.5B
-    ttl: 300
+    capabilities:
+      context: 32768
 
   sweepai/sweep-next-edit-1.5B:
     cmd: ${llama-server-hf} ${cache-small} --ctx-size 32768
     macros:
       quant: Q8_0
+    ttl: 300
     aliases:
       - sweep-next-edit-1.5B
-    ttl: 300
+    capabilities:
+      context: 32768
 
-matrix:
-  vars:
-    qy: empero-ai/Qwythos-9B-Claude-Mythos-5-1M
-    qo35: Jackrong/Qwopus3.5-9B-Coder
+routing:
+  router:
+    use: matrix
 
-    ne15: nomic-ai/nomic-embed-text-v1.5
-    ne2e: nomic-ai/nomic-embed-text-v2-moe
+    settings:
+      matrix:
+        vars:
+          qy: empero-ai/Qwythos-9B-Claude-Mythos-5-1M
+          qo35: Jackrong/Qwopus3.5-9B-Coder
 
-    sne05: sweepai/sweep-next-edit-0.5B
-    sne15: sweepai/sweep-next-edit-1.5B
+          ne15: nomic-ai/nomic-embed-text-v1.5
+          ne2e: nomic-ai/nomic-embed-text-v2-moe
 
-  evict_costs:
-    qy: 50
-    qo35: 50
+          sne05: sweepai/sweep-next-edit-0.5B
+          sne15: sweepai/sweep-next-edit-1.5B
 
-    ne15: 10
-    ne2e: 20
+        evict_costs:
+          qy: 50
+          qo35: 50
 
-    sne05: 10
-    sne15: 20
+          ne15: 10
+          ne2e: 20
 
-  sets:
-    standard: (+agent) & (+embed) & (+nextedit)
+          sne05: 10
+          sne15: 20
 
-    agent: qy | qo35
-    embed: ne15 | ne2e
-    nextedit: sne05 | sne15
+        sets:
+          standard: (+agent) & (+embed) & (+nextedit)
+
+          agent: qy | qo35
+          embed: ne15 | ne2e
+          nextedit: sne05 | sne15
+
+  scheduler:
+    use: fifo
+
+    settings:
+      fifo:
+        priority:
+          empero-ai/Qwythos-9B-Claude-Mythos-5-1M: 50
+          Jackrong/Qwopus3.5-9B-Coder: 50
+          nomic-ai/nomic-embed-text-v1.5: 10
+          nomic-ai/nomic-embed-text-v2-moe: 10
+          sweepai/sweep-next-edit-0.5B: 20
+          sweepai/sweep-next-edit-1.5B: 20
