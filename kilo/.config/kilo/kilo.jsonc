@@ -97,6 +97,14 @@
     "todowrite": "allow",
     "webfetch": "allow",
     "websearch": "allow",
+    "context7_*": "allow",
+    "deepwiki_*": "allow",
+    "filesystem_*": "ask",
+    "filesystem_get_*": "allow",
+    "filesystem_list_*": "allow",
+    "filesystem_read_*": "allow",
+    "filesystem_search_files": "allow",
+    "filesystem_directory_tree": "allow",
     "ghidra_*": "allow",
     "ghidra_delete_*": "ask",
     "ghidra_exit_ghidra": "deny",
@@ -117,15 +125,6 @@
     "dimension": 768
   },
   "mcp": {
-    "kubernetes": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "kubernetes-mcp-server@latest"
-      ],
-      "enabled": false
-    },
     "filesystem": {
       "type": "local",
       "command": [
@@ -133,7 +132,7 @@
         "-y",
         "@modelcontextprotocol/server-filesystem@latest"
       ],
-      "enabled": false
+      "enabled": true
     },
     "microsoft-learn": {
       "type": "remote",
@@ -153,6 +152,7 @@
     "github": {
       "type": "remote",
       "url": "https://api.githubcopilot.com/mcp",
+      "oauth": true,
       "enabled": false
     },
     "exa": {
