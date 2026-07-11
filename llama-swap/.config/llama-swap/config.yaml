@@ -47,8 +47,6 @@ macros:
 
   qwen-common: |-
     ${gpu-only}
-    --ctx-size 131072
-    --n-predict 8192
     --temperature 0.6
     --repeat-penalty 1.05
     --top-k 20
@@ -56,15 +54,18 @@ macros:
     --image-min-tokens 1024
     --reasoning-preserve
 
+  qwythos-common: |-
+    ${qwen-common} ${mtp}
+    --ctx-size 260096
+    --n-predict 16384
+
   qwopus-common: |-
     ${qwen-common}
+    --ctx-size 131072
+    --n-predict 8192
     --rope-scaling yarn
     --rope-scale 4
     --yarn-orig-ctx 32768
-
-  qwythos-common: |-
-    ${qwen-common}
-    ${mtp}
 
   gemma-common: |-
     ${gpu-only}
@@ -72,22 +73,18 @@ macros:
     --top-k 64
     --top-p 0.95
     --ctx-size 262144
+    --n-predict 8192
 
 models:
-  Jackrong/Qwopus3.5-9B-Coder-MTP:
-    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common} ${mtp}
+  empero-ai/Qwythos-9B-Claude-Mythos-5-1M:
+    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwythos-common}
     aliases:
-      - Qwopus3.5-9B-Coder-MTP
+      - Qwythos-9B-Claude-Mythos-5-1M
 
   Jackrong/Qwopus3.5-9B-Coder:
     cmd: ${llama-server-hf-gguf} ${cache-large} ${qwopus-common}
     aliases:
       - Qwopus3.5-9B-Coder
-
-  empero-ai/Qwythos-9B-Claude-Mythos-5-1M:
-    cmd: ${llama-server-hf-gguf} ${cache-large} ${qwythos-common}
-    aliases:
-      - Qwythos-9B-Claude-Mythos-5-1M
 
   nomic-ai/nomic-embed-text-v1.5:
     cmd: |-
@@ -135,9 +132,8 @@ models:
 
 matrix:
   vars:
-    qo35m: Jackrong/Qwopus3.5-9B-Coder-MTP
-    qo35: Jackrong/Qwopus3.5-9B-Coder
     qy: empero-ai/Qwythos-9B-Claude-Mythos-5-1M
+    qo35: Jackrong/Qwopus3.5-9B-Coder
 
     ne15: nomic-ai/nomic-embed-text-v1.5
     ne2e: nomic-ai/nomic-embed-text-v2-moe
@@ -146,9 +142,8 @@ matrix:
     sne15: sweepai/sweep-next-edit-1.5B
 
   evict_costs:
-    qo35m: 50
-    qo35: 50
     qy: 50
+    qo35: 50
 
     ne15: 10
     ne2e: 20
@@ -159,6 +154,6 @@ matrix:
   sets:
     standard: (+agent) & (+embed) & (+nextedit)
 
-    agent: qo35m | qo35 | qy
+    agent: qy | qo35
     embed: ne15 | ne2e
     nextedit: sne05 | sne15

@@ -1,6 +1,6 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  "model": "local/Jackrong/Qwopus3.5-9B-Coder",
+  "model": "empero-ai/Qwythos-9B-Claude-Mythos-5-1M",
   "provider": {
     "local": {
       "name": "Local",
@@ -9,31 +9,22 @@
         "apiKey": "none"
       },
       "models": {
+        "empero-ai/Qwythos-9B-Claude-Mythos-5-1M": {
+          "name": "Qwythos-9B-Claude-Mythos-5-1M",
+          "tool_call": true,
+          "reasoning": true,
+          "limit": {
+            "context": 262144,
+            "output": 16384
+          }
+        },
         "Jackrong/Qwopus3.5-9B-Coder": {
           "name": "Qwopus3.5 9B Coder",
           "tool_call": true,
           "reasoning": true,
           "limit": {
             "context": 131072,
-            "output": 20480
-          }
-        },
-        "Jackrong/Qwopus3.5-9B-Coder-MTP": {
-          "name": "Qwopus3.5 9B Coder MTP",
-          "tool_call": true,
-          "reasoning": true,
-          "limit": {
-            "context": 131072,
-            "output": 20480
-          }
-        },
-        "empero-ai/Qwythos-9B-Claude-Mythos-5-1M": {
-          "name": "Qwythos-9B-Claude-Mythos-5-1M",
-          "tool_call": true,
-          "reasoning": true,
-          "limit": {
-            "context": 131072,
-            "output": 20480
+            "output": 16384
           }
         }
       }
@@ -56,6 +47,7 @@
       "du *": "allow",
       "find *": "allow",
       "free *": "allow",
+      "ghidra_*": "deny",
       "git diff *": "allow",
       "git log *": "allow",
       "git status *": "allow",
@@ -71,7 +63,8 @@
       "tr *": "allow",
       "uniq *": "allow",
       "which *": "allow",
-      "whoami": "allow"
+      "whoami": "allow",
+      "windbg_*": "deny"
     },
     "doom_loop": "deny",
     "edit": "ask",
@@ -83,7 +76,13 @@
     "task": "allow",
     "todowrite": "allow",
     "webfetch": "allow",
-    "websearch": "allow"
+    "websearch": "allow",
+    "ghidra_*": "allow",
+    "ghidra_delete_*": "ask",
+    "ghidra_exit_ghidra": "deny",
+    "ghidra_save_*": "ask",
+    "ghidra_update_*": "ask",
+    "windbg_*": "allow"
   },
   "indexing": {
     "enabled": true,
@@ -104,6 +103,12 @@
         "-y",
         "kubernetes-mcp-server@latest"
       ],
+      "enabled": false,
+      "timeout": 15000
+    },
+    "microsoft-learn": {
+      "type": "remote",
+      "url": "https://learn.microsoft.com/api/mcp",
       "enabled": false,
       "timeout": 15000
     }
