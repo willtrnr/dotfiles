@@ -103,14 +103,59 @@
         "-y",
         "kubernetes-mcp-server@latest"
       ],
-      "enabled": false,
-      "timeout": 15000
+      "enabled": false
+    },
+    "mcp-compass": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@liuyoshio/mcp-compass@latest"
+      ],
+      "enabled": false
+    },
+    "memory": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-memory@latest"
+      ],
+      "enabled": false
+    },
+    "sequential-thinking": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking@latest"
+      ],
+      "enabled": false
     },
     "microsoft-learn": {
       "type": "remote",
       "url": "https://learn.microsoft.com/api/mcp",
-      "enabled": false,
-      "timeout": 15000
+      "enabled": false
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": false
+    },
+    "deepwiki": {
+      "type": "remote",
+      "url": "https://mcp.deepwiki.com/mcp",
+      "enabled": false
+    },
+    "github": {
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp",
+      "enabled": false
+    },
+    "exa": {
+      "type": "remote",
+      "url": "https://mcp.exa.ai/mcp",
+      "enabled": false
     }
   }
 }
