@@ -13,6 +13,16 @@
           "name": "Qwythos-9B-Claude-Mythos-5-1M",
           "tool_call": true,
           "reasoning": true,
+          "temperature": true,
+          "modalities": {
+            "input": [
+              "image",
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
           "limit": {
             "context": 262144,
             "output": 16384
@@ -22,6 +32,16 @@
           "name": "Qwopus3.5 9B Coder",
           "tool_call": true,
           "reasoning": true,
+          "temperature": true,
+          "modalities": {
+            "input": [
+              "image",
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
           "limit": {
             "context": 131072,
             "output": 16384
@@ -82,6 +102,7 @@
     "ghidra_exit_ghidra": "deny",
     "ghidra_save_*": "ask",
     "ghidra_update_*": "ask",
+    "microsoft-learn_*": "allow",
     "windbg_*": "allow"
   },
   "indexing": {
@@ -105,30 +126,12 @@
       ],
       "enabled": false
     },
-    "mcp-compass": {
+    "filesystem": {
       "type": "local",
       "command": [
         "npx",
         "-y",
-        "@liuyoshio/mcp-compass@latest"
-      ],
-      "enabled": false
-    },
-    "memory": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-memory@latest"
-      ],
-      "enabled": false
-    },
-    "sequential-thinking": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking@latest"
+        "@modelcontextprotocol/server-filesystem@latest"
       ],
       "enabled": false
     },
