@@ -83,8 +83,8 @@ macros:
 
   gemma-common: |-
     ${gpu-only}
-    ${cache-turbo}
     ${ram-cache-medium}
+    ${kv-cache-turbo}
     --temperature 1.0
     --top-k 64
     --top-p 0.95
@@ -92,13 +92,16 @@ macros:
     --n-predict 8192
 
   nomic-common: |-
+    ${gpu-only}
     ${ram-cache-small}
-    ${kv-cache-stock}
+    ${kv-cache-turbo}
+    --parallel 2
     --embeddings
 
   sweep-common: |-
+    ${gpu-only}
     ${ram-cache-small}
-    ${kv-cache-stock}
+    ${kv-cache-turbo}
     --ctx-size 32768
 
 models:
