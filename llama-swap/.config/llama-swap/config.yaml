@@ -50,10 +50,16 @@ macros:
     --cache-type-k-draft turbo3
     --cache-type-v-draft turbo4
 
+  reasoning: |-
+    --reasoning on
+    --reasoning-budget 2048
+    --reasoning-budget-message "... thinking budget exceeded, let's answer now."
+
   qwen-common: |-
     ${gpu-only}
     ${ram-cache-medium}
     ${kv-cache-turbo}
+    ${reasoning}
     --parallel 2
     --temperature 0.6
     --repeat-penalty 1.05
