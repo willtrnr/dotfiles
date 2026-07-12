@@ -108,6 +108,7 @@
     "ghidra_exit_ghidra": "deny",
     "ghidra_save_*": "ask",
     "ghidra_update_*": "ask",
+    "kilo_memory_*": "allow",
     "microsoft-learn_*": "allow",
     "rva_*": "allow",
     "windbg_*": "allow"
