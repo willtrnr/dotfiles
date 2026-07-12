@@ -16,7 +16,6 @@
           "temperature": true,
           "modalities": {
             "input": [
-              "image",
               "text"
             ],
             "output": [
@@ -35,7 +34,6 @@
           "temperature": true,
           "modalities": {
             "input": [
-              "image",
               "text"
             ],
             "output": [

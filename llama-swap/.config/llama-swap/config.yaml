@@ -17,11 +17,8 @@ macros:
     ${llama-server-bin}
     --threads 2
     --flash-attn on
-    --cache-type-k q4_0
-    --cache-type-v q4_0
     --direct-io
     --fit on
-    --cache-ram 1536
     --kv-unified
     --cont-batching
     --host 127.0.0.1
@@ -40,18 +37,33 @@ macros:
 
   gpu-only: --n-gpu-layers 999
 
+  ram-cache-none: --cache-ram 0
+  ram-cache-small: --cache-ram 512
+  ram-cache-medium: --cache-ram 1536
+
+  kv-cache-stock: --cache-type-k q4_0 --cache-type-v q4_0
+  kv-cache-turbo: --cache-type-k turbo3 --cache-type-v turbo4
+
+  mtp: |-
+    --spec-type draft-mtp
+    --spec-draft-n-max 3
+    --cache-type-k-draft turbo3
+    --cache-type-v-draft turbo4
+
   qwen-common: |-
     ${gpu-only}
+    ${ram-cache-medium}
+    ${kv-cache-turbo}
     --parallel 2
     --temperature 0.6
     --repeat-penalty 1.05
     --top-k 20
     --top-p 0.95
-    --image-min-tokens 1024
-    --reasoning-preserve
+    --no-mmproj
 
   qwythos-common: |-
     ${qwen-common}
+    ${mtp}
     --ctx-size 260096
     --n-predict 16384
 
@@ -65,44 +77,60 @@ macros:
 
   gemma-common: |-
     ${gpu-only}
+    ${cache-turbo}
+    ${ram-cache-medium}
     --temperature 1.0
     --top-k 64
     --top-p 0.95
     --ctx-size 262144
     --n-predict 8192
 
+  nomic-common: |-
+    ${ram-cache-small}
+    ${kv-cache-stock}
+    --embeddings
+
+  sweep-common: |-
+    ${ram-cache-small}
+    ${kv-cache-stock}
+    --ctx-size 32768
+
 models:
   empero-ai/Qwythos-9B-Claude-Mythos-5-1M:
-    cmd: ${llama-server-hf-gguf} ${qwythos-common}
+    cmd: |-
+      ${llama-server-hf-gguf}
+      ${qwythos-common}
     aliases:
       - Qwythos-9B-Claude-Mythos-5-1M
     capabilities:
-      in: [text, image]
+      in: [text]
       out: [text]
       tools: true
       reranker: false
       context: 262144
 
   Jackrong/Qwopus3.5-9B-Coder:
-    cmd: ${llama-server-hf-gguf} ${qwopus-common}
+    cmd: |-
+      ${llama-server-hf-gguf}
+      ${qwopus-common}
     aliases:
       - Qwopus3.5-9B-Coder
     capabilities:
-      in: [text, image]
+      in: [text]
       out: [text]
       tools: true
       reranker: false
-      context: 262144
+      context: 131072
 
   nomic-ai/nomic-embed-text-v1.5:
     cmd: |-
       ${llama-server-hf-gguf}
+      ${nomic-common}
       --ctx-size 8192
       --batch-size 8192
       --ubatch-size 8192
       --rope-scaling yarn
       --rope-freq-scale 0.75
-      --embeddings
     macros:
       quant: Q6_K
     ttl: 300
@@ -114,10 +142,10 @@ models:
   nomic-ai/nomic-embed-text-v2-moe:
     cmd: |-
       ${llama-server-hf-gguf}
+      ${nomic-common}
       --ctx-size 512
       --batch-size 512
       --ubatch-size 512
-      --embeddings
     macros:
       quant: Q6_K
     ttl: 300
@@ -127,7 +155,9 @@ models:
       context: 512
 
   sweepai/sweep-next-edit-0.5B:
-    cmd: ${llama-server-hf} --ctx-size 32768
+    cmd: |-
+      ${llama-server-hf}
+      ${sweep-common}
     macros:
       quant: Q8_0
     ttl: 300
@@ -137,7 +167,9 @@ models:
       context: 32768
 
   sweepai/sweep-next-edit-1.5B:
-    cmd: ${llama-server-hf} --ctx-size 32768
+    cmd: |-
+      ${llama-server-hf}
+      ${sweep-common}
     macros:
       quant: Q8_0
     ttl: 300
