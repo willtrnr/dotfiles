@@ -111,6 +111,7 @@
     "ghidra_save_*": "ask",
     "ghidra_update_*": "ask",
     "microsoft-learn_*": "allow",
+    "rva_*": "allow",
     "windbg_*": "allow"
   },
   "indexing": {
