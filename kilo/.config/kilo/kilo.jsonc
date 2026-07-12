@@ -1,6 +1,6 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  "model": "empero-ai/Qwythos-9B-Claude-Mythos-5-1M",
+  "model": "empero-ai/Qwythos-9B-v2",
   "provider": {
     "local": {
       "name": "Local",
@@ -9,11 +9,27 @@
         "apiKey": "none"
       },
       "models": {
+        "empero-ai/Qwythos-9B-v2": {
+          "name": "Qwythos-9B-v2",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 262144,
+            "output": 16384
+          }
+        },
         "empero-ai/Qwythos-9B-Claude-Mythos-5-1M": {
           "name": "Qwythos-9B-Claude-Mythos-5-1M",
           "tool_call": true,
           "reasoning": true,
-          "temperature": true,
           "modalities": {
             "input": [
               "text"
@@ -31,7 +47,6 @@
           "name": "Qwopus3.5 9B Coder",
           "tool_call": true,
           "reasoning": true,
-          "temperature": true,
           "modalities": {
             "input": [
               "text"
@@ -56,16 +71,18 @@
     "*": "ask",
     "bash": {
       "*": "ask",
+      "Get-ChildItem *": "allow",
+      "Get-Item *": "allow",
       "cargo search *": "allow",
       "cat *": "allow",
       "cp *": "ask",
       "cut *": "allow",
       "date": "allow",
       "df *": "allow",
+      "dir *": "allow",
       "du *": "allow",
       "find *": "allow",
       "free *": "allow",
-      "ghidra_*": "deny",
       "git diff *": "allow",
       "git log *": "allow",
       "git status *": "allow",
@@ -81,8 +98,7 @@
       "tr *": "allow",
       "uniq *": "allow",
       "which *": "allow",
-      "whoami": "allow",
-      "windbg_*": "deny"
+      "whoami": "allow"
     },
     "doom_loop": "deny",
     "edit": "ask",
@@ -91,18 +107,17 @@
     "list": "allow",
     "lsp": "allow",
     "read": "allow",
+    "semantic_search": "allow",
     "task": "allow",
-    "todowrite": "allow",
-    "webfetch": "allow",
-    "websearch": "allow",
     "context7_*": "allow",
     "deepwiki_*": "allow",
+    "engcalc_*": "allow",
     "filesystem_*": "ask",
+    "filesystem_directory_tree": "allow",
     "filesystem_get_*": "allow",
     "filesystem_list_*": "allow",
     "filesystem_read_*": "allow",
     "filesystem_search_files": "allow",
-    "filesystem_directory_tree": "allow",
     "ghidra_*": "allow",
     "ghidra_delete_*": "ask",
     "ghidra_exit_ghidra": "deny",
@@ -110,7 +125,9 @@
     "ghidra_update_*": "ask",
     "kilo_memory_*": "allow",
     "microsoft-learn_*": "allow",
-    "rva_*": "allow",
+    "todowrite": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
     "windbg_*": "allow"
   },
   "indexing": {
@@ -130,7 +147,8 @@
       "command": [
         "npx",
         "-y",
-        "@modelcontextprotocol/server-filesystem@latest"
+        "@modelcontextprotocol/server-filesystem@latest",
+        "."
       ],
       "enabled": true
     },
@@ -147,12 +165,6 @@
     "deepwiki": {
       "type": "remote",
       "url": "https://mcp.deepwiki.com/mcp",
-      "enabled": false
-    },
-    "github": {
-      "type": "remote",
-      "url": "https://api.githubcopilot.com/mcp",
-      "oauth": true,
       "enabled": false
     },
     "exa": {
