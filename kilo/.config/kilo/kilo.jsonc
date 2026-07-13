@@ -26,23 +26,6 @@
             "output": 16384
           }
         },
-        "empero-ai/Qwythos-9B-Claude-Mythos-5-1M": {
-          "name": "Qwythos-9B-Claude-Mythos-5-1M",
-          "tool_call": true,
-          "reasoning": true,
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "limit": {
-            "context": 262144,
-            "output": 16384
-          }
-        },
         "Jackrong/Qwopus3.5-9B-Coder": {
           "name": "Qwopus3.5 9B Coder",
           "tool_call": true,
@@ -112,6 +95,8 @@
     "context7_*": "allow",
     "deepwiki_*": "allow",
     "engcalc_*": "allow",
+    "excel_get_*": "allow",
+    "excel_read_*": "allow",
     "filesystem_*": "ask",
     "filesystem_directory_tree": "allow",
     "filesystem_get_*": "allow",
@@ -151,6 +136,16 @@
         "."
       ],
       "enabled": true
+    },
+    "excel": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "-q",
+        "excel-mcp-server",
+        "stdio"
+      ],
+      "enabled": false
     },
     "microsoft-learn": {
       "type": "remote",

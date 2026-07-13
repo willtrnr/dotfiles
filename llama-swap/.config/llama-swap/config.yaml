@@ -18,9 +18,8 @@ macros:
     --threads 4
     --flash-attn on
     --direct-io
-    --fit on
-    --kv-unified
-    --cont-batching
+    --parallel 1
+    --no-cont-batching
     --host 127.0.0.1
     --port ${PORT}
     --reuse-port
@@ -36,15 +35,13 @@ macros:
     ${llama-server}
     --hf-repo ${model}-GGUF:${quant}
 
-  gpu-only: --n-gpu-layers 999
-
   ram-cache-none: --cache-ram 0
   ram-cache-small: --cache-ram 512
   ram-cache-medium: --cache-ram 1024
   ram-cache-large: --cache-ram 2048
 
   kv-cache-stock: --cache-type-k q4_0 --cache-type-v q4_0
-  kv-cache-turbo: --cache-type-k turbo3 --cache-type-v turbo4
+  kv-cache-turbo: --cache-type-k turbo4 --cache-type-v turbo3
 
   reasoning: |-
     --reasoning on
@@ -52,27 +49,30 @@ macros:
     --reasoning-budget-message "... thinking budget exceeded, let's answer now."
 
   mtp: |-
+    --spec-draft-n-max 2
+    --spec-draft-p-min 0.8
+    --n-gpu-layers-draft all
     --spec-type draft-mtp
-    --spec-draft-n-max 3
-    --cache-type-k-draft turbo3
-    --cache-type-v-draft turbo4
+
+  slot-save: |-
+    --slot-save-path '${env.RUNTIME_DIRECTORY}/slots'
 
   qwen-common: |-
-    ${gpu-only}
     ${ram-cache-large}
     ${kv-cache-turbo}
     ${reasoning}
+    ${slot-save}
+    --n-gpu-layers all
     --n-predict 16384
     --repeat-penalty 1.05
     --top-k 20
     --top-p 0.95
-    --parallel 2
     --no-mmproj
 
   qwythos-common: |-
     ${qwen-common}
-    ${mtp}
     --ctx-size 260096
+    --temperature 0.2
 
   qwopus-common: |-
     ${qwen-common}
@@ -83,17 +83,16 @@ macros:
     --temperature 0.6
 
   nomic-common: |-
-    ${gpu-only}
     ${ram-cache-small}
     ${kv-cache-turbo}
+    --n-gpu-layers all
     --log-verbosity 2
-    --parallel 1
     --embeddings
 
   sweep-common: |-
-    ${gpu-only}
     ${ram-cache-small}
     ${kv-cache-turbo}
+    --n-gpu-layers all
     --log-verbosity 2
     --ctx-size 32768
 
@@ -102,22 +101,9 @@ models:
     cmd: |-
       ${llama-server-hf-gguf}
       ${qwythos-common}
-      --temperature 0.2
+      ${mtp}
     aliases:
       - Qwythos-9B-v2
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: 262144
-
-  empero-ai/Qwythos-9B-Claude-Mythos-5-1M:
-    cmd: |-
-      ${llama-server-hf-gguf}
-      ${qwythos-common}
-      --temperature 0.6
-    aliases:
-      - Qwythos-9B-Claude-Mythos-5-1M
     capabilities:
       in: [text]
       out: [text]
@@ -185,7 +171,6 @@ routing:
       matrix:
         vars:
           qm2: empero-ai/Qwythos-9B-v2
-          qm1: empero-ai/Qwythos-9B-Claude-Mythos-5-1M
           qo35: Jackrong/Qwopus3.5-9B-Coder
 
           ne15: nomic-ai/nomic-embed-text-v1.5
@@ -195,7 +180,6 @@ routing:
 
         evict_costs:
           qm2: 50
-          qm1: 50
           qo35: 50
 
           ne15: 10
@@ -206,7 +190,7 @@ routing:
         sets:
           standard: (+agent) & (+embed) & (+nextedit)
 
-          agent: qm2 | qm1 | qo35
+          agent: qm2 | qo35
           embed: ne15
           nextedit: sne05 | sne15
 
@@ -217,7 +201,6 @@ routing:
       fifo:
         priority:
           empero-ai/Qwythos-9B-v2: 50
-          empero-ai/Qwythos-9B-Claude-Mythos-5-1M: 50
           Jackrong/Qwopus3.5-9B-Coder: 50
           nomic-ai/nomic-embed-text-v1.5: 10
           sweepai/sweep-next-edit-0.5B: 20
