@@ -18,6 +18,7 @@ macros:
     --threads 4
     --flash-attn on
     --direct-io
+    --fit on
     --parallel 1
     --no-cont-batching
     --host 127.0.0.1
@@ -37,9 +38,8 @@ macros:
 
   ram-cache-none: --cache-ram 0
   ram-cache-small: --cache-ram 1024
-  ram-cache-medium: --cache-ram 2048
-  ram-cache-large: --cache-ram 4096
-  ram-cache-xlarge: --cache-ram 8192
+  ram-cache-medium: --cache-ram 4096
+  ram-cache-large: --cache-ram 8192
 
   kv-cache-stock: --cache-type-k q4_0 --cache-type-v q4_0
   kv-cache-turbo: --cache-type-k turbo4 --cache-type-v turbo3
@@ -50,25 +50,26 @@ macros:
     --reasoning-budget-message "... thinking budget exceeded, let's answer now."
 
   mtp: |-
+    --spec-type draft-mtp,ngram-mod
     --spec-draft-n-max 2
     --spec-draft-p-min 0.8
-    --n-gpu-layers-draft all
-    --spec-type draft-mtp
-
-  slot-save: |-
-    --slot-save-path '${env.RUNTIME_DIRECTORY}/slots'
+    --n-gpu-layers-draft 999
+    --spec-default
 
   qwen-common: |-
     ${ram-cache-large}
     ${kv-cache-turbo}
     ${reasoning}
-    ${slot-save}
-    --n-gpu-layers all
+    --batch-size 512
+    --ubatch-size 512
+    --n-gpu-layers 999
     --n-predict 16384
     --repeat-penalty 1.05
     --top-k 20
     --top-p 0.95
     --no-mmproj
+    --ctx-checkpoints 3
+    --checkpoint-min-step 32768
 
   qwythos-common: |-
     ${qwen-common}
@@ -85,17 +86,10 @@ macros:
 
   nomic-common: |-
     ${ram-cache-small}
-    ${kv-cache-turbo}
     --n-gpu-layers all
     --log-verbosity 2
+    --ctx-checkpoints 0
     --embeddings
-
-  sweep-common: |-
-    ${ram-cache-small}
-    ${kv-cache-turbo}
-    --n-gpu-layers all
-    --log-verbosity 2
-    --ctx-size 32768
 
 models:
   empero-ai/Qwythos-9B-v2:
@@ -133,36 +127,12 @@ models:
       --rope-scaling yarn
       --rope-freq-scale 0.75
     macros:
-      quant: Q6_K
+      quant: Q8_0
     ttl: 300
     aliases:
       - nomic-embed-text-v1.5
     capabilities:
       context: 8192
-
-  sweepai/sweep-next-edit-0.5B:
-    cmd: |-
-      ${llama-server-hf}
-      ${sweep-common}
-    macros:
-      quant: Q8_0
-    ttl: 300
-    aliases:
-      - sweep-next-edit-0.5B
-    capabilities:
-      context: 32768
-
-  sweepai/sweep-next-edit-1.5B:
-    cmd: |-
-      ${llama-server-hf}
-      ${sweep-common}
-    macros:
-      quant: Q8_0
-    ttl: 300
-    aliases:
-      - sweep-next-edit-1.5B
-    capabilities:
-      context: 32768
 
 routing:
   router:
@@ -176,24 +146,17 @@ routing:
 
           ne15: nomic-ai/nomic-embed-text-v1.5
 
-          sne05: sweepai/sweep-next-edit-0.5B
-          sne15: sweepai/sweep-next-edit-1.5B
-
         evict_costs:
-          qm2: 50
-          qo35: 50
+          qm2: 20
+          qo35: 20
 
           ne15: 10
 
-          sne05: 10
-          sne15: 20
-
         sets:
-          standard: (+agent) & (+embed) & (+nextedit)
+          standard: (+agent) & (+embed)
 
           agent: qm2 | qo35
           embed: ne15
-          nextedit: sne05 | sne15
 
   scheduler:
     use: fifo
@@ -201,8 +164,6 @@ routing:
     settings:
       fifo:
         priority:
-          empero-ai/Qwythos-9B-v2: 50
-          Jackrong/Qwopus3.5-9B-Coder: 50
+          empero-ai/Qwythos-9B-v2: 20
+          Jackrong/Qwopus3.5-9B-Coder: 20
           nomic-ai/nomic-embed-text-v1.5: 10
-          sweepai/sweep-next-edit-0.5B: 20
-          sweepai/sweep-next-edit-1.5B: 20
