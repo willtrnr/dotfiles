@@ -36,9 +36,10 @@ macros:
     --hf-repo ${model}-GGUF:${quant}
 
   ram-cache-none: --cache-ram 0
-  ram-cache-small: --cache-ram 512
-  ram-cache-medium: --cache-ram 1024
-  ram-cache-large: --cache-ram 2048
+  ram-cache-small: --cache-ram 1024
+  ram-cache-medium: --cache-ram 2048
+  ram-cache-large: --cache-ram 4096
+  ram-cache-xlarge: --cache-ram 8192
 
   kv-cache-stock: --cache-type-k q4_0 --cache-type-v q4_0
   kv-cache-turbo: --cache-type-k turbo4 --cache-type-v turbo3
