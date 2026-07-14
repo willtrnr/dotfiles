@@ -206,11 +206,6 @@ blink.setup({
 
 lsp_caps = util.update_caps(lsp_caps, blink.get_lsp_capabilities())
 
--- Setup Tabnine
-require("tabnine").setup({
-   accept_keymap = "<C-Right>",
-})
-
 --
 -- Diagnostics
 --

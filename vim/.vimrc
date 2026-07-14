@@ -122,7 +122,6 @@ if has('nvim')
 
   " Completion
   Plug 'blinkresearchlabs/blink-edit.nvim'
-  Plug 'codota/tabnine-nvim', { 'commit': '6d209e52239e09e19c4913595cb253d2c364afa8', 'do': './dl_binaries.sh' }
   Plug 'joelazar/blink-calc'
   Plug 'onsails/lspkind.nvim'
   Plug 'saecki/crates.nvim', { 'tag': 'v0.7.*' }

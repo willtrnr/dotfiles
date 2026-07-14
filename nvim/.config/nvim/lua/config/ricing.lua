@@ -54,13 +54,6 @@ local function lualine_yaml_schema()
    end
 end
 
-local tabnine_status = require("tabnine.status")
-
-local function lualine_tabnine_status()
-   local status = tabnine_status.status()
-   return string.gsub(status, " tabnine", "")
-end
-
 M.lualine = require("lualine")
 M.lualine.setup({
    options = {
@@ -95,7 +88,6 @@ M.lualine.setup({
       },
       lualine_x = {
          "lsp_status",
-         lualine_tabnine_status,
          "filetype",
          lualine_yaml_schema,
          "encoding",
