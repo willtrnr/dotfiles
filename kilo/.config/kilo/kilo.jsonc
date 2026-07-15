@@ -67,6 +67,7 @@
       "df *": "allow",
       "dir *": "allow",
       "du *": "allow",
+      "echo *": "allow",
       "find *": "allow",
       "free *": "allow",
       "git diff *": "allow",
