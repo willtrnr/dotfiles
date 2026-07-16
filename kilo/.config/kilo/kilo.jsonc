@@ -79,6 +79,7 @@
       "ls *": "allow",
       "mv *": "ask",
       "npm search *": "allow",
+      "read *": "allow",
       "rm *": "ask",
       "sed *": "allow",
       "sort *": "allow",
