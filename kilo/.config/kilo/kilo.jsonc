@@ -80,11 +80,13 @@
       "mv *": "ask",
       "npm search *": "allow",
       "rm *": "ask",
+      "sed *": "allow",
       "sort *": "allow",
       "tail *": "allow",
       "tr *": "allow",
       "tree *": "allow",
       "uniq *": "allow",
+      "wc *": "allow",
       "where *": "allow",
       "which *": "allow",
       "whoami": "allow"
