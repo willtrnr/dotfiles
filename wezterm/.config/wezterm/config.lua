@@ -53,15 +53,9 @@ if helpers.running_on_windows() then
       config.default_domain = config.wsl_domains[1].name
 
       config.unix_domains = helpers.map(config.wsl_domains, function(d)
-         local sock <const> = helpers.path_join(helpers.get_runtime_dir(), ("wsl-%s.sock"):format(d.distribution))
          return {
             name = ("UNIX:%s"):format(d.distribution),
-            socket_path = sock,
-            serve_command = {
-               "winsocat.exe",
-               ("UNIX-LISTEN:%s,fork"):format(sock),
-               ("WSL:socat STDIO UNIX-CONNECT:/run/user/1000/wezterm/sock,distribution=%s"):format(d.distribution),
-            },
+            socket_path = helpers.path_join(helpers.get_runtime_dir(), ("wsl-%s.sock"):format(d.distribution)),
          }
       end)
    end
