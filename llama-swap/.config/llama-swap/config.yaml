@@ -83,6 +83,11 @@ macros:
     --yarn-orig-ctx 32768
     --temperature 0.6
 
+  bonsai-common: |-
+    ${qwen-common}
+    --ctx-size 196608
+    --temperature 0.6
+
   nomic-common: |-
     ${ram-cache-small}
     --n-gpu-layers all
@@ -102,7 +107,7 @@ models:
       in: [text]
       out: [text]
       tools: true
-      context: 262144
+      context: 196608
 
   Jackrong/Qwopus3.5-9B-Coder:
     cmd: |-
@@ -115,6 +120,20 @@ models:
       out: [text]
       tools: true
       context: 131072
+
+  prism-ml/Bonsai-27B:
+    cmd: |-
+      ${llama-server-hf-gguf}
+      ${bonsai-common}
+    macros:
+      quant: Q1_0
+    aliases:
+      - Bonsai-27B
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: 196608
 
   nomic-ai/nomic-embed-text-v1.5:
     cmd: |-
@@ -142,19 +161,21 @@ routing:
         vars:
           qm2: empero-ai/Qwythos-9B-v2
           qo35: Jackrong/Qwopus3.5-9B-Coder
+          bon: prism-ml/Bonsai-27B
 
           ne15: nomic-ai/nomic-embed-text-v1.5
 
         evict_costs:
           qm2: 20
           qo35: 20
+          bon: 15
 
           ne15: 10
 
         sets:
           standard: (+agent) & (+embed)
 
-          agent: qm2 | qo35
+          agent: qm2 | qo35 | bon
           embed: ne15
 
   scheduler:
@@ -165,4 +186,5 @@ routing:
         priority:
           empero-ai/Qwythos-9B-v2: 20
           Jackrong/Qwopus3.5-9B-Coder: 20
+          prism-ml/Bonsai-27B: 15
           nomic-ai/nomic-embed-text-v1.5: 10
