@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 export RUSTUP_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/rustup"
+export CARGO_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/cargo"
 
 export PATH="${HOME}/.cargo/bin${PATH:+:${PATH}}"
 
@@ -9,8 +10,8 @@ if RUSTC_WRAPPER="$(command -v sccache)"; then
 fi
 
 if [ -n "$WSL_DISTRO_NAME" ]; then
-  export CARGO_TARGET_I686_PC_WINDOWS_GNU_RUNNER=/usr/bin/env
-  export CARGO_TARGET_I686_PC_WINDOWS_MSVC_RUNNER=/usr/bin/env
-  export CARGO_TARGET_X86_64_PC_WINDOWS_GNU_RUNNER=/usr/bin/env
-  export CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUNNER=/usr/bin/env
+  export CARGO_TARGET_I686_PC_WINDOWS_GNU_RUNNER=/init
+  export CARGO_TARGET_I686_PC_WINDOWS_MSVC_RUNNER=/init
+  export CARGO_TARGET_X86_64_PC_WINDOWS_GNU_RUNNER=/init
+  export CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUNNER=/init
 fi
