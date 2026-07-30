@@ -1,7 +1,0 @@
-alias upip='noglob uv pip'
-alias upipgi='upip freeze | grep'
-alias upipi='upip install'
-alias upipir='upip install -r requirements.txt'
-alias upiplo='upip list -o'
-alias upipreq='upip freeze > requirements.txt'
-alias upipun='upip uninstall'
