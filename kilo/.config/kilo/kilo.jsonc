@@ -26,6 +26,23 @@
             "output": 16384
           }
         },
+        "empero-ai/Qwythos-27B-v1": {
+          "name": "Qwythos 27B v1",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 196608,
+            "output": 16384
+          }
+        },
         "Jackrong/Qwopus3.5-9B-Coder": {
           "name": "Qwopus3.5 9B Coder",
           "tool_call": true,

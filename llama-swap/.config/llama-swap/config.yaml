@@ -72,8 +72,7 @@ macros:
 
   qwythos-common: |-
     ${qwen-common}
-    --ctx-size 196608
-    --temperature 0.2
+    --temperature 0.6
 
   qwopus-common: |-
     ${qwen-common}
@@ -81,11 +80,6 @@ macros:
     --rope-scaling yarn
     --rope-scale 4
     --yarn-orig-ctx 32768
-    --temperature 0.6
-
-  bonsai-common: |-
-    ${qwen-common}
-    --ctx-size 196608
     --temperature 0.6
 
   nomic-common: |-
@@ -101,8 +95,22 @@ models:
       ${llama-server-hf-gguf}
       ${qwythos-common}
       ${mtp-ngram}
+      --ctx-size 196608
     aliases:
       - Qwythos-9B-v2
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: 196608
+
+  empero-ai/Qwythos-27B-v1:
+    cmd: |-
+      ${llama-server-hf-gguf}
+      ${qwythos-common}
+      --ctx-size 196608
+    aliases:
+      - Qwythos-27B-v1
     capabilities:
       in: [text]
       out: [text]
@@ -120,20 +128,6 @@ models:
       out: [text]
       tools: true
       context: 131072
-
-  prism-ml/Bonsai-27B:
-    cmd: |-
-      ${llama-server-hf-gguf}
-      ${bonsai-common}
-    macros:
-      quant: Q1_0
-    aliases:
-      - Bonsai-27B
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: 196608
 
   nomic-ai/nomic-embed-text-v1.5:
     cmd: |-
@@ -159,23 +153,23 @@ routing:
     settings:
       matrix:
         vars:
-          qm2: empero-ai/Qwythos-9B-v2
-          qo35: Jackrong/Qwopus3.5-9B-Coder
-          bon: prism-ml/Bonsai-27B
+          qw92: empero-ai/Qwythos-9B-v2
+          qw271: empero-ai/Qwythos-27B-v1
+          qo359: Jackrong/Qwopus3.5-9B-Coder
 
           ne15: nomic-ai/nomic-embed-text-v1.5
 
         evict_costs:
-          qm2: 20
-          qo35: 20
-          bon: 15
+          qw92: 20
+          qw271: 30
+          qo359: 20
 
           ne15: 10
 
         sets:
           standard: (+agent) & (+embed)
 
-          agent: qm2 | qo35 | bon
+          agent: qw92 | qw271 | qo359
           embed: ne15
 
   scheduler:
@@ -185,6 +179,6 @@ routing:
       fifo:
         priority:
           empero-ai/Qwythos-9B-v2: 20
+          empero-ai/Qwythos-27B-v1: 20
           Jackrong/Qwopus3.5-9B-Coder: 20
-          prism-ml/Bonsai-27B: 15
           nomic-ai/nomic-embed-text-v1.5: 10
