@@ -108,14 +108,14 @@ models:
     cmd: |-
       ${llama-server-hf-gguf}
       ${qwythos-common}
-      --ctx-size 196608
+      --ctx-size 131072
     aliases:
       - Qwythos-27B-v1
     capabilities:
       in: [text]
       out: [text]
       tools: true
-      context: 196608
+      context: 131072
 
   Jackrong/Qwopus3.5-9B-Coder:
     cmd: |-
