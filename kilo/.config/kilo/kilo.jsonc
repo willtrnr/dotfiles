@@ -59,6 +59,23 @@
             "context": 131072,
             "output": 16384
           }
+        },
+        "Jackrong/Qwopus3.5-4B-Coder": {
+          "name": "Qwopus3.5 4B Coder",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 32768,
+            "output": 16384
+          }
         }
       }
     }
@@ -144,7 +161,7 @@
     "windbg_*": "allow"
   },
   "indexing": {
-    "enabled": true,
+    "enabled": false,
     "provider": "openai-compatible",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "openai-compatible": {

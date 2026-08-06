@@ -15,7 +15,7 @@ macros:
 
   llama-server: |-
     ${llama-server-bin}
-    --threads 4
+    --threads 2
     --flash-attn on
     --direct-io
     --fit on
@@ -25,7 +25,7 @@ macros:
     --port ${PORT}
     --reuse-port
     --no-ui
-    --threads-http 4
+    --threads-http 2
     --jinja
 
   llama-server-hf: |-
@@ -44,6 +44,8 @@ macros:
   kv-cache-stock: --cache-type-k q8_0 --cache-type-v q4_0
   kv-cache-turbo: --cache-type-k q8_0 --cache-type-v turbo3
 
+  gpu-only: --n-gpu-layers all
+
   reasoning: |-
     --reasoning on
     --reasoning-budget 2048
@@ -56,13 +58,11 @@ macros:
     --spec-default
 
   qwen-common: |-
-    ${ram-cache-large}
     ${kv-cache-turbo}
     ${reasoning}
     --batch-size 1024
     --ubatch-size 512
     --n-predict 16384
-    --n-gpu-layers all
     --repeat-penalty 1.05
     --top-k 20
     --top-p 0.95
@@ -72,10 +72,14 @@ macros:
 
   qwythos-common: |-
     ${qwen-common}
+    ${ram-cache-large}
+    ${gpu-only}
     --temperature 0.6
 
   qwopus-common: |-
     ${qwen-common}
+    ${ram-cache-large}
+    ${gpu-only}
     --ctx-size 131072
     --rope-scaling yarn
     --rope-scale 4
@@ -84,7 +88,6 @@ macros:
 
   nomic-common: |-
     ${ram-cache-small}
-    --n-gpu-layers all
     --log-verbosity 2
     --ctx-checkpoints 0
     --embeddings
@@ -129,6 +132,21 @@ models:
       tools: true
       context: 131072
 
+  Jackrong/Qwopus3.5-4B-Coder:
+    cmd: |-
+      ${llama-server-hf-gguf}
+      ${qwen-common}
+      ${ram-cache-small}
+      --temperature 0.6
+      --ctx-size 32768
+    aliases:
+      - Qwopus3.5-4B-Coder
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: 32768
+
   nomic-ai/nomic-embed-text-v1.5:
     cmd: |-
       ${llama-server-hf-gguf}
@@ -156,6 +174,7 @@ routing:
           qw92: empero-ai/Qwythos-9B-v2
           qw271: empero-ai/Qwythos-27B-v1
           qo359: Jackrong/Qwopus3.5-9B-Coder
+          qo354: Jackrong/Qwopus3.5-4B-Coder
 
           ne15: nomic-ai/nomic-embed-text-v1.5
 
@@ -163,13 +182,14 @@ routing:
           qw92: 20
           qw271: 30
           qo359: 20
+          qo354: 15
 
           ne15: 10
 
         sets:
           standard: (+agent) & (+embed)
 
-          agent: qw92 | qw271 | qo359
+          agent: qw92 | qw271 | qo359 | qo354
           embed: ne15
 
   scheduler:
@@ -181,4 +201,5 @@ routing:
           empero-ai/Qwythos-9B-v2: 20
           empero-ai/Qwythos-27B-v1: 20
           Jackrong/Qwopus3.5-9B-Coder: 20
+          Jackrong/Qwopus3.5-4B-Coder: 20
           nomic-ai/nomic-embed-text-v1.5: 10
