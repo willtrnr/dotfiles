@@ -10,6 +10,6 @@ if [ -z "${WSL_DISTRO_NAME}" ] && command -v wslpath >/dev/null; then
   esac
 fi
 
-if [ -n "${WSL_DISTRO_NAME}" ] && [ -z "${DISPLAY}" ]; then
+if [ -n "${WSL_DISTRO_NAME}" ] && [ -z "${WAYLAND_DISPLAY}" ] && [ -z "${DISPLAY}" ]; then
   export DISPLAY=:0
 fi
