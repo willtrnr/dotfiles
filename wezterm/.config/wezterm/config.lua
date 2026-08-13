@@ -55,7 +55,16 @@ if helpers.running_on_windows() then
       config.unix_domains = helpers.map(config.wsl_domains, function(d)
          return {
             name = ("UNIX:%s"):format(d.distribution),
-            socket_path = helpers.path_join(helpers.get_runtime_dir(), ("wsl-%s.sock"):format(d.distribution)),
+            proxy_command = {
+               "C:\\Windows\\System32\\wsl.exe",
+               "--distribution",
+               d.distribution,
+               "--exec",
+               "/usr/bin/socat",
+               "STDIO",
+               "UNIX-CLIENT:/run/user/1000/wezterm/sock",
+            },
+            no_serve_automatically = true,
          }
       end)
    end
