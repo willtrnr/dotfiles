@@ -78,7 +78,7 @@ end
 
 -- GUI mode config
 if wezterm.gui then
-   -- Remove key bindings using the SUPER from the default, reserved for the WM
+   -- Remove key bindings using SUPER from the default, reserved for the WM
    config.keys = helpers.filter(wezterm.gui.default_keys(), function(k)
       return not k.mods or not k.mods:find("SUPER")
    end)
@@ -89,6 +89,7 @@ if wezterm.gui then
    end)
    config.disable_default_key_bindings = true
 
+   --[[
    if not helpers.running_in_vm() then
       -- Select the integrated GPU if available, otherwise dedicated, or else whatever Dx or GL
       local gpu <const> = helpers.priority_find(
@@ -124,6 +125,7 @@ if wezterm.gui then
          config.front_end = "WebGpu"
       end
    end
+   ]]
 end
 
 -- Apply local config if available
