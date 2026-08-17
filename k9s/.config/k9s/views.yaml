@@ -7,3 +7,12 @@ views:
       - POLICY:.metadata.labels.pod-security\.kubernetes\.io/enforce
       - LINKERD:.metadata.annotations.linkerd\.io/inject
       - AGE
+
+  gateway.networking.k8s.io/v1/httproutes:
+    columns:
+      - NAMESPACE
+      - NAME
+      - ACCEPTED:.status.parents[*].conditions[?(@.type == "Accepted")].reason
+      - RESOLVED:.status.parents[*].conditions[?(@.type == "ResolvedRefs")].reason
+      - HOSTNAMES:.spec.hostnames[*]
+      - AGE
