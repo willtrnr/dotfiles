@@ -57,7 +57,7 @@ macros:
     --spec-draft-p-min 0.8
     --spec-default
 
-  qwen-common: |-
+  qwen35-common: |-
     ${kv-cache-turbo}
     ${reasoning}
     --batch-size 1024
@@ -71,13 +71,13 @@ macros:
     --checkpoint-min-step 32768
 
   qwythos-common: |-
-    ${qwen-common}
+    ${qwen35-common}
     ${ram-cache-large}
     ${gpu-only}
     --temperature 0.6
 
   qwopus-common: |-
-    ${qwen-common}
+    ${qwen35-common}
     ${ram-cache-large}
     ${gpu-only}
     --ctx-size 131072
@@ -120,6 +120,22 @@ models:
       tools: true
       context: 131072
 
+  empero-ai/Qwen3.8-9B-Distill:
+    cmd: |-
+      ${llama-server-hf-gguf}
+      ${qwen35-common}
+      ${ram-cache-large}
+      ${gpu-only}
+      --temperature 0.6
+      --ctx-size 196608
+    aliases:
+      - Qwen3.8-9B-Distill
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: 196608
+
   Jackrong/Qwopus3.5-9B-Coder:
     cmd: |-
       ${llama-server-hf-gguf}
@@ -135,7 +151,7 @@ models:
   Jackrong/Qwopus3.5-4B-Coder:
     cmd: |-
       ${llama-server-hf-gguf}
-      ${qwen-common}
+      ${qwen35-common}
       ${ram-cache-small}
       --temperature 0.6
       --ctx-size 32768
@@ -173,6 +189,7 @@ routing:
         vars:
           qw92: empero-ai/Qwythos-9B-v2
           qw271: empero-ai/Qwythos-27B-v1
+          qw389d: empero-ai/Qwen3.8-9B-Distill
           qo359: Jackrong/Qwopus3.5-9B-Coder
           qo354: Jackrong/Qwopus3.5-4B-Coder
 
@@ -181,6 +198,7 @@ routing:
         evict_costs:
           qw92: 20
           qw271: 30
+          qw389d: 20
           qo359: 20
           qo354: 15
 
@@ -189,7 +207,7 @@ routing:
         sets:
           standard: (+agent) & (+embed)
 
-          agent: qw92 | qw271 | qo359 | qo354
+          agent: qw92 | qw271 | qw389d | qo359 | qo354
           embed: ne15
 
   scheduler:
@@ -200,6 +218,7 @@ routing:
         priority:
           empero-ai/Qwythos-9B-v2: 20
           empero-ai/Qwythos-27B-v1: 20
+          empero-ai/Qwen3.8-9B-Distill: 20
           Jackrong/Qwopus3.5-9B-Coder: 20
           Jackrong/Qwopus3.5-4B-Coder: 20
           nomic-ai/nomic-embed-text-v1.5: 10
