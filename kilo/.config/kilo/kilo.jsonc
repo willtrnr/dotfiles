@@ -189,16 +189,6 @@
     "dimension": 768
   },
   "mcp": {
-    "filesystem": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-filesystem@latest",
-        "."
-      ],
-      "enabled": true
-    },
     "excel": {
       "type": "local",
       "command": [
