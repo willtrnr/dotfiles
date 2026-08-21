@@ -13,7 +13,7 @@ macros:
 
   llama-server-bin: /usr/bin/llama-server
 
-  llama-server: |-
+  llama-server: >-
     ${llama-server-bin}
     --threads 2
     --flash-attn on
@@ -28,11 +28,11 @@ macros:
     --threads-http 2
     --jinja
 
-  llama-server-hf: |-
+  llama-server-hf: >-
     ${llama-server}
     --hf-repo ${model}:${quant}
 
-  llama-server-hf-gguf: |-
+  llama-server-hf-gguf: >-
     ${llama-server}
     --hf-repo ${model}-GGUF:${quant}
 
@@ -46,18 +46,18 @@ macros:
 
   gpu-only: --n-gpu-layers all
 
-  reasoning: |-
+  reasoning: >-
     --reasoning on
     --reasoning-budget 2048
     --reasoning-budget-message "... thinking budget exceeded, let's answer now."
 
-  mtp-ngram: |-
+  mtp-ngram: >-
     --spec-type draft-mtp,ngram-mod
     --spec-draft-n-max 2
     --spec-draft-p-min 0.8
     --spec-default
 
-  qwen35-common: |-
+  qwen35-common: >-
     ${kv-cache-turbo}
     ${reasoning}
     --batch-size 1024
@@ -70,13 +70,13 @@ macros:
     --ctx-checkpoints 3
     --checkpoint-min-step 32768
 
-  qwythos-common: |-
+  qwythos-common: >-
     ${qwen35-common}
     ${ram-cache-large}
     ${gpu-only}
     --temperature 0.6
 
-  qwopus-common: |-
+  qwopus-common: >-
     ${qwen35-common}
     ${ram-cache-large}
     ${gpu-only}
@@ -86,7 +86,7 @@ macros:
     --yarn-orig-ctx 32768
     --temperature 0.6
 
-  nomic-common: |-
+  nomic-common: >-
     ${ram-cache-small}
     --log-verbosity 2
     --ctx-checkpoints 0
@@ -94,7 +94,7 @@ macros:
 
 models:
   empero-ai/Qwythos-9B-v2:
-    cmd: |-
+    cmd: >-
       ${llama-server-hf-gguf}
       ${qwythos-common}
       ${mtp-ngram}
@@ -108,7 +108,7 @@ models:
       context: 196608
 
   empero-ai/Qwythos-27B-v1:
-    cmd: |-
+    cmd: >-
       ${llama-server-hf-gguf}
       ${qwythos-common}
       --ctx-size 131072
@@ -121,11 +121,12 @@ models:
       context: 131072
 
   empero-ai/Qwen3.8-9B-Distill:
-    cmd: |-
+    cmd: >-
       ${llama-server-hf-gguf}
       ${qwen35-common}
       ${ram-cache-large}
       ${gpu-only}
+      ${mtp-ngram}
       --temperature 0.6
       --ctx-size 196608
     aliases:
@@ -137,7 +138,7 @@ models:
       context: 196608
 
   Jackrong/Qwopus3.5-9B-Coder:
-    cmd: |-
+    cmd: >-
       ${llama-server-hf-gguf}
       ${qwopus-common}
     aliases:
@@ -149,7 +150,7 @@ models:
       context: 131072
 
   Jackrong/Qwopus3.5-4B-Coder:
-    cmd: |-
+    cmd: >-
       ${llama-server-hf-gguf}
       ${qwen35-common}
       ${ram-cache-small}
@@ -164,7 +165,7 @@ models:
       context: 32768
 
   nomic-ai/nomic-embed-text-v1.5:
-    cmd: |-
+    cmd: >-
       ${llama-server-hf-gguf}
       ${nomic-common}
       --ctx-size 8192
