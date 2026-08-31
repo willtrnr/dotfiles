@@ -1,6 +1,6 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  "model": "empero-ai/Qwythos-9B-v2",
+  "model": "empero-ai/Qwen3.8-9B-Distill",
   "provider": {
     "local": {
       "name": "Local",
@@ -77,8 +77,8 @@
             "output": 16384
           }
         },
-        "Jackrong/Qwopus3.5-4B-Coder": {
-          "name": "Qwopus3.5 4B Coder",
+        "ornith-ai/Ornith-1.5-9B": {
+          "name": "Ornith 1.5 9B",
           "tool_call": true,
           "reasoning": true,
           "modalities": {
@@ -90,7 +90,7 @@
             ]
           },
           "limit": {
-            "context": 32768,
+            "context": 196608,
             "output": 16384
           }
         }
@@ -112,6 +112,7 @@
       "Select-String *": "allow",
       "Test-Path *": "allow",
       "Where-Object *": "allow",
+      "awk *": "allow",
       "cargo doc *": "allow",
       "cargo expand *": "allow",
       "cargo metadata *": "allow",
@@ -136,6 +137,9 @@
       "ls *": "allow",
       "mv *": "ask",
       "npm search *": "allow",
+      "python -c *": "deny",
+      "python2 -c *": "deny",
+      "python3 -c *": "deny",
       "read *": "allow",
       "rm *": "ask",
       "rustc *": "allow",
@@ -143,6 +147,7 @@
       "sed *": "allow",
       "sort *": "allow",
       "tail *": "allow",
+      "tomlq *": "allow",
       "tr *": "allow",
       "tree *": "allow",
       "true": "allow",
@@ -150,7 +155,8 @@
       "wc *": "allow",
       "where *": "allow",
       "which *": "allow",
-      "whoami": "allow"
+      "whoami": "allow",
+      "yq *": "allow"
     },
     "doom_loop": "deny",
     "edit": "ask",
@@ -158,6 +164,7 @@
     "excel_read_data_from_excel": "allow",
     "glob": "allow",
     "grep": "allow",
+    "kilo_memory_save": "allow",
     "list": "allow",
     "lsp": "allow",
     "read": "allow",

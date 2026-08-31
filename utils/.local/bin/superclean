@@ -1,0 +1,206 @@
+#!/usr/bin/env bash
+
+set -e
+
+source /usr/share/makepkg/util/message.sh
+
+CACHE_PATHS=(
+  ".wine/drive_c/users/$USER/AppData/Local/Temp"
+  .ansible/{collections,cp,galaxy_cache,tmp}
+  .azcopy
+  .azure/{logs,telemetry}
+  .bundle/cache
+  .cache/ImageMagick
+  .cache/JNA
+  .cache/Microsoft
+  .cache/Yubico
+  .cache/ansible-compat
+  .cache/aura
+  .cache/bazel{,isk}
+  .cache/biome
+  .cache/black
+  .cache/bloop
+  .cache/buf
+  .cache/bun
+  .cache/cargo-xwin
+  .cache/containers
+  .cache/coursier
+  .cache/debuginfod_client
+  .cache/fontconfig
+  .cache/gegl-0.4
+  .cache/gimp
+  .cache/glycin
+  .cache/go{,-build,imports,pls}
+  .cache/gtk-{3,4}.0
+  .cache/harlequin
+  .cache/hatch
+  .cache/helm
+  .cache/jadx
+  .cache/jdtls
+  .cache/k0sctl
+  .cache/kilo
+  .cache/kitty
+  .cache/llama.cpp
+  .cache/luarocks
+  .cache/mesa_shader_cache{,_db}
+  .cache/metals
+  .cache/node{,-gyp}
+  .cache/nvim
+  .cache/opencode
+  .cache/pip{,x}
+  .cache/pre-commit
+  .cache/protocbridge
+  .cache/pypoetry
+  .cache/rules_python_pycache
+  .cache/rust-releases
+  .cache/samba
+  .cache/sccache
+  .cache/tauri
+  .cache/thumbnails
+  .cache/tooling
+  .cache/tree-sitter
+  .cache/typescript
+  .cache/uv
+  .cache/vcpkg
+  .cache/vim
+  .cache/virt-manager
+  .cache/vmware
+  .cache/webkitgtk-4.1
+  .cache/wezterm
+  .cache/wine{,tricks}
+  .cache/yarn
+  .cache/zenith
+  .cacje/sccache
+  .cargo/{advisory-dbs,registry,git}
+  .dotnet/toolResolverCache
+  .gradle
+  .ivy2/cache
+  .java
+  .java/fonts
+  .local/share/NuGet/http-cache
+  .local/share/Nuget/Cache
+  .local/share/Trash
+  .local/share/bloop/logs
+  .local/share/gem/specs
+  .local/share/rustup/{downloads,tmp,toolchains}
+  .local/share/yarn/berry
+  .local/state/pipx/log
+  .local/{share,state}/nvim/swap
+  .m2/{repository,wrapper}
+  .npm
+  .nuget/packages
+  .omnisharp
+  .parallel/tmp
+  .rustup/{downloads,tmp,update-hashes}
+  .sbt/1.0/{server,zinc}
+  .sbt/{0.13,1.0}/plugins/{project,target}
+  .templateengine
+  .webman/tmp
+  .yarn/berry
+  .zenmap
+  go
+)
+
+clean_cache() {
+  msg 'Checking for common cache data locations...'
+  REAL_PATHS=()
+  for p in "${CACHE_PATHS[@]}"; do
+    if [ -x "$HOME/$p" ]; then
+      REAL_PATHS+=("$HOME/$p")
+    fi
+  done
+
+  if [ ${#REAL_PATHS[@]} -gt 0 ]; then
+    TOTAL="$(du -chx "${REAL_PATHS[@]}" 2>/dev/null | tail -n1 | cut -f1)"
+    msg2 'Found about %sB to be cleaned in %d paths.' "$TOTAL" "${#REAL_PATHS[@]}"
+
+    for p in "${REAL_PATHS[@]}"; do
+      msg2 'Cleaning %s...' "$p"
+      rm -rf "$p" 2>/dev/null || true
+    done
+  fi
+}
+
+clean_webman() {
+  if [ -e "$HOME/.webman" ] && yq="$(command -v yq 2>/dev/null)"; then
+    msg 'Checking for unused webman package versions...'
+    UNUSED_PKG=()
+    for p in "$HOME/.webman/pkg/"*; do
+      if version="$("$yq" -r .using "$p/using.yaml" 2>/dev/null)"; then
+        mapfile -d '' -t -O "${#UNUSED_PKG[@]}" UNUSED_PKG < <(
+          find "$p" -mindepth 1 -maxdepth 1 -type d ! -name "$version" -print0
+        )
+      fi
+    done
+
+    if [ ${#UNUSED_PKG[@]} -gt 0 ]; then
+      TOTAL="$(du -chx "${UNUSED_PKG[@]}" 2>/dev/null | tail -n1 | cut -f1)"
+      msg2 'Found about %sB to be cleaned in %d unused packages versions.' "$TOTAL" "${#UNUSED_PKG[@]}"
+
+      for p in "${UNUSED_PKG[@]}"; do
+        msg2 'Cleaning %s...' "$p"
+        rm -rf "$p" 2>/dev/null || true
+      done
+    fi
+  fi
+}
+
+clean_user_podman() {
+  msg 'Checking for podman external containers (user)...'
+  mapfile -t CONTAINERS < <(podman ps -q --external)
+  if [ ${#CONTAINERS[@]} -gt 0 ]; then
+    msg2 'Removing %d containers...' "${#CONTAINERS[@]}"
+    podman rm -f "${CONTAINERS[@]}" 2>/dev/null || true
+  fi
+
+  msg 'Checking for podman images (user)...'
+  mapfile -t IMAGES < <(podman images -q)
+  if [ ${#IMAGES[@]} -gt 0 ]; then
+    msg2 'Removing %d images...' "${#IMAGES[@]}"
+    podman rmi "${IMAGES[@]}" 2>/dev/null || true
+  fi
+}
+
+clean_pacman() {
+  msg 'Cleaning uninstalled pacman packages...'
+  sudo pacman -Sc --noconfirm || true
+}
+
+clean_journal() {
+  msg 'Cleaning systemd journals...'
+  sudo journalctl --vacuum-size=1 || true
+}
+
+clean_coredumps() {
+  msg 'Cleaning core dumps...'
+  sudo find /var/lib/systemd/coredump -type f -delete || true
+}
+
+clean_system_podman() {
+  msg 'Checking for podman external containers (system)...'
+  mapfile -t CONTAINERS < <(sudo podman ps -q --external)
+  if [ ${#CONTAINERS[@]} -gt 0 ]; then
+    msg2 'Removing %d containers...' "${#CONTAINERS[@]}"
+    sudo podman rm -f "${CONTAINERS[@]}" 2>/dev/null || true
+  fi
+
+  msg 'Checking for podman images (system)...'
+  mapfile -t IMAGES < <(sudo podman images -q)
+  if [ ${#IMAGES[@]} -gt 0 ]; then
+    msg2 'Removing %d images...' "${#IMAGES[@]}"
+    sudo podman rmi "${IMAGES[@]}" 2>/dev/null || true
+  fi
+}
+
+colorize
+
+clean_cache
+clean_webman
+clean_user_podman
+
+if [ "$1" = '-s' ]; then
+  clean_pacman
+  clean_journal
+  clean_coredumps
+  clean_system_podman
+fi

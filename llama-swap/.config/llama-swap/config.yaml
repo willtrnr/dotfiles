@@ -149,20 +149,21 @@ models:
       tools: true
       context: 131072
 
-  Jackrong/Qwopus3.5-4B-Coder:
+  ornith-ai/Ornith-1.5-9B:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwen35-common}
-      ${ram-cache-small}
+      ${ram-cache-large}
+      ${gpu-only}
       --temperature 0.6
-      --ctx-size 32768
+      --ctx-size 196608
     aliases:
-      - Qwopus3.5-4B-Coder
+      - Ornith-1.5-9B
     capabilities:
       in: [text]
       out: [text]
       tools: true
-      context: 32768
+      context: 196608
 
   nomic-ai/nomic-embed-text-v1.5:
     cmd: >-
@@ -192,7 +193,6 @@ routing:
           qw271: empero-ai/Qwythos-27B-v1
           qw389d: empero-ai/Qwen3.8-9B-Distill
           qo359: Jackrong/Qwopus3.5-9B-Coder
-          qo354: Jackrong/Qwopus3.5-4B-Coder
 
           ne15: nomic-ai/nomic-embed-text-v1.5
 
@@ -201,14 +201,13 @@ routing:
           qw271: 30
           qw389d: 20
           qo359: 20
-          qo354: 15
 
           ne15: 10
 
         sets:
           standard: (+agent) & (+embed)
 
-          agent: qw92 | qw271 | qw389d | qo359 | qo354
+          agent: qw92 | qw271 | qw389d | qo359
           embed: ne15
 
   scheduler:
@@ -221,5 +220,4 @@ routing:
           empero-ai/Qwythos-27B-v1: 20
           empero-ai/Qwen3.8-9B-Distill: 20
           Jackrong/Qwopus3.5-9B-Coder: 20
-          Jackrong/Qwopus3.5-4B-Coder: 20
           nomic-ai/nomic-embed-text-v1.5: 10
