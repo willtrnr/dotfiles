@@ -9,8 +9,8 @@
         "apiKey": "sk-none"
       },
       "models": {
-        "empero-ai/Qwythos-9B-v2": {
-          "name": "Qwythos 9B v2",
+        "Jackrong/Qwopus3.5-9B-Coder": {
+          "name": "Qwopus3.5 9B Coder",
           "tool_call": true,
           "reasoning": true,
           "modalities": {
@@ -22,12 +22,12 @@
             ]
           },
           "limit": {
-            "context": 196608,
+            "context": 131072,
             "output": 16384
           }
         },
-        "empero-ai/Qwythos-27B-v1": {
-          "name": "Qwythos 27B v1",
+        "JonathanColetti/Qwen3.8-27B-Uncensored": {
+          "name": "Qwen3.8 27B Uncensored",
           "tool_call": true,
           "reasoning": true,
           "modalities": {
@@ -60,8 +60,8 @@
             "output": 16384
           }
         },
-        "Jackrong/Qwopus3.5-9B-Coder": {
-          "name": "Qwopus3.5 9B Coder",
+        "empero-ai/Qwythos-27B-v1": {
+          "name": "Qwythos 27B v1",
           "tool_call": true,
           "reasoning": true,
           "modalities": {
@@ -74,6 +74,23 @@
           },
           "limit": {
             "context": 131072,
+            "output": 16384
+          }
+        },
+        "empero-ai/Qwythos-9B-v2": {
+          "name": "Qwythos 9B v2",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 196608,
             "output": 16384
           }
         },
@@ -100,6 +117,11 @@
   "enabled_providers": [
     "local"
   ],
+  "agent": {
+    "title": {
+      "disable": true
+    }
+  },
   "lsp": true,
   "permission": {
     "*": "ask",
@@ -169,6 +191,9 @@
     "lsp": "allow",
     "read": "allow",
     "semantic_search": "allow",
+    "skill": {
+      "kilo-config": "allow"
+    },
     "task": "allow",
     "todowrite": "allow",
     "webfetch": "allow",

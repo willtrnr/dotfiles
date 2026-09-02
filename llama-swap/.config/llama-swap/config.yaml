@@ -17,14 +17,16 @@ macros:
     ${llama-server-bin}
     --threads 2
     --flash-attn on
-    --direct-io
+    --load-mode dio
     --fit on
     --parallel 1
     --no-cont-batching
     --host 127.0.0.1
     --port ${PORT}
     --reuse-port
+    --cors-origins localhost
     --no-ui
+    --metrics
     --threads-http 2
     --jinja
 
@@ -57,7 +59,7 @@ macros:
     --spec-draft-p-min 0.8
     --spec-default
 
-  qwen35-common: >-
+  qwen35-base: >-
     ${kv-cache-turbo}
     ${reasoning}
     --batch-size 1024
@@ -70,20 +72,52 @@ macros:
     --ctx-checkpoints 3
     --checkpoint-min-step 32768
 
+  qwen35-common: >-
+    ${qwen35-base}
+    ${ram-cache-large}
+    ${gpu-only}
+    ${mtp-ngram}
+    --temperature 0.6
+
+  qwen38-base: >-
+    ${kv-cache-turbo}
+    ${reasoning}
+    --batch-size 1024
+    --ubatch-size 512
+    --n-predict 16384
+    --repeat-penalty 1.05
+    --top-k 20
+    --top-p 0.95
+    --no-mmproj
+    --ctx-checkpoints 3
+    --checkpoint-min-step 32768
+
+  qwen38-common: >-
+    ${qwen38-base}
+    ${ram-cache-large}
+    ${gpu-only}
+    ${mtp-ngram}
+    --temperature 0.6
+
   qwythos-common: >-
-    ${qwen35-common}
+    ${qwen35-base}
     ${ram-cache-large}
     ${gpu-only}
     --temperature 0.6
 
   qwopus-common: >-
-    ${qwen35-common}
+    ${qwen35-base}
     ${ram-cache-large}
     ${gpu-only}
-    --ctx-size 131072
     --rope-scaling yarn
     --rope-scale 4
     --yarn-orig-ctx 32768
+    --temperature 0.6
+
+  ornith-common: >-
+    ${qwen35-base}
+    ${ram-cache-large}
+    ${gpu-only}
     --temperature 0.6
 
   nomic-common: >-
@@ -99,8 +133,6 @@ models:
       ${qwythos-common}
       ${mtp-ngram}
       --ctx-size 196608
-    aliases:
-      - Qwythos-9B-v2
     capabilities:
       in: [text]
       out: [text]
@@ -112,8 +144,6 @@ models:
       ${llama-server-hf-gguf}
       ${qwythos-common}
       --ctx-size 131072
-    aliases:
-      - Qwythos-27B-v1
     capabilities:
       in: [text]
       out: [text]
@@ -123,14 +153,8 @@ models:
   empero-ai/Qwen3.8-9B-Distill:
     cmd: >-
       ${llama-server-hf-gguf}
-      ${qwen35-common}
-      ${ram-cache-large}
-      ${gpu-only}
-      ${mtp-ngram}
-      --temperature 0.6
+      ${qwen38-common}
       --ctx-size 196608
-    aliases:
-      - Qwen3.8-9B-Distill
     capabilities:
       in: [text]
       out: [text]
@@ -141,8 +165,18 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwopus-common}
-    aliases:
-      - Qwopus3.5-9B-Coder
+      --ctx-size 131072
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: 131072
+
+  JonathanColetti/Qwen3.8-27B-Uncensored:
+    cmd: >-
+      ${llama-server-hf-gguf}
+      ${qwen38-common}
+      --ctx-size 131072
     capabilities:
       in: [text]
       out: [text]
@@ -152,13 +186,8 @@ models:
   ornith-ai/Ornith-1.5-9B:
     cmd: >-
       ${llama-server-hf-gguf}
-      ${qwen35-common}
-      ${ram-cache-large}
-      ${gpu-only}
-      --temperature 0.6
+      ${ornith-common}
       --ctx-size 196608
-    aliases:
-      - Ornith-1.5-9B
     capabilities:
       in: [text]
       out: [text]
@@ -177,38 +206,31 @@ models:
     macros:
       quant: Q8_0
     ttl: 300
-    aliases:
-      - nomic-embed-text-v1.5
     capabilities:
       context: 8192
 
 routing:
   router:
-    use: matrix
+    use: group
 
     settings:
-      matrix:
-        vars:
-          qw92: empero-ai/Qwythos-9B-v2
-          qw271: empero-ai/Qwythos-27B-v1
-          qw389d: empero-ai/Qwen3.8-9B-Distill
-          qo359: Jackrong/Qwopus3.5-9B-Coder
+      groups:
+        agent:
+          swap: true
+          exclusive: false
+          members:
+            - empero-ai/Qwythos-9B-v2
+            - empero-ai/Qwythos-27B-v1
+            - empero-ai/Qwen3.8-9B-Distill
+            - Jackrong/Qwopus3.5-9B-Coder
+            - JonathanColetti/Qwen3.8-27B-Uncensored
+            - ornith-ai/Ornith-1.5-9B
 
-          ne15: nomic-ai/nomic-embed-text-v1.5
-
-        evict_costs:
-          qw92: 20
-          qw271: 30
-          qw389d: 20
-          qo359: 20
-
-          ne15: 10
-
-        sets:
-          standard: (+agent) & (+embed)
-
-          agent: qw92 | qw271 | qw389d | qo359
-          embed: ne15
+        embed:
+          swap: true
+          exclusive: false
+          members:
+            - nomic-ai/nomic-embed-text-v1.5
 
   scheduler:
     use: fifo
@@ -216,8 +238,4 @@ routing:
     settings:
       fifo:
         priority:
-          empero-ai/Qwythos-9B-v2: 20
-          empero-ai/Qwythos-27B-v1: 20
-          empero-ai/Qwen3.8-9B-Distill: 20
-          Jackrong/Qwopus3.5-9B-Coder: 20
-          nomic-ai/nomic-embed-text-v1.5: 10
+          nomic-ai/nomic-embed-text-v1.5: -10
