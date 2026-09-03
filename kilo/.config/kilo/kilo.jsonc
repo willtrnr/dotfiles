@@ -186,14 +186,13 @@
     "excel_read_data_from_excel": "allow",
     "glob": "allow",
     "grep": "allow",
+    "kilo_memory_recall": "allow",
     "kilo_memory_save": "allow",
     "list": "allow",
     "lsp": "allow",
     "read": "allow",
     "semantic_search": "allow",
-    "skill": {
-      "kilo-config": "allow"
-    },
+    "skill": "allow",
     "task": "allow",
     "todowrite": "allow",
     "webfetch": "allow",
