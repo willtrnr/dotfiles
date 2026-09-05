@@ -114,9 +114,6 @@
       }
     }
   },
-  "enabled_providers": [
-    "local"
-  ],
   "agent": {
     "title": {
       "disable": true
