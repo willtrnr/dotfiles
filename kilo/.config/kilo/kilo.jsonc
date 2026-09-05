@@ -22,7 +22,7 @@
             ]
           },
           "limit": {
-            "context": 131072,
+            "context": 114688,
             "output": 16384
           },
           "variants": {
@@ -133,7 +133,7 @@
             ]
           },
           "limit": {
-            "context": 131072,
+            "context": 114688,
             "output": 16384
           },
           "variants": {

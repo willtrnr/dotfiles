@@ -12,15 +12,21 @@ macros:
   model: ${MODEL_ID}
   quant: Q4_K_M
 
+  cache-ram: 2048
+
+  ctx: 131072
+  max-tokens: 16384
+
+  temp: 0.6
+
   llama-server-bin: /usr/bin/llama-server
 
   llama-server: >-
     ${llama-server-bin}
-    --threads 2
-    --flash-attn on
-    --load-mode dio
+    --threads 4
+    --threads-batch 8
     --fit on
-    --parallel 1
+    --cache-ram ${cache-ram}
     --no-cont-batching
     --no-mmproj
     --host 127.0.0.1
@@ -40,26 +46,23 @@ macros:
     ${llama-server}
     --hf-repo ${model}-GGUF:${quant}
 
-  ram-cache-none: --cache-ram 0
-  ram-cache-small: --cache-ram 1024
-  ram-cache-medium: --cache-ram 4096
-  ram-cache-large: --cache-ram 8192
-
   kv-cache-stock: --cache-type-k q8_0 --cache-type-v q4_0
   kv-cache-turbo: --cache-type-k q8_0 --cache-type-v turbo3
+  kv-cache-embedding: --cache-type-k f16 --cache-type-v f16
 
-  gpu-only: --n-gpu-layers all
+  gpu-only: >-
+    --flash-attn on
+    --load-mode none
+    --n-gpu-layers all
+    --parallel 1
 
-  ctx: 131072
-  max-tokens: 16384
-
-  temp: 0.6
+  cpu-only: >-
+    --n-gpu-layers 0
+    --parallel 4
 
   mtp-ngram: >-
-    --spec-type draft-mtp,ngram-mod
+    --spec-type draft-mtp
     --spec-draft-n-max 2
-    --spec-draft-p-min 0.8
-    --spec-default
 
   qwen35-base: >-
     ${kv-cache-turbo}
@@ -95,24 +98,20 @@ macros:
 
   qwen35-common: >-
     ${qwen35-base}
-    ${ram-cache-large}
     ${gpu-only}
     ${mtp-ngram}
 
   qwen38-common: >-
     ${qwen38-base}
-    ${ram-cache-large}
     ${gpu-only}
     ${mtp-ngram}
 
   qwythos-common: >-
     ${qwen35-base}
-    ${ram-cache-large}
     ${gpu-only}
 
   qwopus-common: >-
     ${qwen35-base}
-    ${ram-cache-large}
     ${gpu-only}
     --rope-scaling yarn
     --rope-scale 4
@@ -120,13 +119,14 @@ macros:
 
   ornith-common: >-
     ${qwen35-base}
-    ${ram-cache-large}
     ${gpu-only}
 
   nomic-common: >-
-    ${ram-cache-small}
+    ${kv-cache-embedding}
+    ${cpu-only}
     --log-verbosity 2
     --ctx-checkpoints 0
+    --pooling mean
     --embeddings
 
 models:
@@ -166,7 +166,7 @@ models:
       --hf-file Qwen3.8-27B-TurboFCFusion-735-882-Here-Uncen-NEO-CODER-MAX-LOW-MTP-${quant}.gguf
     macros:
       quant: IQ4_XS
-      ctx: &ctx 131072
+      ctx: &ctx 114688
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -223,7 +223,7 @@ models:
       ${llama-server-hf-gguf}
       ${qwythos-common}
     macros:
-      ctx: &ctx 131072
+      ctx: &ctx 114688
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -251,12 +251,15 @@ models:
       ${llama-server-hf-gguf}
       ${nomic-common}
       --ctx-size 8192
-      --batch-size 8192
-      --ubatch-size 8192
+      --batch-size 512
+      --ubatch-size 512
       --rope-scaling yarn
       --rope-freq-scale 0.75
     macros:
       quant: Q8_0
+      cache-ram: 1024
+    env:
+      - CUDA_VISIBLE_DEVICES=
     ttl: 300
     filters: *filters
     metadata:
