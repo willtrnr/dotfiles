@@ -234,13 +234,6 @@
       }
     }
   },
-  "agent": {
-    "title": {
-      "options": {
-        "reasoningEffort": "low"
-      }
-    }
-  },
   "sandbox": {
     "enabled": true,
     "network": "allow"
