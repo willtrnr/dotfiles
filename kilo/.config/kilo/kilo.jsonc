@@ -6,9 +6,46 @@
       "name": "Local",
       "options": {
         "baseURL": "http://localhost:12434/v1",
-        "apiKey": "sk-none"
+        "apiKey": "sk-local"
       },
       "models": {
+        "DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP": {
+          "name": "Qwen3.8 27B TURBO Fable Cold Fusion 735 882 Heretic Uncensored NEO CODER MAX MTP",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 131072,
+            "output": 16384
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
+          }
+        },
         "Jackrong/Qwopus3.5-9B-Coder": {
           "name": "Qwopus3.5 9B Coder",
           "tool_call": true,
@@ -24,23 +61,26 @@
           "limit": {
             "context": 131072,
             "output": 16384
-          }
-        },
-        "JonathanColetti/Qwen3.8-27B-Uncensored": {
-          "name": "Qwen3.8 27B Uncensored",
-          "tool_call": true,
-          "reasoning": true,
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
           },
-          "limit": {
-            "context": 131072,
-            "output": 16384
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
           }
         },
         "empero-ai/Qwen3.8-9B-Distill": {
@@ -58,6 +98,26 @@
           "limit": {
             "context": 196608,
             "output": 16384
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
           }
         },
         "empero-ai/Qwythos-27B-v1": {
@@ -75,6 +135,26 @@
           "limit": {
             "context": 131072,
             "output": 16384
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
           }
         },
         "empero-ai/Qwythos-9B-v2": {
@@ -92,6 +172,26 @@
           "limit": {
             "context": 196608,
             "output": 16384
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
           }
         },
         "ornith-ai/Ornith-1.5-9B": {
@@ -109,6 +209,26 @@
           "limit": {
             "context": 196608,
             "output": 16384
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "minimal": {
+              "reasoningEffort": "minimal"
+            },
+            "none": {
+              "reasoningEffort": "none"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            }
           }
         }
       }
@@ -116,8 +236,14 @@
   },
   "agent": {
     "title": {
-      "disable": true
+      "options": {
+        "reasoningEffort": "low"
+      }
     }
+  },
+  "sandbox": {
+    "enabled": true,
+    "network": "allow"
   },
   "lsp": true,
   "permission": {
@@ -201,7 +327,7 @@
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "openai-compatible": {
       "baseUrl": "http://localhost:12434/v1",
-      "apiKey": "sk-none"
+      "apiKey": "sk-local"
     },
     "vectorStore": "lancedb",
     "dimension": 768
@@ -224,7 +350,7 @@
     },
     "context7": {
       "type": "remote",
-      "url": "https://mcp.context7.com/mcp",
+      "url": "https://mcp.context7.com/mcp/oauth",
       "enabled": false
     },
     "deepwiki": {

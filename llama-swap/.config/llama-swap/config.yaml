@@ -1,11 +1,12 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mostlygeek/llama-swap/refs/heads/main/config-schema.json
-
-captureBuffer: 0
-
 startPort: 13434
 
 globalTTL: 1800
+
+sendLoadingState: true
+
+captureBuffer: 4
 
 macros:
   model: ${MODEL_ID}
@@ -21,6 +22,7 @@ macros:
     --fit on
     --parallel 1
     --no-cont-batching
+    --no-mmproj
     --host 127.0.0.1
     --port ${PORT}
     --reuse-port
@@ -48,10 +50,10 @@ macros:
 
   gpu-only: --n-gpu-layers all
 
-  reasoning: >-
-    --reasoning on
-    --reasoning-budget 2048
-    --reasoning-budget-message "... thinking budget exceeded, let's answer now."
+  ctx: 131072
+  max-tokens: 16384
+
+  temp: 0.6
 
   mtp-ngram: >-
     --spec-type draft-mtp,ngram-mod
@@ -61,49 +63,52 @@ macros:
 
   qwen35-base: >-
     ${kv-cache-turbo}
-    ${reasoning}
+    --ctx-size ${ctx}
     --batch-size 1024
     --ubatch-size 512
-    --n-predict 16384
-    --repeat-penalty 1.05
+    --n-predict ${max-tokens}
+    --temperature ${temp}
     --top-k 20
     --top-p 0.95
-    --no-mmproj
+    --min-p 0.0
+    --repeat-penalty 1.0
+    --presence-penalty 0.0
     --ctx-checkpoints 3
     --checkpoint-min-step 32768
+    --reasoning on
+
+  qwen38-base: >-
+    ${kv-cache-turbo}
+    --ctx-size ${ctx}
+    --batch-size 1024
+    --ubatch-size 512
+    --n-predict ${max-tokens}
+    --temperature ${temp}
+    --top-k 20
+    --top-p 0.95
+    --min-p 0.0
+    --repeat-penalty 1.0
+    --presence-penalty 0.0
+    --ctx-checkpoints 3
+    --checkpoint-min-step 32768
+    --reasoning on
 
   qwen35-common: >-
     ${qwen35-base}
     ${ram-cache-large}
     ${gpu-only}
     ${mtp-ngram}
-    --temperature 0.6
-
-  qwen38-base: >-
-    ${kv-cache-turbo}
-    ${reasoning}
-    --batch-size 1024
-    --ubatch-size 512
-    --n-predict 16384
-    --repeat-penalty 1.05
-    --top-k 20
-    --top-p 0.95
-    --no-mmproj
-    --ctx-checkpoints 3
-    --checkpoint-min-step 32768
 
   qwen38-common: >-
     ${qwen38-base}
     ${ram-cache-large}
     ${gpu-only}
     ${mtp-ngram}
-    --temperature 0.6
 
   qwythos-common: >-
     ${qwen35-base}
     ${ram-cache-large}
     ${gpu-only}
-    --temperature 0.6
 
   qwopus-common: >-
     ${qwen35-base}
@@ -112,13 +117,11 @@ macros:
     --rope-scaling yarn
     --rope-scale 4
     --yarn-orig-ctx 32768
-    --temperature 0.6
 
   ornith-common: >-
     ${qwen35-base}
     ${ram-cache-large}
     ${gpu-only}
-    --temperature 0.6
 
   nomic-common: >-
     ${ram-cache-small}
@@ -127,72 +130,121 @@ macros:
     --embeddings
 
 models:
-  empero-ai/Qwythos-9B-v2:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${qwythos-common}
-      ${mtp-ngram}
-      --ctx-size 196608
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: 196608
+  .unused:
+    cmd: /usr/bin/false ${PORT}
+    unlisted: true
+    filters: &filters
+      stripParams: "temperature,top_k,top_p,min_p"
+      setParams:
+        reasoningEffort?: medium
+    metadata: &metadata
+      temperature: "${temp}"
+      max_tokens: "${max-tokens}"
+      reasoning: true
+      kilo:
+        limit:
+          context: "${ctx}"
+          output: "${max-tokens}"
+        variants:
+          none:
+            reasoningEffort: none
+          minimal:
+            reasoningEffort: minimal
+          low:
+            reasoningEffort: low
+          medium:
+            reasoningEffort: medium
+          high:
+            reasoningEffort: high
+          xhigh:
+            reasoningEffort: xhigh
 
-  empero-ai/Qwythos-27B-v1:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${qwythos-common}
-      --ctx-size 131072
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: 131072
-
-  empero-ai/Qwen3.8-9B-Distill:
+  DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwen38-common}
-      --ctx-size 196608
+      --hf-file Qwen3.8-27B-TurboFCFusion-735-882-Here-Uncen-NEO-CODER-MAX-LOW-MTP-${quant}.gguf
+    macros:
+      quant: IQ4_XS
+      ctx: &ctx 131072
+    filters: *filters
+    metadata: *metadata
     capabilities:
       in: [text]
       out: [text]
       tools: true
-      context: 196608
+      context: *ctx
 
   Jackrong/Qwopus3.5-9B-Coder:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwopus-common}
-      --ctx-size 131072
+    macros:
+      ctx: &ctx 131072
+    filters: *filters
+    metadata: *metadata
     capabilities:
       in: [text]
       out: [text]
       tools: true
-      context: 131072
+      context: *ctx
 
-  JonathanColetti/Qwen3.8-27B-Uncensored:
+  empero-ai/Qwythos-9B-v2:
+    cmd: >-
+      ${llama-server-hf-gguf}
+      ${qwythos-common}
+      ${mtp-ngram}
+    macros:
+      ctx: &ctx 196608
+    filters: *filters
+    metadata: *metadata
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: *ctx
+
+  empero-ai/Qwen3.8-9B-Distill:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwen38-common}
-      --ctx-size 131072
+    macros:
+      ctx: &ctx 196608
+    filters: *filters
+    metadata: *metadata
     capabilities:
       in: [text]
       out: [text]
       tools: true
-      context: 131072
+      context: *ctx
+
+  empero-ai/Qwythos-27B-v1:
+    cmd: >-
+      ${llama-server-hf-gguf}
+      ${qwythos-common}
+    macros:
+      ctx: &ctx 131072
+    filters: *filters
+    metadata: *metadata
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: *ctx
 
   ornith-ai/Ornith-1.5-9B:
     cmd: >-
       ${llama-server-hf-gguf}
       ${ornith-common}
-      --ctx-size 196608
+    macros:
+      ctx: &ctx 196608
+    filters: *filters
+    metadata: *metadata
     capabilities:
       in: [text]
       out: [text]
       tools: true
-      context: 196608
+      context: *ctx
 
   nomic-ai/nomic-embed-text-v1.5:
     cmd: >-
@@ -206,6 +258,11 @@ models:
     macros:
       quant: Q8_0
     ttl: 300
+    filters: *filters
+    metadata:
+      embedding: true
+      kilo:
+        dimension: 768
     capabilities:
       context: 8192
 
@@ -219,11 +276,11 @@ routing:
           swap: true
           exclusive: false
           members:
-            - empero-ai/Qwythos-9B-v2
-            - empero-ai/Qwythos-27B-v1
-            - empero-ai/Qwen3.8-9B-Distill
+            - DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP
             - Jackrong/Qwopus3.5-9B-Coder
-            - JonathanColetti/Qwen3.8-27B-Uncensored
+            - empero-ai/Qwen3.8-9B-Distill
+            - empero-ai/Qwythos-27B-v1
+            - empero-ai/Qwythos-9B-v2
             - ornith-ai/Ornith-1.5-9B
 
         embed:
