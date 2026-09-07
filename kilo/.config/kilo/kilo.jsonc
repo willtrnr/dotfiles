@@ -22,7 +22,7 @@
             ]
           },
           "limit": {
-            "context": 114688,
+            "context": 196608,
             "output": 16384
           },
           "variants": {
@@ -59,7 +59,7 @@
             ]
           },
           "limit": {
-            "context": 131072,
+            "context": 196608,
             "output": 16384
           },
           "variants": {
@@ -133,7 +133,7 @@
             ]
           },
           "limit": {
-            "context": 114688,
+            "context": 196608,
             "output": 16384
           },
           "variants": {
@@ -304,7 +304,11 @@
       "yarn lint *": "allow",
       "yarn test *": "allow",
       "yq *": "allow",
-      "cargo check *": "allow"
+      "cargo check *": "allow",
+      "cargo build *": "allow",
+      "cargo clippy *": "allow",
+      "cargo test *": "allow",
+      "cargo fmt *": "allow"
     },
     "context7_query-docs": "allow",
     "context7_resolve-library-id": "allow",

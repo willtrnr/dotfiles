@@ -101,12 +101,10 @@ macros:
   qwen35-common: >-
     ${qwen35-base}
     ${gpu-only}
-    ${mtp-ngram}
 
   qwen38-common: >-
     ${qwen38-base}
     ${gpu-only}
-    ${mtp-ngram}
 
   qwythos-common: >-
     ${qwen35-base}
@@ -114,6 +112,7 @@ macros:
 
   qwopus-common: >-
     ${qwen35-base}
+    ${mtp-ngram}
     ${gpu-only}
     --rope-scaling yarn
     --rope-scale 4
@@ -121,6 +120,7 @@ macros:
 
   ornith-common: >-
     ${qwen35-base}
+    ${mtp-ngram}
     ${gpu-only}
 
   nomic-common: >-
@@ -168,7 +168,7 @@ models:
       --hf-file Qwen3.8-27B-TurboFCFusion-735-882-Here-Uncen-NEO-CODER-MAX-LOW-MTP-${quant}.gguf
     macros:
       quant: IQ4_XS
-      ctx: &ctx 114688
+      ctx: &ctx 196608
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -182,7 +182,7 @@ models:
       ${llama-server-hf-gguf}
       ${qwopus-common}
     macros:
-      ctx: &ctx 131072
+      ctx: &ctx 196608
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -210,6 +210,7 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwen38-common}
+      ${mtp-ngram}
     macros:
       ctx: &ctx 196608
     filters: *filters
@@ -225,7 +226,7 @@ models:
       ${llama-server-hf-gguf}
       ${qwythos-common}
     macros:
-      ctx: &ctx 114688
+      ctx: &ctx 196608
     filters: *filters
     metadata: *metadata
     capabilities:
