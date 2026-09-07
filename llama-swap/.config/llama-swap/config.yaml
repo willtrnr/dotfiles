@@ -12,6 +12,9 @@ macros:
   model: ${MODEL_ID}
   quant: Q4_K_M
 
+  threads: 4
+  threads-batch: "${threads}"
+
   cache-ram: 2048
 
   ctx: 131072
@@ -23,8 +26,10 @@ macros:
 
   llama-server: >-
     ${llama-server-bin}
-    --threads 4
-    --threads-batch 8
+    --threads ${threads}
+    --threads-batch ${threads-batch}
+    --ctx-size ${ctx}
+    --flash-attn on
     --fit on
     --cache-ram ${cache-ram}
     --no-cont-batching
@@ -51,14 +56,13 @@ macros:
   kv-cache-embedding: --cache-type-k f16 --cache-type-v f16
 
   gpu-only: >-
-    --flash-attn on
     --load-mode none
     --n-gpu-layers all
     --parallel 1
 
   cpu-only: >-
     --n-gpu-layers 0
-    --parallel 4
+    --parallel ${threads}
 
   mtp-ngram: >-
     --spec-type draft-mtp
@@ -66,7 +70,6 @@ macros:
 
   qwen35-base: >-
     ${kv-cache-turbo}
-    --ctx-size ${ctx}
     --batch-size 1024
     --ubatch-size 512
     --n-predict ${max-tokens}
@@ -82,7 +85,6 @@ macros:
 
   qwen38-base: >-
     ${kv-cache-turbo}
-    --ctx-size ${ctx}
     --batch-size 1024
     --ubatch-size 512
     --n-predict ${max-tokens}
@@ -250,14 +252,14 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${nomic-common}
-      --ctx-size 8192
-      --batch-size 512
-      --ubatch-size 512
+      --batch-size 2048
+      --ubatch-size 2048
       --rope-scaling yarn
       --rope-freq-scale 0.75
     macros:
       quant: Q8_0
       cache-ram: 1024
+      ctx: &ctx 8192
     env:
       - CUDA_VISIBLE_DEVICES=
     ttl: 300
@@ -267,7 +269,7 @@ models:
       kilo:
         dimension: 768
     capabilities:
-      context: 8192
+      context: *ctx
 
 routing:
   router:

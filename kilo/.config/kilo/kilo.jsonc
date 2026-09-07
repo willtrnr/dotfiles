@@ -256,7 +256,7 @@
       "cargo metadata *": "allow",
       "cargo search *": "allow",
       "cat *": "allow",
-      "cp *": "ask",
+      "cp *": "allow",
       "cut *": "allow",
       "date": "allow",
       "df *": "allow",
@@ -273,6 +273,7 @@
       "head *": "allow",
       "jq *": "allow",
       "ls *": "allow",
+      "mkdir *": "allow",
       "mv *": "ask",
       "npm search *": "allow",
       "python -c *": "deny",
@@ -294,19 +295,36 @@
       "where *": "allow",
       "which *": "allow",
       "whoami": "allow",
-      "yq *": "allow"
+      "yarn build *": "allow",
+      "yarn check *": "allow",
+      "yarn ci *": "allow",
+      "yarn fix *": "allow",
+      "yarn format *": "allow",
+      "yarn install *": "allow",
+      "yarn lint *": "allow",
+      "yarn test *": "allow",
+      "yq *": "allow",
+      "cargo check *": "allow"
     },
+    "context7_query-docs": "allow",
+    "context7_resolve-library-id": "allow",
+    "deepwiki_ask_question": "allow",
+    "deepwiki_read_wiki_contents": "allow",
     "doom_loop": "deny",
-    "edit": "ask",
-    "excel_get_workbook_metadata": "allow",
-    "excel_read_data_from_excel": "allow",
+    "edit": {
+      "*": "allow"
+    },
+    "exa_web_fetch_exa": "allow",
     "glob": "allow",
     "grep": "allow",
     "kilo_memory_recall": "allow",
     "kilo_memory_save": "allow",
     "list": "allow",
     "lsp": "allow",
-    "read": "allow",
+    "read": {
+      "*": "allow",
+      ".env": "deny"
+    },
     "semantic_search": "allow",
     "skill": "allow",
     "task": "allow",
@@ -326,35 +344,20 @@
     "dimension": 768
   },
   "mcp": {
-    "excel": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "-q",
-        "excel-mcp-server",
-        "stdio"
-      ],
-      "enabled": false
-    },
-    "microsoft-learn": {
-      "type": "remote",
-      "url": "https://learn.microsoft.com/api/mcp",
-      "enabled": false
-    },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp/oauth",
-      "enabled": false
+      "enabled": true
     },
     "deepwiki": {
       "type": "remote",
       "url": "https://mcp.deepwiki.com/mcp",
-      "enabled": false
+      "enabled": true
     },
     "exa": {
       "type": "remote",
       "url": "https://mcp.exa.ai/mcp",
-      "enabled": false
+      "enabled": true
     }
   }
 }
