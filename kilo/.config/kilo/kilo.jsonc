@@ -309,6 +309,7 @@
     "context7_resolve-library-id": "allow",
     "deepwiki_ask_question": "allow",
     "deepwiki_read_wiki_contents": "allow",
+    "deepwiki_read_wiki_structure": "allow",
     "doom_loop": "deny",
     "edit": "allow",
     "exa_web_fetch_exa": "allow",
