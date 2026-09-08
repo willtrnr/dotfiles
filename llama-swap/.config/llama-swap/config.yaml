@@ -112,7 +112,6 @@ macros:
 
   qwopus-common: >-
     ${qwen35-base}
-    ${mtp-ngram}
     ${gpu-only}
     --rope-scaling yarn
     --rope-scale 4
@@ -120,7 +119,6 @@ macros:
 
   ornith-common: >-
     ${qwen35-base}
-    ${mtp-ngram}
     ${gpu-only}
 
   nomic-common: >-
@@ -182,7 +180,7 @@ models:
       ${llama-server-hf-gguf}
       ${qwopus-common}
     macros:
-      ctx: &ctx 196608
+      ctx: &ctx 229376
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -195,9 +193,8 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwythos-common}
-      ${mtp-ngram}
     macros:
-      ctx: &ctx 196608
+      ctx: &ctx 229376
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -210,9 +207,8 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwen38-common}
-      ${mtp-ngram}
     macros:
-      ctx: &ctx 196608
+      ctx: &ctx 229376
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -240,7 +236,7 @@ models:
       ${llama-server-hf-gguf}
       ${ornith-common}
     macros:
-      ctx: &ctx 196608
+      ctx: &ctx 229376
     filters: *filters
     metadata: *metadata
     capabilities:

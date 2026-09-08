@@ -59,7 +59,7 @@
             ]
           },
           "limit": {
-            "context": 196608,
+            "context": 229376,
             "output": 16384
           },
           "variants": {
@@ -96,7 +96,7 @@
             ]
           },
           "limit": {
-            "context": 196608,
+            "context": 229376,
             "output": 16384
           },
           "variants": {
@@ -170,7 +170,7 @@
             ]
           },
           "limit": {
-            "context": 196608,
+            "context": 229376,
             "output": 16384
           },
           "variants": {
@@ -207,7 +207,7 @@
             ]
           },
           "limit": {
-            "context": 196608,
+            "context": 229376,
             "output": 16384
           },
           "variants": {
@@ -301,7 +301,9 @@
       "xargs *": "allow",
       "xxd *": "allow",
       "yarn *": "allow",
-      "yq *": "allow"
+      "yq *": "allow",
+      "sbt11 *": "allow",
+      "sbt *": "allow"
     },
     "context7_query-docs": "allow",
     "context7_resolve-library-id": "allow",
