@@ -254,10 +254,12 @@
       "awk *": "allow",
       "cargo *": "allow",
       "cat *": "allow",
+      "cp *": "allow",
       "cut *": "allow",
       "date": "allow",
       "df *": "allow",
       "dir *": "allow",
+      "dotnet *": "allow",
       "du *": "allow",
       "echo *": "allow",
       "false": "allow",
@@ -285,6 +287,7 @@
       "rustdoc *": "allow",
       "sed *": "allow",
       "sort *": "allow",
+      "strings *": "allow",
       "tail *": "allow",
       "tomlq *": "allow",
       "tr *": "allow",
@@ -295,6 +298,8 @@
       "where *": "allow",
       "which *": "allow",
       "whoami": "allow",
+      "xargs *": "allow",
+      "xxd *": "allow",
       "yarn *": "allow",
       "yq *": "allow"
     },
@@ -303,9 +308,7 @@
     "deepwiki_ask_question": "allow",
     "deepwiki_read_wiki_contents": "allow",
     "doom_loop": "deny",
-    "edit": {
-      "*": "allow"
-    },
+    "edit": "allow",
     "exa_web_fetch_exa": "allow",
     "glob": "allow",
     "grep": "allow",
@@ -318,6 +321,7 @@
       ".env": "deny"
     },
     "semantic_search": "allow",
+    "semble_search": "allow",
     "skill": "allow",
     "task": "allow",
     "todowrite": "allow",
@@ -350,6 +354,21 @@
       "type": "remote",
       "url": "https://mcp.exa.ai/mcp",
       "enabled": true
+    },
+    "microsoft-learn": {
+      "type": "remote",
+      "url": "https://learn.microsoft.com/api/mcp",
+      "enabled": false
+    },
+    "semble": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "semble[mcp]",
+        "semble"
+      ],
+      "enabled": false
     }
   }
 }
