@@ -310,6 +310,7 @@
     "doom_loop": "deny",
     "edit": "allow",
     "exa_web_fetch_exa": "allow",
+    "exa_web_search_exa": "allow",
     "glob": "allow",
     "grep": "allow",
     "kilo_memory_recall": "allow",
