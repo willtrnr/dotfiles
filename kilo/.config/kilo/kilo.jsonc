@@ -213,15 +213,7 @@
     "websearch": "allow"
   },
   "indexing": {
-    "enabled": false,
-    "provider": "openai-compatible",
-    "model": "nomic-ai/nomic-embed-text-v1.5",
-    "openai-compatible": {
-      "baseUrl": "http://localhost:12434/v1",
-      "apiKey": "sk-local"
-    },
-    "vectorStore": "lancedb",
-    "dimension": 768
+    "enabled": false
   },
   "mcp": {
     "context7": {
@@ -252,7 +244,7 @@
         "semble[mcp]",
         "semble"
       ],
-      "enabled": false
+      "enabled": true
     }
   }
 }
