@@ -204,7 +204,8 @@
       "*": "allow",
       ".env": "deny"
     },
-    "semantic_search": "allow",
+    "semantic_search": "deny",
+    "semble_find_related": "allow",
     "semble_search": "allow",
     "skill": "allow",
     "task": "allow",
@@ -213,11 +214,19 @@
     "websearch": "allow"
   },
   "indexing": {
-    "enabled": false,
-    "model": "nomic-ai/nomic-embed-text-v1.5",
-    "dimension": 768
+    "enabled": false
   },
   "mcp": {
+    "semble": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "semble[mcp]",
+        "semble"
+      ],
+      "enabled": true
+    },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp/oauth",
@@ -237,16 +246,6 @@
       "type": "remote",
       "url": "https://learn.microsoft.com/api/mcp",
       "enabled": false
-    },
-    "semble": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "--from",
-        "semble[mcp]",
-        "semble"
-      ],
-      "enabled": true
     }
   }
 }

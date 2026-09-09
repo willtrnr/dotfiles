@@ -7,7 +7,6 @@
 /.vim
 /.vscode
 /.wakatime*
-AGENTS.md
 coc-settings.json
 
 # IDE/editor temp files
