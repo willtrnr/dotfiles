@@ -268,6 +268,7 @@ routing:
             - empero-ai/Qwen3.8-9B-Distill
             - empero-ai/Qwythos-27B-v1
             - empero-ai/Qwythos-9B-v2
+            - mradermacher/Ornith-1.5-9B-uncensored
 
         embed:
           swap: true
