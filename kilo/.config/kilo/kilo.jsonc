@@ -214,7 +214,9 @@
     "websearch": "allow"
   },
   "indexing": {
-    "enabled": false
+    "enabled": false,
+    "model": "nomic-ai/nomic-embed-text-v1.5",
+    "dimension": 768
   },
   "mcp": {
     "semble": {
