@@ -24,26 +24,6 @@
           "limit": {
             "context": 196608,
             "output": 16384
-          },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
-            },
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "minimal": {
-              "reasoningEffort": "minimal"
-            },
-            "none": {
-              "reasoningEffort": "none"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
-            }
           }
         },
         "Jackrong/Qwopus3.5-9B-Coder": {
@@ -61,26 +41,6 @@
           "limit": {
             "context": 229376,
             "output": 16384
-          },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
-            },
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "minimal": {
-              "reasoningEffort": "minimal"
-            },
-            "none": {
-              "reasoningEffort": "none"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
-            }
           }
         },
         "empero-ai/Qwen3.8-9B-Distill": {
@@ -98,26 +58,6 @@
           "limit": {
             "context": 229376,
             "output": 16384
-          },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
-            },
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "minimal": {
-              "reasoningEffort": "minimal"
-            },
-            "none": {
-              "reasoningEffort": "none"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
-            }
           }
         },
         "empero-ai/Qwythos-27B-v1": {
@@ -135,26 +75,6 @@
           "limit": {
             "context": 196608,
             "output": 16384
-          },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
-            },
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "minimal": {
-              "reasoningEffort": "minimal"
-            },
-            "none": {
-              "reasoningEffort": "none"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
-            }
           }
         },
         "empero-ai/Qwythos-9B-v2": {
@@ -172,63 +92,6 @@
           "limit": {
             "context": 229376,
             "output": 16384
-          },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
-            },
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "minimal": {
-              "reasoningEffort": "minimal"
-            },
-            "none": {
-              "reasoningEffort": "none"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
-            }
-          }
-        },
-        "ornith-ai/Ornith-1.5-9B": {
-          "name": "Ornith 1.5 9B",
-          "tool_call": true,
-          "reasoning": true,
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "limit": {
-            "context": 229376,
-            "output": 16384
-          },
-          "variants": {
-            "high": {
-              "reasoningEffort": "high"
-            },
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "minimal": {
-              "reasoningEffort": "minimal"
-            },
-            "none": {
-              "reasoningEffort": "none"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
-            }
           }
         }
       }

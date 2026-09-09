@@ -81,7 +81,6 @@ macros:
     --presence-penalty 0.0
     --ctx-checkpoints 3
     --checkpoint-min-step 32768
-    --reasoning on
 
   qwen38-base: >-
     ${kv-cache-turbo}
@@ -96,30 +95,29 @@ macros:
     --presence-penalty 0.0
     --ctx-checkpoints 3
     --checkpoint-min-step 32768
-    --reasoning on
 
   qwen35-common: >-
     ${qwen35-base}
     ${gpu-only}
+    --reasoning on
 
   qwen38-common: >-
     ${qwen38-base}
     ${gpu-only}
+    --reasoning on
 
   qwythos-common: >-
     ${qwen35-base}
     ${gpu-only}
+    --reasoning on
 
   qwopus-common: >-
     ${qwen35-base}
     ${gpu-only}
+    --reasoning on
     --rope-scaling yarn
     --rope-scale 4
     --yarn-orig-ctx 32768
-
-  ornith-common: >-
-    ${qwen35-base}
-    ${gpu-only}
 
   nomic-common: >-
     ${kv-cache-embedding}
@@ -135,8 +133,6 @@ models:
     unlisted: true
     filters: &filters
       stripParams: "temperature,top_k,top_p,min_p"
-      setParams:
-        reasoningEffort?: medium
     metadata: &metadata
       temperature: "${temp}"
       max_tokens: "${max-tokens}"
@@ -145,19 +141,6 @@ models:
         limit:
           context: "${ctx}"
           output: "${max-tokens}"
-        variants:
-          none:
-            reasoningEffort: none
-          minimal:
-            reasoningEffort: minimal
-          low:
-            reasoningEffort: low
-          medium:
-            reasoningEffort: medium
-          high:
-            reasoningEffort: high
-          xhigh:
-            reasoningEffort: xhigh
 
   DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP:
     cmd: >-
@@ -231,20 +214,6 @@ models:
       tools: true
       context: *ctx
 
-  ornith-ai/Ornith-1.5-9B:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${ornith-common}
-    macros:
-      ctx: &ctx 229376
-    filters: *filters
-    metadata: *metadata
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: *ctx
-
   nomic-ai/nomic-embed-text-v1.5:
     cmd: >-
       ${llama-server-hf-gguf}
@@ -283,7 +252,6 @@ routing:
             - empero-ai/Qwen3.8-9B-Distill
             - empero-ai/Qwythos-27B-v1
             - empero-ai/Qwythos-9B-v2
-            - ornith-ai/Ornith-1.5-9B
 
         embed:
           swap: true
