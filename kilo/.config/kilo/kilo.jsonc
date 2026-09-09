@@ -185,29 +185,60 @@
       "sbt11 *": "allow",
       "sbt *": "allow"
     },
-    "context7_query-docs": "allow",
-    "context7_resolve-library-id": "allow",
-    "deepwiki_ask_question": "allow",
-    "deepwiki_read_wiki_contents": "allow",
-    "deepwiki_read_wiki_structure": "allow",
+    "context7_query-docs": {
+      "*": "allow"
+    },
+    "context7_resolve-library-id": {
+      "*": "allow"
+    },
+    "deepwiki_ask_question": {
+      "*": "allow"
+    },
+    "deepwiki_read_wiki_contents": {
+      "*": "allow"
+    },
+    "deepwiki_read_wiki_structure": {
+      "*": "allow"
+    },
     "doom_loop": "deny",
-    "edit": "allow",
-    "exa_web_fetch_exa": "allow",
-    "exa_web_search_exa": "allow",
+    "edit": {
+      "*": "allow"
+    },
     "glob": "allow",
     "grep": "allow",
-    "kilo_memory_recall": "allow",
-    "kilo_memory_save": "allow",
+    "kilo_memory_recall": {
+      "*": "allow"
+    },
+    "kilo_memory_save": {
+      "*": "allow"
+    },
     "list": "allow",
     "lsp": "allow",
+    "microsoft-learn_microsoft_docs_fetch": {
+      "*": "allow"
+    },
+    "microsoft-learn_microsoft_docs_search": {
+      "*": "allow"
+    },
+    "microsoft-learn_code_sample_search": {
+      "*": "allow"
+    },
     "read": {
       "*": "allow",
       ".env": "deny"
     },
-    "semantic_search": "deny",
-    "semble_find_related": "allow",
-    "semble_search": "allow",
-    "skill": "allow",
+    "semantic_search": {
+      "*": "deny"
+    },
+    "semble_find_related": {
+      "*": "allow"
+    },
+    "semble_search": {
+      "*": "allow"
+    },
+    "skill": {
+      "*": "allow"
+    },
     "task": "allow",
     "todowrite": "allow",
     "webfetch": "allow",
@@ -237,11 +268,6 @@
     "deepwiki": {
       "type": "remote",
       "url": "https://mcp.deepwiki.com/mcp",
-      "enabled": true
-    },
-    "exa": {
-      "type": "remote",
-      "url": "https://mcp.exa.ai/mcp",
       "enabled": true
     },
     "microsoft-learn": {
