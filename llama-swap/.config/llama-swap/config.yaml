@@ -166,7 +166,7 @@ models:
       ${qwopus-common}
       ${mtp-ngram}
     macros:
-      ctx: &ctx 200704
+      ctx: &ctx 196608
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -181,7 +181,7 @@ models:
       ${qwythos-common}
       ${mtp-ngram}
     macros:
-      ctx: &ctx 200704
+      ctx: &ctx 196608
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -196,7 +196,7 @@ models:
       ${qwen38-common}
       ${mtp-ngram}
     macros:
-      ctx: &ctx 200704
+      ctx: &ctx 196608
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -225,7 +225,7 @@ models:
       ${ornith-common}
       ${mtp-ngram}
     macros:
-      ctx: &ctx 200704
+      ctx: &ctx 196608
     filters: *filters
     metadata: *metadata
     capabilities:
