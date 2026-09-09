@@ -81,6 +81,7 @@ macros:
     --presence-penalty 0.0
     --ctx-checkpoints 3
     --checkpoint-min-step 32768
+    --reasoning on
 
   qwen38-base: >-
     ${kv-cache-turbo}
@@ -95,29 +96,30 @@ macros:
     --presence-penalty 0.0
     --ctx-checkpoints 3
     --checkpoint-min-step 32768
+    --reasoning on
 
   qwen35-common: >-
     ${qwen35-base}
     ${gpu-only}
-    --reasoning on
 
   qwen38-common: >-
     ${qwen38-base}
     ${gpu-only}
-    --reasoning on
 
   qwythos-common: >-
     ${qwen35-base}
     ${gpu-only}
-    --reasoning on
 
   qwopus-common: >-
     ${qwen35-base}
     ${gpu-only}
-    --reasoning on
     --rope-scaling yarn
     --rope-scale 4
     --yarn-orig-ctx 32768
+
+  ornith-common: >-
+    ${qwen35-base}
+    ${gpu-only}
 
   nomic-common: >-
     ${kv-cache-embedding}
@@ -206,6 +208,20 @@ models:
       ${qwythos-common}
     macros:
       ctx: &ctx 196608
+    filters: *filters
+    metadata: *metadata
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: *ctx
+
+  mradermacher/Ornith-1.5-9B-uncensored:
+    cmd: >-
+      ${llama-server-hf-gguf}
+      ${ornith-common}
+    macros:
+      ctx: &ctx 229376
     filters: *filters
     metadata: *metadata
     capabilities:

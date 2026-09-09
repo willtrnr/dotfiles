@@ -93,6 +93,23 @@
             "context": 229376,
             "output": 16384
           }
+        },
+        "mradermacher/Ornith-1.5-9B-uncensored": {
+          "name": "Ornith 1.5 9B uncensored",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 229376,
+            "output": 16384
+          }
         }
       }
     }
