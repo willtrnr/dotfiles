@@ -164,8 +164,9 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwopus-common}
+      ${mtp-ngram}
     macros:
-      ctx: &ctx 229376
+      ctx: &ctx 200704
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -178,8 +179,9 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwythos-common}
+      ${mtp-ngram}
     macros:
-      ctx: &ctx 229376
+      ctx: &ctx 200704
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -192,8 +194,9 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwen38-common}
+      ${mtp-ngram}
     macros:
-      ctx: &ctx 229376
+      ctx: &ctx 200704
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -220,8 +223,9 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${ornith-common}
+      ${mtp-ngram}
     macros:
-      ctx: &ctx 229376
+      ctx: &ctx 200704
     filters: *filters
     metadata: *metadata
     capabilities:

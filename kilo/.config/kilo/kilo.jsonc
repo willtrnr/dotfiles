@@ -39,7 +39,7 @@
             ]
           },
           "limit": {
-            "context": 229376,
+            "context": 200704,
             "output": 16384
           }
         },
@@ -56,7 +56,7 @@
             ]
           },
           "limit": {
-            "context": 229376,
+            "context": 200704,
             "output": 16384
           }
         },
@@ -90,7 +90,7 @@
             ]
           },
           "limit": {
-            "context": 229376,
+            "context": 200704,
             "output": 16384
           }
         },
@@ -107,7 +107,7 @@
             ]
           },
           "limit": {
-            "context": 229376,
+            "context": 200704,
             "output": 16384
           }
         }
@@ -213,7 +213,9 @@
     "websearch": "allow"
   },
   "indexing": {
-    "enabled": false
+    "enabled": false,
+    "model": "nomic-ai/nomic-embed-text-v1.5",
+    "dimension": 768
   },
   "mcp": {
     "context7": {
