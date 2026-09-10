@@ -20,6 +20,9 @@ macros:
   ctx: 131072
   max-tokens: 16384
 
+  checkpoints: 4
+  checkpoint-step: 8192
+
   temp: 0.6
 
   llama-server-bin: /usr/bin/llama-server
@@ -30,7 +33,6 @@ macros:
     --threads-batch ${threads-batch}
     --ctx-size ${ctx}
     --flash-attn on
-    --fit on
     --cache-ram ${cache-ram}
     --no-cont-batching
     --no-mmproj
@@ -68,8 +70,13 @@ macros:
     --spec-type draft-mtp
     --spec-draft-n-max 2
 
+  checkpointing: >-
+    --ctx-checkpoints ${checkpoints}
+    --checkpoint-min-step ${checkpoint-step}
+
   qwen35-base: >-
     ${kv-cache-turbo}
+    ${checkpointing}
     --batch-size 1024
     --ubatch-size 512
     --n-predict ${max-tokens}
@@ -79,12 +86,11 @@ macros:
     --min-p 0.0
     --repeat-penalty 1.0
     --presence-penalty 0.0
-    --ctx-checkpoints 3
-    --checkpoint-min-step 32768
     --reasoning on
 
   mistral-base: >-
     ${kv-cache-turbo}
+    ${checkpointing}
     --batch-size 1024
     --ubatch-size 512
     --n-predict ${max-tokens}
@@ -94,8 +100,6 @@ macros:
     --min-p 0.0
     --repeat-penalty 1.0
     --presence-penalty 0.0
-    --ctx-checkpoints 3
-    --checkpoint-min-step 32768
     --reasoning on
 
   qwen35-common: >-
