@@ -165,10 +165,13 @@
       "python2 -c *": "deny",
       "python3 -c *": "deny",
       "read *": "allow",
+      "rg *": "allow",
       "rm *": "ask",
       "ruff *": "allow",
       "rustc *": "allow",
       "rustdoc *": "allow",
+      "sbt *": "allow",
+      "sbt11 *": "allow",
       "sed *": "allow",
       "sort *": "allow",
       "strings *": "allow",
@@ -185,9 +188,7 @@
       "xargs *": "allow",
       "xxd *": "allow",
       "yarn *": "allow",
-      "yq *": "allow",
-      "sbt11 *": "allow",
-      "sbt *": "allow"
+      "yq *": "allow"
     },
     "context7_query-docs": {
       "*": "allow"
