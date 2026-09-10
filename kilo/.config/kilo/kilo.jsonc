@@ -150,9 +150,12 @@
       "find *": "allow",
       "free *": "allow",
       "git diff *": "allow",
+      "git diff-tree *": "allow",
       "git log *": "allow",
+      "git merge-base *": "allow",
       "git rev-parse *": "allow",
       "git show *": "allow",
+      "git show-ref *": "allow",
       "git status *": "allow",
       "grep *": "allow",
       "head *": "allow",
@@ -208,6 +211,11 @@
     "doom_loop": "deny",
     "edit": {
       "*": "allow"
+    },
+    "external_directory": {
+      "/tmp/*": "allow",
+      "~/.dotfiles/kilo/*": "allow",
+      "~/.kilo/skills/*": "allow"
     },
     "glob": "allow",
     "grep": "allow",
