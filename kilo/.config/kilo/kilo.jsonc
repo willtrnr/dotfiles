@@ -116,7 +116,10 @@
   },
   "sandbox": {
     "enabled": true,
-    "network": "allow"
+    "network": "allow",
+    "writable_paths": [
+      "~/.cache"
+    ]
   },
   "lsp": true,
   "permission": {
@@ -254,6 +257,7 @@
       "type": "local",
       "command": [
         "uvx",
+        "--quiet",
         "--from",
         "semble[mcp]",
         "semble"
@@ -274,6 +278,16 @@
       "type": "remote",
       "url": "https://learn.microsoft.com/api/mcp",
       "enabled": false
+    },
+    "agent-sops": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--quiet",
+        "strands-agents-sops",
+        "mcp"
+      ],
+      "enabled": true
     }
   }
 }

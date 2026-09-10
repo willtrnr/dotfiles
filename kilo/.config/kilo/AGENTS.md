@@ -28,8 +28,7 @@ If rules conflict, lower-numbered priority wins:
 ## Tools
 
 - Shell commands SHOULD NOT be used unless strictly necessary.
-- The `grep`, `glob` and `read` tool calls SHOULD be used instead of shell commands.
-- MCP tools SHOULD be used instead of shell commands when possible.
+- When writing instructions for agents, use the ASD-STE100 skill with RFC 2119 keyworks for clarity.
 
 ## Git & PRs/MRs
 
