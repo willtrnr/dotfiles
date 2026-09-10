@@ -88,20 +88,6 @@ macros:
     --presence-penalty 0.0
     --reasoning on
 
-  mistral-base: >-
-    ${kv-cache-turbo}
-    ${checkpointing}
-    --batch-size 1024
-    --ubatch-size 512
-    --n-predict ${max-tokens}
-    --temperature ${temp}
-    --top-k 20
-    --top-p 0.95
-    --min-p 0.0
-    --repeat-penalty 1.0
-    --presence-penalty 0.0
-    --reasoning on
-
   qwen35-common: >-
     ${qwen35-base}
     ${gpu-only}
@@ -120,10 +106,6 @@ macros:
     --rope-scaling yarn
     --rope-scale 4
     --yarn-orig-ctx 32768
-
-  mistral-common: >-
-    ${mistral-base}
-    ${gpu-only}
 
   ornith-common: >-
     ${qwen35-base}
@@ -227,21 +209,6 @@ models:
       tools: true
       context: *ctx
 
-  bartowski/Devstral-Small-2-24B-Instruct-2512:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${mistral-common}
-    macros:
-      model: bartowski/mistralai_Devstral-Small-2-24B-Instruct-2512
-      ctx: &ctx 196608
-    filters: *filters
-    metadata: *metadata
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: *ctx
-
   mradermacher/Ornith-1.5-9B-uncensored:
     cmd: >-
       ${llama-server-hf-gguf}
@@ -292,7 +259,6 @@ routing:
           members:
             - DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP
             - Jackrong/Qwopus3.5-9B-Coder
-            - bartowski/Devstral-Small-2-24B-Instruct-2512
             - empero-ai/Qwen3.8-9B-Distill
             - empero-ai/Qwythos-27B-v1
             - empero-ai/Qwythos-9B-v2
