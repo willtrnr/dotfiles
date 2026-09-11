@@ -227,15 +227,6 @@
     },
     "list": "allow",
     "lsp": "allow",
-    "microsoft-learn_microsoft_docs_fetch": {
-      "*": "allow"
-    },
-    "microsoft-learn_microsoft_docs_search": {
-      "*": "allow"
-    },
-    "microsoft-learn_code_sample_search": {
-      "*": "allow"
-    },
     "read": {
       "*": "allow",
       ".env": "deny"
@@ -263,6 +254,22 @@
     "dimension": 768
   },
   "mcp": {
+    "asdlc": {
+      "type": "remote",
+      "url": "https://asdlc.io/mcp",
+      "enabled": false
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp/oauth",
+      "oauth": true,
+      "enabled": true
+    },
+    "deepwiki": {
+      "type": "remote",
+      "url": "https://mcp.deepwiki.com/mcp",
+      "enabled": true
+    },
     "semble": {
       "type": "local",
       "command": [
@@ -271,31 +278,6 @@
         "--from",
         "semble[mcp]",
         "semble"
-      ],
-      "enabled": true
-    },
-    "context7": {
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp/oauth",
-      "enabled": true
-    },
-    "deepwiki": {
-      "type": "remote",
-      "url": "https://mcp.deepwiki.com/mcp",
-      "enabled": true
-    },
-    "microsoft-learn": {
-      "type": "remote",
-      "url": "https://learn.microsoft.com/api/mcp",
-      "enabled": false
-    },
-    "agent-sops": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "--quiet",
-        "strands-agents-sops",
-        "mcp"
       ],
       "enabled": true
     }
