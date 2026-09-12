@@ -17,7 +17,7 @@ git init
 curl -sSf https://www.toptal.com/developers/gitignore/api/rust \
   | sed 's/^Cargo.lock/#Cargo.lock/' > .gitignore
 
-cat > .editorconfig <<EOF
+cat >.editorconfig <<EOF
 # http://editorconfig.org
 root = true
 
@@ -33,13 +33,13 @@ trim_trailing_whitespace = true
 indent_size = 4
 EOF
 
-"${HOME}/.local/bin/mit" > LICENSE
+"${HOME}/.local/bin/mit" >LICENSE
 
-cat > README.md <<EOF
+cat >README.md <<EOF
 # ${PKGNAME}
 EOF
 
-cat > Cargo.toml <<EOF
+cat >Cargo.toml <<EOF
 [workspace]
 members = [
   "${PKGNAME}",
@@ -52,7 +52,7 @@ authors = [
   "github.com/willtrnr",
 ]
 edition = "2024"
-rust-version = "1.92"
+rust-version = "1.98"
 repository = "https://github.com/willtrnr/${PKGNAME}"
 license = "MIT"
 publish = false
@@ -78,7 +78,7 @@ opt-level = 2
 codegen-units = 1
 EOF
 
-cat > rust-toolchain.toml <<EOF
+cat >rust-toolchain.toml <<EOF
 [toolchain]
 channel = "stable"
 profile = "default"
@@ -88,7 +88,7 @@ targets = [
 ]
 EOF
 
-cat > deny.toml <<EOF
+cat >deny.toml <<EOF
 [graph]
 targets = [
   "x86_64-pc-windows-msvc",
@@ -100,30 +100,29 @@ all-features = true
 unmaintained = "workspace"
 git-fetch-with-cli = true
 
-[licenses]
-allow = [
-  "MIT",
-]
-
-[licenses.private]
-ignore = true
-
 [bans]
 deny = [
   { crate = "log", deny-multiple-versions = true },
   { crate = "opentelemetry", deny-multiple-versions = true },
-  { crate = "rustls", reason = "use native-tls instead" },
   { crate = "tracing", deny-multiple-versions = true },
   { crate = "webpki-roots", reason = "use system roots instead" },
 ]
+
+[licenses]
+allow = [
+  "MIT",
+]
+private = { ignore = true }
+
+[sources]
 EOF
 
-cat > .taplo.toml <<EOF
+cat >.taplo.toml <<EOF
 [formatting]
 inline_table_expand = false
 EOF
 
-cat > "${PKGNAME}/Cargo.toml" <<EOF
+cat >"${PKGNAME}/Cargo.toml" <<EOF
 [package]
 name = "${PKGNAME}"
 description = "${PKGNAME}"
@@ -141,9 +140,9 @@ publish.workspace = true
 default = []
 EOF
 
-echo > "${PKGNAME}/src/lib.rs"
+echo >"${PKGNAME}/src/lib.rs"
 
-cat > "${PKGNAME}/src/main.rs" <<EOF
+cat >"${PKGNAME}/src/main.rs" <<EOF
 pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
