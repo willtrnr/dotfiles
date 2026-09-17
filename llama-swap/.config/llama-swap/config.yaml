@@ -213,7 +213,6 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${ornith-common}
-      ${mtp-ngram}
     macros:
       ctx: &ctx 196608
     filters: *filters
