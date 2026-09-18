@@ -119,7 +119,6 @@
     "enabled": true,
     "network": "allow",
     "writable_paths": [
-      "/run",
       "/tmp",
       "~/.cache",
       "~/.dotnet",
