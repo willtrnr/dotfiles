@@ -119,7 +119,14 @@
     "enabled": true,
     "network": "allow",
     "writable_paths": [
-      "~/.cache"
+      "/run",
+      "/tmp",
+      "~/.cache",
+      "~/.dotnet",
+      "~/.go",
+      "~/.ivy2",
+      "~/.local/share/cargo",
+      "~/.sbt"
     ]
   },
   "lsp": true,
@@ -212,10 +219,20 @@
     "edit": {
       "*": "allow"
     },
+    "excel_get_workbook_metadata": {
+      "*": "allow"
+    },
     "external_directory": {
+      "/run/*": "allow",
       "/tmp/*": "allow",
+      "~/.cache/*": "allow",
       "~/.dotfiles/kilo/*": "allow",
-      "~/.kilo/skills/*": "allow"
+      "~/.dotnet/*": "allow",
+      "~/.go/*": "allow",
+      "~/.ivy2/*": "allow",
+      "~/.kilo/skills/*": "allow",
+      "~/.local/share/cargo/*": "allow",
+      "~/.sbt/*": "allow"
     },
     "glob": "allow",
     "grep": "allow",
