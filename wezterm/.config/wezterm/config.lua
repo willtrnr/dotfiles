@@ -48,13 +48,26 @@ config.check_for_updates = false
 
 -- Launch into WSL by default on Windows
 if helpers.running_on_windows() then
-   config.wsl_domains = wezterm.default_wsl_domains()
+   config.wsl_domains = helpers.map(
+      wezterm.default_wsl_domains(),
+      ---@return WslDomain
+      function(d)
+         return {
+            name = d.name,
+            distribution = d.distribution,
+            username = "root",
+            default_cwd = d.default_cwd,
+            default_prod = { "login", "-p", "-f", d.username or helpers.get_username():lower() },
+         }
+      end
+   )
+
    if config.wsl_domains[1] ~= nil then
       config.default_domain = config.wsl_domains[1].name
 
       config.unix_domains = helpers.map(config.wsl_domains, function(d)
          return {
-            name = ("UNIX:%s"):format(d.distribution),
+            name = string.format("UNIX:%s", d.distribution),
             proxy_command = {
                "C:\\Windows\\System32\\wsl.exe",
                "--distribution",
@@ -88,44 +101,6 @@ if wezterm.gui then
       end)
    end)
    config.disable_default_key_bindings = true
-
-   --[[
-   if not helpers.running_in_vm() then
-      -- Select the integrated GPU if available, otherwise dedicated, or else whatever Dx or GL
-      local gpu <const> = helpers.priority_find(
-         helpers.filter(
-            wezterm.gui.enumerate_gpus(),
-            helpers.ternary(helpers.running_on_windows(), function(g)
-               -- Ignore CPU and Vulkan backends on Windows
-               return g.device_type ~= "Cpu" and g.backend ~= "Vulkan"
-            end, function(g)
-               -- Ignore the CPU backend on other platforms
-               return g.device_type ~= "Cpu"
-            end)
-         ),
-         function(g)
-            return g.device_type == "IntegratedGpu" and g.backend == "Vulkan"
-         end,
-         function(g)
-            return g.device_type == "IntegratedGpu" and g.backend:find("^Dx")
-         end,
-         function(g)
-            return g.backend == "Vulkan"
-         end,
-         function(g)
-            return g.backend:find("^Dx")
-         end,
-         function(g)
-            return g.backend == "Gl"
-         end
-      )
-
-      if gpu ~= nil then
-         config.webgpu_preferred_adapter = gpu
-         config.front_end = "WebGpu"
-      end
-   end
-   ]]
 end
 
 -- Apply local config if available

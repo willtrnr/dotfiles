@@ -98,6 +98,11 @@ M.get_runtime_dir = M.memoized(function()
    end
 end)
 
+---@return string
+M.get_username = M.memoized(function()
+   return os.getenv("USER") or os.getenv("USERNAME") or "will"
+end)
+
 ---@generic T
 ---@param modname string
 ---@param fn fun(mod: any): T?
