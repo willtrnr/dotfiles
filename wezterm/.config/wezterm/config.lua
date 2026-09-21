@@ -50,6 +50,7 @@ config.check_for_updates = false
 if helpers.running_on_windows() then
    config.wsl_domains = helpers.map(
       wezterm.default_wsl_domains(),
+      ---@param d WslDomain
       ---@return WslDomain
       function(d)
          return {
@@ -57,7 +58,7 @@ if helpers.running_on_windows() then
             distribution = d.distribution,
             username = "root",
             default_cwd = d.default_cwd,
-            default_prod = { "login", "-p", "-f", d.username or helpers.get_username():lower() },
+            default_prog = d.default_prog or { "login", "-p", "-f", d.username or helpers.get_username():lower() },
          }
       end
    )
