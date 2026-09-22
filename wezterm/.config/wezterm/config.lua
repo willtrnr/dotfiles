@@ -58,7 +58,8 @@ if helpers.running_on_windows() then
             distribution = d.distribution,
             username = "root",
             default_cwd = d.default_cwd,
-            default_prog = d.default_prog or { "login", "-p", "-f", d.username or helpers.get_username():lower() },
+            default_prog = (d.default_prog or
+               { "/usr/bin/login", "-p", "-f", d.username or helpers.get_username():lower() }),
          }
       end
    )
