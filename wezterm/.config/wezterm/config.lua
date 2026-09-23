@@ -48,22 +48,7 @@ config.check_for_updates = false
 
 -- Launch into WSL by default on Windows
 if helpers.running_on_windows() then
-   config.wsl_domains = helpers.map(
-      wezterm.default_wsl_domains(),
-      ---@param d WslDomain
-      ---@return WslDomain
-      function(d)
-         return {
-            name = d.name,
-            distribution = d.distribution,
-            username = "root",
-            default_cwd = d.default_cwd or "/",
-            default_prog = (d.default_prog or
-               { "/usr/bin/machinectl", "shell", "-q", "--uid", d.username or "1000" }),
-         }
-      end
-   )
-
+   config.wsl_domains = wezterm.default_wsl_domains()
    if config.wsl_domains[1] ~= nil then
       config.default_domain = config.wsl_domains[1].name
 
