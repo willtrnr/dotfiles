@@ -57,9 +57,9 @@ if helpers.running_on_windows() then
             name = d.name,
             distribution = d.distribution,
             username = "root",
-            default_cwd = d.default_cwd,
+            default_cwd = d.default_cwd or "/",
             default_prog = (d.default_prog or
-               { "/usr/bin/login", "-p", "-f", d.username or helpers.get_username():lower() }),
+               { "/usr/bin/machinectl", "shell", "-q", "--uid", d.username or "1000" }),
          }
       end
    )
