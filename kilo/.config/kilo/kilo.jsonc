@@ -187,6 +187,9 @@
     "excel_get_workbook_metadata": {
       "*": "allow"
     },
+    "excel_read_data_from_excel": {
+      "*": "allow"
+    },
     "external_directory": {
       "/run/*": "allow",
       "/tmp/*": "allow",
