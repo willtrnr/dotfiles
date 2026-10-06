@@ -74,7 +74,7 @@ macros:
     --ctx-checkpoints ${checkpoints}
     --checkpoint-min-step ${checkpoint-step}
 
-  qwen35-base: >-
+  qwen-base: >-
     ${kv-cache-turbo}
     ${checkpointing}
     --batch-size 1024
@@ -88,27 +88,12 @@ macros:
     --presence-penalty 0.0
     --reasoning on
 
-  qwen35-common: >-
-    ${qwen35-base}
-    ${gpu-only}
-
   qwen38-common: >-
-    ${qwen35-base}
+    ${qwen-base}
     ${gpu-only}
-
-  qwythos-common: >-
-    ${qwen35-base}
-    ${gpu-only}
-
-  qwopus-common: >-
-    ${qwen35-base}
-    ${gpu-only}
-    --rope-scaling yarn
-    --rope-scale 4
-    --yarn-orig-ctx 32768
 
   ornith-common: >-
-    ${qwen35-base}
+    ${qwen-base}
     ${gpu-only}
 
   nomic-common: >-
@@ -137,40 +122,10 @@ models:
   DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP:
     cmd: >-
       ${llama-server-hf-gguf}
-      ${qwen38-common}
       --hf-file Qwen3.8-27B-TurboFCFusion-735-882-Here-Uncen-NEO-CODER-MAX-LOW-MTP-${quant}.gguf
+      ${qwen38-common}
     macros:
       quant: IQ4_XS
-      ctx: &ctx 196608
-    filters: *filters
-    metadata: *metadata
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: *ctx
-
-  Jackrong/Qwopus3.5-9B-Coder:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${qwopus-common}
-      ${mtp-ngram}
-    macros:
-      ctx: &ctx 196608
-    filters: *filters
-    metadata: *metadata
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: *ctx
-
-  empero-ai/Qwythos-9B-v2:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${qwythos-common}
-      ${mtp-ngram}
-    macros:
       ctx: &ctx 196608
     filters: *filters
     metadata: *metadata
@@ -185,20 +140,6 @@ models:
       ${llama-server-hf-gguf}
       ${qwen38-common}
       ${mtp-ngram}
-    macros:
-      ctx: &ctx 196608
-    filters: *filters
-    metadata: *metadata
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: *ctx
-
-  empero-ai/Qwythos-27B-v1:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${qwythos-common}
     macros:
       ctx: &ctx 196608
     filters: *filters
@@ -257,10 +198,7 @@ routing:
           exclusive: false
           members:
             - DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP
-            - Jackrong/Qwopus3.5-9B-Coder
             - empero-ai/Qwen3.8-9B-Distill
-            - empero-ai/Qwythos-27B-v1
-            - empero-ai/Qwythos-9B-v2
             - mradermacher/Ornith-1.5-9B-uncensored
 
         embed:
