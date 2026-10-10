@@ -121,6 +121,7 @@
       "false": "allow",
       "find *": "allow",
       "free *": "allow",
+      "git -c core.quotepath=false diff *": "allow",
       "git diff *": "allow",
       "git diff-tree *": "allow",
       "git log *": "allow",

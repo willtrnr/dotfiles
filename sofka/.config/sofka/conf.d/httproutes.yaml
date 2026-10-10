@@ -1,0 +1,10 @@
+views:
+  gateway.networking.k8s.io/v1/httproutes:
+    columns:
+    - builtin: NAMESPACE
+      name: NAMESPACE
+    - builtin: NAME
+      name: NAME
+    - builtin: AGE
+      name: AGE
+    replace: true
