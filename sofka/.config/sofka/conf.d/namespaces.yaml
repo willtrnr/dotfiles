@@ -1,15 +1,17 @@
 views:
   v1/namespaces:
+    replace: true
+
     columns:
-    - builtin: NAME
-      name: NAME
-    - builtin: STATUS
-      name: STATUS
+    - name: NAME
+      builtin: NAME
+    - name: STATUS
+      builtin: STATUS
     - name: POLICY
       path: /metadata/labels/pod-security.kubernetes.io~1enforce
     - name: LINKERD
       path: /metadata/annotations/linkerd.io~1inject
-    - builtin: AGE
-      name: AGE
-    replace: true
+    - name: AGE
+      builtin: AGE
+
     sort: NAME:asc
