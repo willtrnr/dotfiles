@@ -127,7 +127,7 @@ models:
     cmd: /usr/bin/false ${PORT}
     unlisted: true
     filters: &filters
-      stripParams: "temperature,top_k,top_p,min_p"
+      stripParams: "top_k,top_p,min_p"
     metadata: &metadata
       temperature: "${temp}"
       max_tokens: "${max-tokens}"
