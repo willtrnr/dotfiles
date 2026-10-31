@@ -16,7 +16,8 @@
           "reasoning": true,
           "modalities": {
             "input": [
-              "text"
+              "text",
+              "image"
             ],
             "output": [
               "text"
@@ -67,7 +68,8 @@
           "reasoning": true,
           "modalities": {
             "input": [
-              "text"
+              "text",
+              "image"
             ],
             "output": [
               "text"
@@ -75,6 +77,23 @@
           },
           "limit": {
             "context": 196608,
+            "output": 16384
+          }
+        },
+        "poolside/Laguna-XS-2.1": {
+          "name": "Laguna XS 2.1",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 131072,
             "output": 16384
           }
         }

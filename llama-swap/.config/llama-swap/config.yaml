@@ -12,8 +12,12 @@ macros:
   model: ${MODEL_ID}
   quant: Q4_K_M
 
+  log-level: 3
+
   threads: 4
-  threads-batch: "${threads}"
+  threads-batch: ${threads}
+
+  fit-target: 1024
 
   cache-ram: 2048
 
@@ -33,9 +37,14 @@ macros:
     --threads-batch ${threads-batch}
     --ctx-size ${ctx}
     --flash-attn on
+    --load-mode none
+    --moe-cache soft
+    --fit on
+    --fit-target ${fit-target}
+    --fit-ctx ${ctx}
+    --log-verbosity ${log-level}
     --cache-ram ${cache-ram}
     --no-cont-batching
-    --no-mmproj
     --host 127.0.0.1
     --port ${PORT}
     --reuse-port
@@ -58,7 +67,6 @@ macros:
   kv-cache-embedding: --cache-type-k f16 --cache-type-v f16
 
   gpu-only: >-
-    --load-mode none
     --n-gpu-layers all
     --parallel 1
 
@@ -87,6 +95,21 @@ macros:
     --repeat-penalty 1.0
     --presence-penalty 0.0
     --reasoning on
+    --reasoning-preserve
+
+  laguna-base: ${kv-cache-turbo}
+    ${checkpointing}
+    --batch-size 1024
+    --ubatch-size 512
+    --n-predict ${max-tokens}
+    --temperature ${temp}
+    --top-k 20
+    --top-p 0.95
+    --min-p 0.0
+    --repeat-penalty 1.0
+    --presence-penalty 0.0
+    --reasoning on
+    --reasoning-preserve
 
   nemotron-base: >-
     ${kv-cache-turbo}
@@ -101,6 +124,7 @@ macros:
     --repeat-penalty 1.0
     --presence-penalty 0.0
     --reasoning on
+    --reasoning-preserve
 
   qwen38-common: >-
     ${qwen-base}
@@ -110,6 +134,9 @@ macros:
     ${qwen-base}
     ${gpu-only}
 
+  laguna-common: >-
+    ${laguna-base}
+
   nemotron-common: >-
     ${nemotron-base}
     ${gpu-only}
@@ -117,7 +144,6 @@ macros:
   nomic-common: >-
     ${kv-cache-embedding}
     ${cpu-only}
-    --log-verbosity 2
     --ctx-checkpoints 0
     --pooling mean
     --embeddings
@@ -148,7 +174,7 @@ models:
     filters: *filters
     metadata: *metadata
     capabilities:
-      in: [text]
+      in: [text, image]
       out: [text]
       tools: true
       context: *ctx
@@ -192,6 +218,20 @@ models:
     filters: *filters
     metadata: *metadata
     capabilities:
+      in: [text, image]
+      out: [text]
+      tools: true
+      context: *ctx
+
+  poolside/Laguna-XS-2.1:
+    cmd: >-
+      ${llama-server-hf-gguf}
+      ${laguna-common}
+    macros:
+      ctx: &ctx 131072
+    filters: *filters
+    metadata: *metadata
+    capabilities:
       in: [text]
       out: [text]
       tools: true
@@ -209,6 +249,7 @@ models:
       quant: Q8_0
       cache-ram: 1024
       ctx: &ctx 8192
+      log-level: 2
     env:
       - CUDA_VISIBLE_DEVICES=
     ttl: 300
@@ -234,6 +275,7 @@ routing:
             - bartowski/nvidia_Nemotron-3-Nano-4B
             - empero-ai/Qwen3.8-9B-Distill
             - mradermacher/Ornith-1.5-9B-uncensored
+            - poolside/Laguna-XS-2.1
 
         embed:
           swap: true
