@@ -16,15 +16,31 @@
           "reasoning": true,
           "modalities": {
             "input": [
-              "text",
-              "image"
+              "text"
             ],
             "output": [
               "text"
             ]
           },
           "limit": {
-            "context": 196608,
+            "context": 131072,
+            "output": 16384
+          }
+        },
+        "Jackrong/Qwopus3.8-27B-Coder-Flash": {
+          "name": "Qwopus3.8 27B Coder Flash",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 131072,
             "output": 16384
           }
         },
@@ -68,8 +84,7 @@
           "reasoning": true,
           "modalities": {
             "input": [
-              "text",
-              "image"
+              "text"
             ],
             "output": [
               "text"
