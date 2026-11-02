@@ -44,23 +44,6 @@
             "output": 16384
           }
         },
-        "bartowski/nvidia_Nemotron-3-Nano-4B": {
-          "name": "nvidia Nemotron 3 Nano 4B",
-          "tool_call": true,
-          "reasoning": true,
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "limit": {
-            "context": 196608,
-            "output": 16384
-          }
-        },
         "empero-ai/Qwen3.8-9B-Distill": {
           "name": "Qwen3.8 9B Distill",
           "tool_call": true,
@@ -80,6 +63,23 @@
         },
         "mradermacher/Ornith-1.5-9B-uncensored": {
           "name": "Ornith 1.5 9B uncensored",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 196608,
+            "output": 16384
+          }
+        },
+        "nvidia/NVIDIA-Nemotron-3-Nano-4B": {
+          "name": "NVIDIA Nemotron 3 Nano 4B",
           "tool_call": true,
           "reasoning": true,
           "modalities": {

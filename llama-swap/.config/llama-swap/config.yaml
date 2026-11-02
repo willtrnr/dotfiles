@@ -17,7 +17,7 @@ macros:
   threads: 4
   threads-batch: ${threads}
 
-  fit-target: 1024
+  fit-target: 768
 
   cache-ram: 2048
 
@@ -83,7 +83,7 @@ macros:
     --ctx-checkpoints ${checkpoints}
     --checkpoint-min-step ${checkpoint-step}
 
-  qwen-base: >-
+  laguna-base: >-
     ${kv-cache-turbo}
     ${checkpointing}
     --batch-size 1024
@@ -96,21 +96,6 @@ macros:
     --repeat-penalty 1.0
     --presence-penalty 0.0
     --reasoning on
-    --reasoning-preserve
-
-  laguna-base: ${kv-cache-turbo}
-    ${checkpointing}
-    --batch-size 1024
-    --ubatch-size 512
-    --n-predict ${max-tokens}
-    --temperature ${temp}
-    --top-k 20
-    --top-p 0.95
-    --min-p 0.0
-    --repeat-penalty 1.0
-    --presence-penalty 0.0
-    --reasoning on
-    --reasoning-preserve
 
   nemotron-base: >-
     ${kv-cache-turbo}
@@ -125,22 +110,35 @@ macros:
     --repeat-penalty 1.0
     --presence-penalty 0.0
     --reasoning on
+
+  qwen-base: >-
+    ${kv-cache-turbo}
+    ${checkpointing}
+    --batch-size 1024
+    --ubatch-size 512
+    --n-predict ${max-tokens}
+    --temperature ${temp}
+    --top-k 20
+    --top-p 0.95
+    --min-p 0.0
+    --repeat-penalty 1.0
+    --presence-penalty 0.0
+    --reasoning on
+
+  laguna-common: >-
+    ${laguna-base}
+    --reasoning-preserve
+
+  nemotron-common: >-
+    ${nemotron-base}
+    --reasoning-preserve
+
+  ornith-common: >-
+    ${qwen-base}
     --reasoning-preserve
 
   qwen38-common: >-
     ${qwen-base}
-    ${gpu-only}
-
-  ornith-common: >-
-    ${qwen-base}
-    ${gpu-only}
-
-  laguna-common: >-
-    ${laguna-base}
-
-  nemotron-common: >-
-    ${nemotron-base}
-    ${gpu-only}
 
   nomic-common: >-
     ${kv-cache-embedding}
@@ -163,21 +161,6 @@ models:
         limit:
           context: "${ctx}"
           output: "${max-tokens}"
-
-  bartowski/nvidia_Nemotron-3-Nano-4B:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${nemotron-common}
-    macros:
-      quant: Q6_K_L
-      ctx: &ctx 196608
-    filters: *filters
-    metadata: *metadata
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: *ctx
 
   DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP:
     cmd: >-
@@ -238,6 +221,21 @@ models:
       tools: true
       context: *ctx
 
+  nvidia/NVIDIA-Nemotron-3-Nano-4B:
+    cmd: >-
+      ${llama-server-hf-gguf}
+      ${nemotron-common}
+      ${gpu-only}
+    macros:
+      ctx: &ctx 196608
+    filters: *filters
+    metadata: *metadata
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: *ctx
+
   poolside/Laguna-XS-2.1:
     cmd: >-
       ${llama-server-hf-gguf}
@@ -286,11 +284,11 @@ routing:
           swap: true
           exclusive: false
           members:
-            - bartowski/nvidia_Nemotron-3-Nano-4B
             - DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP
             - empero-ai/Qwen3.8-9B-Distill
             - Jackrong/Qwopus3.8-27B-Coder-Flash
             - mradermacher/Ornith-1.5-9B-uncensored
+            - nvidia/NVIDIA-Nemotron-3-Nano-4B
             - poolside/Laguna-XS-2.1
 
         embed:
