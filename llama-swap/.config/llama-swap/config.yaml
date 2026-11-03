@@ -4,8 +4,6 @@ startPort: 13434
 
 globalTTL: 1800
 
-sendLoadingState: true
-
 captureBuffer: 4
 
 macros:
