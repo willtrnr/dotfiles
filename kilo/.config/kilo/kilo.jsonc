@@ -1,5 +1,6 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
+  "theme": "system",
   "model": "poolside/laguna-s-2.1",
   "small_model": "poolside/laguna-s-2.1",
   "provider": {
