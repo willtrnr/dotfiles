@@ -112,6 +112,23 @@
             "context": 131072,
             "output": 16384
           }
+        },
+        "tiiuae/Falcon-H1R-7B": {
+          "name": "Falcon H1R 7B",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 196608,
+            "output": 16384
+          }
         }
       }
     }

@@ -81,7 +81,7 @@ macros:
     --ctx-checkpoints ${checkpoints}
     --checkpoint-min-step ${checkpoint-step}
 
-  laguna-base: >-
+  common: >-
     ${kv-cache-turbo}
     ${checkpointing}
     --batch-size 1024
@@ -95,48 +95,23 @@ macros:
     --presence-penalty 0.0
     --reasoning on
 
-  nemotron-base: >-
-    ${kv-cache-turbo}
-    ${checkpointing}
-    --batch-size 1024
-    --ubatch-size 512
-    --n-predict ${max-tokens}
-    --temperature ${temp}
-    --top-k 20
-    --top-p 0.95
-    --min-p 0.0
-    --repeat-penalty 1.0
-    --presence-penalty 0.0
-    --reasoning on
-
-  qwen-base: >-
-    ${kv-cache-turbo}
-    ${checkpointing}
-    --batch-size 1024
-    --ubatch-size 512
-    --n-predict ${max-tokens}
-    --temperature ${temp}
-    --top-k 20
-    --top-p 0.95
-    --min-p 0.0
-    --repeat-penalty 1.0
-    --presence-penalty 0.0
-    --reasoning on
+  falcon-common: >-
+    ${common}
 
   laguna-common: >-
-    ${laguna-base}
+    ${common}
     --reasoning-preserve
 
   nemotron-common: >-
-    ${nemotron-base}
+    ${common}
     --reasoning-preserve
 
   ornith-common: >-
-    ${qwen-base}
+    ${common}
     --reasoning-preserve
 
   qwen38-common: >-
-    ${qwen-base}
+    ${common}
 
   nomic-common: >-
     ${kv-cache-embedding}
@@ -248,6 +223,21 @@ models:
       tools: true
       context: *ctx
 
+  tiiuae/Falcon-H1R-7B:
+    cmd: >-
+      ${llama-server-hf-gguf}
+      ${falcon-common}
+      ${gpu-only}
+    macros:
+      ctx: &ctx 196608
+    filters: *filters
+    metadata: *metadata
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: *ctx
+
   nomic-ai/nomic-embed-text-v1.5:
     cmd: >-
       ${llama-server-hf-gguf}
@@ -288,6 +278,7 @@ routing:
             - mradermacher/Ornith-1.5-9B-uncensored
             - nvidia/NVIDIA-Nemotron-3-Nano-4B
             - poolside/Laguna-XS-2.1
+            - tiiuae/Falcon-H1R-7B
 
         embed:
           swap: true
