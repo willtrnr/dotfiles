@@ -155,9 +155,10 @@
       "Get-Content *": "allow",
       "Get-Item *": "allow",
       "Join-Path *": "allow",
-      "Measure-Object": "allow",
+      "Measure-Object *": "allow",
       "Select-Object *": "allow",
       "Select-String *": "allow",
+      "Sort-Object *": "allow",
       "Test-Path *": "allow",
       "Where-Object *": "allow",
       "awk *": "allow",
@@ -237,6 +238,12 @@
       "~/.sbt/*": "allow"
     },
     "ghidra_*": "allow",
+    "github_get_file_contents": {
+      "*": "allow"
+    },
+    "github_search_code": {
+      "*": "allow"
+    },
     "glob": "allow",
     "grep": "allow",
     "kilo_memory_*": "allow",
