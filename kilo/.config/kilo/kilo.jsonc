@@ -150,9 +150,11 @@
     "*": "ask",
     "bash": {
       "*": "ask",
+      "ForEach-Object *": "allow",
       "Get-ChildItem *": "allow",
       "Get-Content *": "allow",
       "Get-Item *": "allow",
+      "Join-Path *": "allow",
       "Measure-Object": "allow",
       "Select-Object *": "allow",
       "Select-String *": "allow",
@@ -217,31 +219,11 @@
       "yarn *": "allow",
       "yq *": "allow"
     },
-    "context7_query-docs": {
-      "*": "allow"
-    },
-    "context7_resolve-library-id": {
-      "*": "allow"
-    },
-    "deepwiki_ask_question": {
-      "*": "allow"
-    },
-    "deepwiki_read_wiki_contents": {
-      "*": "allow"
-    },
-    "deepwiki_read_wiki_structure": {
-      "*": "allow"
-    },
+    "context7_*": "allow",
+    "deepwiki_*": "allow",
     "doom_loop": "deny",
-    "edit": {
-      "*": "allow"
-    },
-    "excel_get_workbook_metadata": {
-      "*": "allow"
-    },
-    "excel_read_data_from_excel": {
-      "*": "allow"
-    },
+    "edit": "allow",
+    "excel_*": "allow",
     "external_directory": {
       "/run/*": "allow",
       "/tmp/*": "allow",
@@ -254,36 +236,24 @@
       "~/.local/share/cargo/*": "allow",
       "~/.sbt/*": "allow"
     },
+    "ghidra_*": "allow",
     "glob": "allow",
     "grep": "allow",
-    "kilo_memory_recall": {
-      "*": "allow"
-    },
-    "kilo_memory_save": {
-      "*": "allow"
-    },
+    "kilo_memory_*": "allow",
     "list": "allow",
     "lsp": "allow",
     "read": {
       "*": "allow",
       ".env": "deny"
     },
-    "semantic_search": {
-      "*": "deny"
-    },
-    "semble_find_related": {
-      "*": "allow"
-    },
-    "semble_search": {
-      "*": "allow"
-    },
-    "skill": {
-      "*": "allow"
-    },
+    "semantic_search": "deny",
+    "semble_*": "allow",
+    "skill": "allow",
     "task": "allow",
     "todowrite": "allow",
     "webfetch": "allow",
-    "websearch": "allow"
+    "websearch": "allow",
+    "windbg_*": "allow"
   },
   "indexing": {
     "enabled": false,
@@ -304,6 +274,12 @@
     "github": {
       "type": "remote",
       "url": "https://api.githubcopilot.com/mcp",
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {env:GITHUB_API_KEY}",
+        "X-MCP-Toolsets": "context,issues,repos,pull_requests",
+        "X-MCP-Readonly": "true"
+      },
       "enabled": false
     },
     "linear": {
