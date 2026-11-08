@@ -162,6 +162,7 @@
       "Sort-Object *": "allow",
       "Test-Path *": "allow",
       "Where-Object *": "allow",
+      "Write-Output *": "allow",
       "awk *": "allow",
       "cargo *": "allow",
       "cat *": "allow",
@@ -239,12 +240,9 @@
       "~/.sbt/*": "allow"
     },
     "ghidra_*": "allow",
-    "github_get_file_contents": {
-      "*": "allow"
-    },
-    "github_search_code": {
-      "*": "allow"
-    },
+    "github_get_*": "allow",
+    "github_list_*": "allow",
+    "github_search_*": "allow",
     "glob": "allow",
     "grep": "allow",
     "kilo_memory_*": "allow",
