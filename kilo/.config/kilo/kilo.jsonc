@@ -301,6 +301,11 @@
       "url": "https://mcp.deepwiki.com/mcp",
       "enabled": true
     },
+    "github": {
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp",
+      "enabled": false
+    },
     "linear": {
       "type": "remote",
       "url": "https://mcp.linear.app/mcp",
