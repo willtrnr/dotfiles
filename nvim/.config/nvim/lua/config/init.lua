@@ -608,9 +608,8 @@ vim.api.nvim_create_autocmd("FileType", {
             statusBarProvider = "on",
          },
          settings = {
+            javaHome = "/usr/lib/jvm/java-21-openjdk",
             showImplicitArguments = true,
-            -- TODO Make this per-project somehow
-            javaHome = "/usr/lib/jvm/java-11-openjdk",
          },
          tvp = vim.empty_dict(),
       })
