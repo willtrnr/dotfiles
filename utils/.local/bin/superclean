@@ -50,11 +50,13 @@ CACHE_PATHS=(
   .cache/pip{,x}
   .cache/pre-commit
   .cache/protocbridge
+  .cache/pydantic-ai
   .cache/pypoetry
   .cache/rules_python_pycache
   .cache/rust-releases
   .cache/samba
   .cache/sccache
+  .cache/semble
   .cache/tauri
   .cache/thumbnails
   .cache/tooling
@@ -70,7 +72,6 @@ CACHE_PATHS=(
   .cache/wine{,tricks}
   .cache/yarn
   .cache/zenith
-  .cacje/sccache
   .cargo/{advisory-dbs,registry,git}
   .dotnet/toolResolverCache
   .gradle
@@ -81,8 +82,11 @@ CACHE_PATHS=(
   .local/share/Nuget/Cache
   .local/share/Trash
   .local/share/bloop/logs
+  .local/share/cargo{,-msrv}
   .local/share/gem/specs
-  .local/share/rustup/{downloads,tmp,toolchains}
+  .local/share/scalacli
+  .local/share/scalacli
+  .local/share/rustup/{downloads,tmp,toolchains,update-hashes}
   .local/share/yarn/berry
   .local/state/pipx/log
   .local/{share,state}/nvim/swap
@@ -95,7 +99,6 @@ CACHE_PATHS=(
   .sbt/1.0/{server,zinc}
   .sbt/{0.13,1.0}/plugins/{project,target}
   .templateengine
-  .webman/tmp
   .yarn/berry
   .zenmap
   go
@@ -103,6 +106,7 @@ CACHE_PATHS=(
 
 clean_cache() {
   msg 'Checking for common cache data locations...'
+
   REAL_PATHS=()
   for p in "${CACHE_PATHS[@]}"; do
     if [ -x "$HOME/$p" ]; then
@@ -118,30 +122,6 @@ clean_cache() {
       msg2 'Cleaning %s...' "$p"
       rm -rf "$p" 2>/dev/null || true
     done
-  fi
-}
-
-clean_webman() {
-  if [ -e "$HOME/.webman" ] && yq="$(command -v yq 2>/dev/null)"; then
-    msg 'Checking for unused webman package versions...'
-    UNUSED_PKG=()
-    for p in "$HOME/.webman/pkg/"*; do
-      if version="$("$yq" -r .using "$p/using.yaml" 2>/dev/null)"; then
-        mapfile -d '' -t -O "${#UNUSED_PKG[@]}" UNUSED_PKG < <(
-          find "$p" -mindepth 1 -maxdepth 1 -type d ! -name "$version" -print0
-        )
-      fi
-    done
-
-    if [ ${#UNUSED_PKG[@]} -gt 0 ]; then
-      TOTAL="$(du -chx "${UNUSED_PKG[@]}" 2>/dev/null | tail -n1 | cut -f1)"
-      msg2 'Found about %sB to be cleaned in %d unused packages versions.' "$TOTAL" "${#UNUSED_PKG[@]}"
-
-      for p in "${UNUSED_PKG[@]}"; do
-        msg2 'Cleaning %s...' "$p"
-        rm -rf "$p" 2>/dev/null || true
-      done
-    fi
   fi
 }
 
@@ -162,7 +142,12 @@ clean_user_podman() {
 }
 
 clean_pacman() {
-  msg 'Cleaning uninstalled pacman packages...'
+  msg 'Cleaning pacman cache...'
+
+  msg2 'Removing failed downloads...'
+  sudo rm -rf /var/cache/pacman/pkg/download-*/
+
+  msg2 'Removing old packages...'
   sudo pacman -Sc --noconfirm || true
 }
 
@@ -195,7 +180,6 @@ clean_system_podman() {
 colorize
 
 clean_cache
-clean_webman
 clean_user_podman
 
 if [ "$1" = '-s' ]; then
