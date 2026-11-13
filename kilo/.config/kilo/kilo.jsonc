@@ -202,6 +202,7 @@
       "mkdir *": "allow",
       "mv *": "ask",
       "npm *": "allow",
+      "od *": "allow",
       "python -c *": "deny",
       "python2 -c *": "deny",
       "python3 -c *": "deny",
@@ -292,7 +293,7 @@
       "url": "https://api.githubcopilot.com/mcp",
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {env:GITHUB_API_KEY}",
+        "Authorization": "Bearer {env:GITHUB_TOKEN}",
         "X-MCP-Toolsets": "context,issues,repos,pull_requests",
         "X-MCP-Readonly": "true"
       },
