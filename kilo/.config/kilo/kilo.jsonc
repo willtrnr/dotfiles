@@ -1,6 +1,6 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  "model": "meituan/longcat-2.0",
+  "model": "meituan/longcat-2.5",
   "small_model": "google/gemma-3-4b-it",
   "provider": {
     "local": {
@@ -187,6 +187,7 @@
       "free *": "allow",
       "git diff *": "allow",
       "git diff-tree *": "allow",
+      "git grep *": "allow",
       "git log *": "allow",
       "git ls-files *": "allow",
       "git merge-base *": "allow",
@@ -244,12 +245,15 @@
       "/run/*": "allow",
       "/tmp/*": "allow",
       "~/.cache/*": "allow",
+      "~/.cargo/registry/src/*": "allow",
       "~/.dotfiles/kilo/*": "allow",
       "~/.dotnet/*": "allow",
       "~/.go/*": "allow",
       "~/.ivy2/*": "allow",
       "~/.kilo/skills/*": "allow",
       "~/.local/share/cargo/*": "allow",
+      "~/.local/share/kilo/plans/*": "allow",
+      "~/.local/share/rustup/toolchains/*": "allow",
       "~/.sbt/*": "allow"
     },
     "ghidra_*": "allow",
@@ -259,6 +263,8 @@
     "glob": "allow",
     "grep": "allow",
     "kilo_memory_*": "allow",
+    "linear_get_*": "allow",
+    "linear_list_*": "allow",
     "list": "allow",
     "lsp": "allow",
     "read": {
@@ -299,6 +305,11 @@
         "X-MCP-Toolsets": "context,issues,repos,pull_requests",
         "X-MCP-Readonly": "true"
       },
+      "enabled": false
+    },
+    "gitlab": {
+      "type": "remote",
+      "url": "https://gitlab.com/api/v4/mcp",
       "enabled": false
     },
     "linear": {

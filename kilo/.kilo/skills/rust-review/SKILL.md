@@ -1,15 +1,16 @@
 ---
 name: rust-review
-description: Use when reviewing Rust workspaces
+description: Use when reviewing Rust projects
 ---
 # Rust Code Review
 
 ## Scope
 
-Review the Rust workspace code for correctness, safety, concurrency, performance, and
-API quality.
+Review the Rust project code for correctness, safety, concurrency, performance, and API
+quality.
 
-Split the work dimensions across multiple sub-agents in large projects.
+Split the work into multiple sub-agents either by crate, dimensions or both in large
+projects.
 
 ## Gates (run before reading code)
 
@@ -33,7 +34,7 @@ Report gate failures verbatim; do not fix them silently.
 ### 2. Safety (unsafe)
 
 - Every `unsafe` block REQUIRES a `// SAFETY:` comment stating the invariants
-- Raw pointer derefs: alignment, lifetime, and null checks
+- Raw pointer derefs: alignment, lifetime, null checks and provenance
 - `unsafe impl Send/Sync` must be justified or removed
 - Prefer safe abstractions (`NonZero*`, `get_unchecked` only with proof, `Bytes`) over
   hand-written unsafe use established libraries when available
