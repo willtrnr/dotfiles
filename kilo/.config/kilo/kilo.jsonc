@@ -1,6 +1,6 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
-  "model": "meituan/longcat-2.5",
+  "model": "z-ai/glm-5.3-flash",
   "small_model": "google/gemma-3-4b-it",
   "provider": {
     "local": {
@@ -245,8 +245,10 @@
       "/run/*": "allow",
       "/tmp/*": "allow",
       "~/.cache/*": "allow",
+      "~/.cargo/git/checkouts/*": "allow",
       "~/.cargo/registry/src/*": "allow",
       "~/.dotfiles/kilo/*": "allow",
+      "~/.dotfiles/rust/.cargo/*": "allow",
       "~/.dotnet/*": "allow",
       "~/.go/*": "allow",
       "~/.ivy2/*": "allow",

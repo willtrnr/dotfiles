@@ -3,7 +3,7 @@
 export RUSTUP_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/rustup"
 export CARGO_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/cargo"
 
-export PATH="${HOME}/.cargo/bin${PATH:+:${PATH}}"
+export PATH="${CARGO_HOME}/bin${PATH:+:${PATH}}"
 
 if RUSTC_WRAPPER="$(command -v sccache)"; then
   export RUSTC_WRAPPER
