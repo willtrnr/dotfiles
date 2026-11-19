@@ -57,24 +57,25 @@
             ]
           },
           "limit": {
-            "context": 196608,
+            "context": 163840,
             "output": 16384
           }
         },
-        "mradermacher/Ornith-1.5-9B-uncensored": {
-          "name": "Ornith 1.5 9B uncensored",
+        "google/gemma-4-12B-it": {
+          "name": "gemma 4 12B it",
           "tool_call": true,
           "reasoning": true,
           "modalities": {
             "input": [
-              "text"
+              "text",
+              "image"
             ],
             "output": [
               "text"
             ]
           },
           "limit": {
-            "context": 196608,
+            "context": 163840,
             "output": 16384
           }
         },
@@ -109,23 +110,6 @@
           },
           "limit": {
             "context": 131072,
-            "output": 16384
-          }
-        },
-        "tiiuae/Falcon-H1R-7B": {
-          "name": "Falcon H1R 7B",
-          "tool_call": true,
-          "reasoning": true,
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "limit": {
-            "context": 196608,
             "output": 16384
           }
         }
@@ -281,11 +265,6 @@
     "webfetch": "allow",
     "websearch": "allow",
     "windbg_*": "allow"
-  },
-  "indexing": {
-    "enabled": false,
-    "model": "nomic-ai/nomic-embed-text-v1.5",
-    "dimension": 768
   },
   "mcp": {
     "context7": {

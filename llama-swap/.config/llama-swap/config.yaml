@@ -43,7 +43,6 @@ macros:
     --log-verbosity ${log-level}
     --cache-ram ${cache-ram}
     --no-cont-batching
-    --no-mmproj
     --host 127.0.0.1
     --port ${PORT}
     --reuse-port
@@ -88,37 +87,29 @@ macros:
     --ubatch-size 512
     --n-predict ${max-tokens}
     --temperature ${temp}
-    --top-k 20
     --top-p 0.95
     --min-p 0.0
     --repeat-penalty 1.0
     --presence-penalty 0.0
     --reasoning on
 
-  falcon-common: >-
+  gemma-common: >-
     ${common}
+    --top-k 64
 
   laguna-common: >-
     ${common}
+    --top-k 20
     --reasoning-preserve
 
   nemotron-common: >-
     ${common}
-    --reasoning-preserve
-
-  ornith-common: >-
-    ${common}
+    --top-k 20
     --reasoning-preserve
 
   qwen38-common: >-
     ${common}
-
-  nomic-common: >-
-    ${kv-cache-embedding}
-    ${cpu-only}
-    --ctx-checkpoints 0
-    --pooling mean
-    --embeddings
+    --top-k 20
 
 models:
   .unused:
@@ -157,11 +148,27 @@ models:
       ${qwen38-common}
       ${mtp-ngram}
     macros:
-      ctx: &ctx 196608
+      ctx: &ctx 163840
     filters: *filters
     metadata: *metadata
     capabilities:
       in: [text]
+      out: [text]
+      tools: true
+      context: *ctx
+
+  google/gemma-4-12B-it:
+    cmd: >-
+      ${llama-server-hf}
+      ${gemma-common}
+    macros:
+      model: ${MODEL_ID}-qat-q4_0-gguf
+      quant: Q4_0
+      ctx: &ctx 163840
+    filters: *filters
+    metadata: *metadata
+    capabilities:
+      in: [text, image]
       out: [text]
       tools: true
       context: *ctx
@@ -180,25 +187,10 @@ models:
       tools: true
       context: *ctx
 
-  mradermacher/Ornith-1.5-9B-uncensored:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${ornith-common}
-    macros:
-      ctx: &ctx 196608
-    filters: *filters
-    metadata: *metadata
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: *ctx
-
   nvidia/NVIDIA-Nemotron-3-Nano-4B:
     cmd: >-
       ${llama-server-hf-gguf}
       ${nemotron-common}
-      ${gpu-only}
     macros:
       ctx: &ctx 196608
     filters: *filters
@@ -223,45 +215,6 @@ models:
       tools: true
       context: *ctx
 
-  tiiuae/Falcon-H1R-7B:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${falcon-common}
-      ${gpu-only}
-    macros:
-      ctx: &ctx 196608
-    filters: *filters
-    metadata: *metadata
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: *ctx
-
-  nomic-ai/nomic-embed-text-v1.5:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${nomic-common}
-      --batch-size 2048
-      --ubatch-size 2048
-      --rope-scaling yarn
-      --rope-freq-scale 0.75
-    macros:
-      quant: Q8_0
-      cache-ram: 1024
-      ctx: &ctx 8192
-      log-level: 2
-    env:
-      - CUDA_VISIBLE_DEVICES=
-    ttl: 300
-    filters: *filters
-    metadata:
-      embedding: true
-      kilo:
-        dimension: 768
-    capabilities:
-      context: *ctx
-
 routing:
   router:
     use: group
@@ -274,22 +227,9 @@ routing:
           members:
             - DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP
             - empero-ai/Qwen3.8-9B-Distill
+            - google/gemma-4-12B-it
             - Jackrong/Qwopus3.8-27B-Coder-Flash
-            - mradermacher/Ornith-1.5-9B-uncensored
-            - nvidia/NVIDIA-Nemotron-3-Nano-4B
             - poolside/Laguna-XS-2.1
-            - tiiuae/Falcon-H1R-7B
-
-        embed:
-          swap: true
-          exclusive: false
-          members:
-            - nomic-ai/nomic-embed-text-v1.5
 
   scheduler:
     use: fifo
-
-    settings:
-      fifo:
-        priority:
-          nomic-ai/nomic-embed-text-v1.5: -10
