@@ -1,10 +1,16 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mostlygeek/llama-swap/refs/heads/main/config-schema.json
+logLevel: info
+
+captureBuffer: 4
+
+helpagent:
+  disable: true
+
 startPort: 13434
 
 globalTTL: 1800
 
-captureBuffer: 4
 
 macros:
   model: ${MODEL_ID}
@@ -19,7 +25,14 @@ macros:
 
   cache-ram: 2048
 
-  ctx: 131072
+  ctx-1b: ${env.LLAMA_CTX_1B}
+  ctx-4b: ${env.LLAMA_CTX_4B}
+  ctx-9b: ${env.LLAMA_CTX_9B}
+  ctx-12b: ${env.LLAMA_CTX_12B}
+  ctx-27b: ${env.LLAMA_CTX_27B}
+  ctx-33b: ${env.LLAMA_CTX_33B}
+
+  ctx: ${ctx-33b}
   max-tokens: 16384
 
   checkpoints: 4
@@ -43,6 +56,7 @@ macros:
     --log-verbosity ${log-level}
     --cache-ram ${cache-ram}
     --no-cont-batching
+    --no-mmproj
     --host 127.0.0.1
     --port ${PORT}
     --reuse-port
@@ -133,7 +147,7 @@ models:
       ${qwen38-common}
     macros:
       quant: IQ4_XS
-      ctx: &ctx 131072
+      ctx: &ctx ${ctx-27b}
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -148,7 +162,7 @@ models:
       ${qwen38-common}
       ${mtp-ngram}
     macros:
-      ctx: &ctx 163840
+      ctx: &ctx ${ctx-9b}
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -164,11 +178,11 @@ models:
     macros:
       model: ${MODEL_ID}-qat-q4_0-gguf
       quant: Q4_0
-      ctx: &ctx 163840
+      ctx: &ctx ${ctx-12b}
     filters: *filters
     metadata: *metadata
     capabilities:
-      in: [text, image]
+      in: [text]
       out: [text]
       tools: true
       context: *ctx
@@ -178,7 +192,7 @@ models:
       ${llama-server-hf-gguf}
       ${qwen38-common}
     macros:
-      ctx: &ctx 131072
+      ctx: &ctx ${ctx-27b}
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -192,7 +206,7 @@ models:
       ${llama-server-hf-gguf}
       ${nemotron-common}
     macros:
-      ctx: &ctx 196608
+      ctx: &ctx ${ctx-4b}
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -206,7 +220,7 @@ models:
       ${llama-server-hf-gguf}
       ${laguna-common}
     macros:
-      ctx: &ctx 131072
+      ctx: &ctx ${ctx-33b}
     filters: *filters
     metadata: *metadata
     capabilities:

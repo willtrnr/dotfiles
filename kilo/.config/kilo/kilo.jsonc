@@ -23,7 +23,7 @@
             ]
           },
           "limit": {
-            "context": 131072,
+            "context": 98304,
             "output": 16384
           }
         },
@@ -40,7 +40,7 @@
             ]
           },
           "limit": {
-            "context": 131072,
+            "context": 98304,
             "output": 16384
           }
         },
@@ -67,15 +67,14 @@
           "reasoning": true,
           "modalities": {
             "input": [
-              "text",
-              "image"
+              "text"
             ],
             "output": [
               "text"
             ]
           },
           "limit": {
-            "context": 163840,
+            "context": 131072,
             "output": 16384
           }
         },
@@ -109,7 +108,7 @@
             ]
           },
           "limit": {
-            "context": 131072,
+            "context": 65536,
             "output": 16384
           }
         }
