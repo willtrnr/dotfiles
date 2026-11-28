@@ -36,6 +36,7 @@ macros:
 
   ctx: ${ctx-32b}
   max-tokens: 16384
+  draft-n-max: 2
 
   checkpoints: 4
   checkpoint-step: 8192
@@ -88,9 +89,9 @@ macros:
     --n-gpu-layers 0
     --parallel ${threads}
 
-  mtp-ngram: >-
+  draft-mtp: >-
     --spec-type draft-mtp
-    --spec-draft-n-max 2
+    --spec-draft-n-max ${draft-n-max}
 
   checkpointing: >-
     --ctx-checkpoints ${checkpoints}
@@ -162,7 +163,7 @@ models:
     cmd: >-
       ${llama-server-hf-gguf}
       ${qwen38-common}
-      ${mtp-ngram}
+      ${draft-mtp}
     macros:
       ctx: &ctx ${ctx-8b}
     filters: *filters
@@ -233,6 +234,22 @@ models:
       tools: true
       context: *ctx
 
+  tngtech/NVIDIA-Nemotron-3.5-Lightning-30B-A3B:
+    cmd: >-
+      ${llama-server-hf-gguf}
+      ${nemotron-common}
+    macros:
+      model: ${MODEL_ID}-NVFP4
+      quant: NVFP4
+      ctx: &ctx ${ctx-1b}
+    filters: *filters
+    metadata: *metadata
+    capabilities:
+      in: [text]
+      out: [text]
+      tools: true
+      context: *ctx
+
 routing:
   router:
     use: group
@@ -248,6 +265,7 @@ routing:
             - google/gemma-4-12B-it
             - google/gemma-4-26B-A4B-it
             - poolside/Laguna-XS-2.1
+            - tngtech/NVIDIA-Nemotron-3.5-Lightning-30B-A3B
 
   scheduler:
     use: fifo

@@ -57,7 +57,7 @@
             ]
           },
           "limit": {
-            "context": 229376,
+            "context": 196608,
             "output": 16384
           }
         },
@@ -74,7 +74,7 @@
             ]
           },
           "limit": {
-            "context": 131072,
+            "context": 163840,
             "output": 16384
           }
         },
@@ -111,6 +111,23 @@
             "context": 131072,
             "output": 16384
           }
+        },
+        "tngtech/NVIDIA-Nemotron-3.5-Lightning-30B-A3B": {
+          "name": "NVIDIA Nemotron 3.5 Lightning 30B A3B",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 524288,
+            "output": 16384
+          }
         }
       }
     }
@@ -125,6 +142,7 @@
       "{env:HOME}/.ivy2",
       "{env:HOME}/.local/share/cargo",
       "{env:HOME}/.local/share/rustup/toolchains/*",
+      "{env:HOME}/.npm",
       "{env:HOME}/.sbt",
       "{env:HOME}/go"
     ]
@@ -308,6 +326,15 @@
     "webfetch": "allow",
     "websearch": "allow",
     "windbg_*": {
+      "*": "allow"
+    },
+    "context7_resolve-library-id": {
+      "*": "allow"
+    },
+    "context7_query-docs": {
+      "*": "allow"
+    },
+    "deepwiki_ask_wiki_question": {
       "*": "allow"
     }
   },
