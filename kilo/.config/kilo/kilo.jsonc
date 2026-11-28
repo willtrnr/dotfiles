@@ -23,24 +23,7 @@
             ]
           },
           "limit": {
-            "context": 98304,
-            "output": 16384
-          }
-        },
-        "Jackrong/Qwopus3.8-27B-Coder-Flash": {
-          "name": "Qwopus3.8 27B Coder Flash",
-          "tool_call": true,
-          "reasoning": true,
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "limit": {
-            "context": 98304,
+            "context": 131072,
             "output": 16384
           }
         },
@@ -57,12 +40,29 @@
             ]
           },
           "limit": {
-            "context": 163840,
+            "context": 262144,
             "output": 16384
           }
         },
         "google/gemma-4-12B-it": {
           "name": "gemma 4 12B it",
+          "tool_call": true,
+          "reasoning": true,
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 229376,
+            "output": 16384
+          }
+        },
+        "google/gemma-4-26B-A4B-it": {
+          "name": "gemma 4 26B A4B it",
           "tool_call": true,
           "reasoning": true,
           "modalities": {
@@ -91,7 +91,7 @@
             ]
           },
           "limit": {
-            "context": 196608,
+            "context": 262144,
             "output": 16384
           }
         },
@@ -108,7 +108,7 @@
             ]
           },
           "limit": {
-            "context": 65536,
+            "context": 131072,
             "output": 16384
           }
         }

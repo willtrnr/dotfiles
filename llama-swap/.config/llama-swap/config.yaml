@@ -11,7 +11,6 @@ startPort: 13434
 
 globalTTL: 1800
 
-
 macros:
   model: ${MODEL_ID}
   quant: Q4_K_M
@@ -27,12 +26,15 @@ macros:
 
   ctx-1b: ${env.LLAMA_CTX_1B}
   ctx-4b: ${env.LLAMA_CTX_4B}
-  ctx-9b: ${env.LLAMA_CTX_9B}
+  ctx-8b: ${env.LLAMA_CTX_8B}
   ctx-12b: ${env.LLAMA_CTX_12B}
-  ctx-27b: ${env.LLAMA_CTX_27B}
-  ctx-33b: ${env.LLAMA_CTX_33B}
+  ctx-16b: ${env.LLAMA_CTX_16B}
+  ctx-20b: ${env.LLAMA_CTX_20B}
+  ctx-24b: ${env.LLAMA_CTX_24B}
+  ctx-28b: ${env.LLAMA_CTX_28B}
+  ctx-32b: ${env.LLAMA_CTX_32B}
 
-  ctx: ${ctx-33b}
+  ctx: ${ctx-32b}
   max-tokens: 16384
 
   checkpoints: 4
@@ -147,7 +149,7 @@ models:
       ${qwen38-common}
     macros:
       quant: IQ4_XS
-      ctx: &ctx ${ctx-27b}
+      ctx: &ctx ${ctx-28b}
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -162,7 +164,7 @@ models:
       ${qwen38-common}
       ${mtp-ngram}
     macros:
-      ctx: &ctx ${ctx-9b}
+      ctx: &ctx ${ctx-8b}
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -194,21 +196,7 @@ models:
     macros:
       model: ${MODEL_ID}-qat-q4_0-gguf
       quant: Q4_0
-      ctx: &ctx ${ctx-27b}
-    filters: *filters
-    metadata: *metadata
-    capabilities:
-      in: [text]
-      out: [text]
-      tools: true
-      context: *ctx
-
-  Jackrong/Qwopus3.8-27B-Coder-Flash:
-    cmd: >-
-      ${llama-server-hf-gguf}
-      ${qwen38-common}
-    macros:
-      ctx: &ctx ${ctx-27b}
+      ctx: &ctx ${ctx-24b}
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -236,7 +224,7 @@ models:
       ${llama-server-hf-gguf}
       ${laguna-common}
     macros:
-      ctx: &ctx ${ctx-33b}
+      ctx: &ctx ${ctx-32b}
     filters: *filters
     metadata: *metadata
     capabilities:
@@ -259,7 +247,6 @@ routing:
             - empero-ai/Qwen3.8-9B-Distill
             - google/gemma-4-12B-it
             - google/gemma-4-26B-A4B-it
-            - Jackrong/Qwopus3.8-27B-Coder-Flash
             - poolside/Laguna-XS-2.1
 
   scheduler:
