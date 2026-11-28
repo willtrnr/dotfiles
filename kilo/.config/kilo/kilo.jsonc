@@ -229,9 +229,7 @@
     "deepwiki_*": {
       "*": "allow"
     },
-    "doom_loop": {
-      "*": "deny"
-    },
+    "doom_loop": "deny",
     "edit": {
       "*": "allow"
     },
@@ -306,15 +304,9 @@
     "task": {
       "*": "allow"
     },
-    "todowrite": {
-      "*": "allow"
-    },
-    "webfetch": {
-      "*": "allow"
-    },
-    "websearch": {
-      "*": "allow"
-    },
+    "todowrite": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
     "windbg_*": {
       "*": "allow"
     }
